@@ -15,6 +15,11 @@
 
 <style>
 
+/* 🔥 FIX GLOBAL RESPONSIVE */
+*{
+box-sizing:border-box;
+}
+
 html { scroll-behavior:smooth; }
 
 body{
@@ -26,6 +31,7 @@ background-position:center;
 background-attachment:fixed;
 background-repeat:no-repeat;
 color:white;
+overflow-x:hidden; /* 🔥 evita desborde lateral */
 }
 
 h1{
@@ -114,6 +120,7 @@ border:1px solid rgba(255,255,255,0.3);
 border-radius:10px;
 font-weight:700;
 background:rgba(255,255,255,0.05);
+width:100%;
 }
 
 .subtitulo{
@@ -130,6 +137,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:15px;
+flex-wrap:wrap; /* 🔥 permite bajar linea en mobile */
 }
 
 .equipo{
@@ -159,13 +167,47 @@ padding:20px;
 font-size:18px;
 }
 
-/* Responsive */
+/* 🔥 RESPONSIVE MEJORADO */
 
 @media (max-width:900px){
-.layout{grid-template-columns:1fr;}
-.trofeos{justify-content:center;}
-model-viewer{width:250px;height:320px;}
-.bracket-grid{grid-template-columns:1fr;}
+
+.layout{
+grid-template-columns:1fr;
+padding:20px;
+}
+
+.trofeos{
+justify-content:center;
+}
+
+model-viewer{
+width:250px;
+height:320px;
+}
+
+.bracket-grid{
+grid-template-columns:1fr;
+gap:25px;
+}
+
+.panel{
+padding:20px;
+}
+
+.partido{
+width:100%;
+font-size:14px;
+}
+
+.equipo span{
+font-size:14px;
+}
+
+.equipo img{
+width:18px;
+height:18px;
+}
+
 }
 
 </style>
