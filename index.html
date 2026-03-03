@@ -11,113 +11,130 @@
 
 <style>
 
-html {
-  scroll-behavior: smooth;
+html { scroll-behavior:smooth; }
+
+body{
+margin:0;
+font-family:'Montserrat',sans-serif;
+background-image:url('fondo.png');
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+background-repeat:no-repeat;
+color:white;
 }
 
-body {
-  margin:0;
-  font-family:'Montserrat', sans-serif;
-  background-image:url('fondo.png');
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-  background-repeat:no-repeat;
-  color:white;
+h1{
+text-align:center;
+font-size:48px;
+font-weight:900;
+letter-spacing:3px;
+padding:30px 0;
 }
 
-h1 {
-  text-align:center;
-  font-size:48px;
-  font-weight:900;
-  letter-spacing:3px;
-  padding:30px 0;
+.layout{
+display:grid;
+grid-template-columns:3fr 1fr;
+gap:40px;
+padding:40px;
 }
 
-.layout {
-  display:grid;
-  grid-template-columns: 3fr 1fr;
-  gap:40px;
-  padding:40px;
+.trofeos{
+display:flex;
+gap:40px;
+flex-wrap:wrap;
 }
 
-.trofeos {
-  display:flex;
-  gap:40px;
-  flex-wrap:wrap;
+.copa{text-align:center;}
+
+model-viewer{
+width:300px;
+height:400px;
 }
 
-.copa {
-  text-align:center;
+a{
+color:white;
+text-decoration:none;
 }
 
-model-viewer {
-  width:300px;
-  height:400px;
+.video-container{
+display:flex;
+justify-content:center;
+align-items:flex-start;
 }
 
-a {
-  color:white;
-  text-decoration:none;
+video{
+width:100%;
+max-width:350px;
+border-radius:15px;
 }
 
-a:hover {
-  opacity:0.7;
+.seccion{
+padding:80px 20px;
+text-align:center;
 }
 
-.video-container {
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
+.panel{
+margin:auto;
+margin-top:30px;
+max-width:1000px;
+background:rgba(0,0,0,0.75);
+padding:40px;
+border-radius:20px;
 }
 
-video {
-  width:100%;
-  max-width:350px;
-  border-radius:15px;
+/* BRACKET */
+
+.bracket{
+display:flex;
+justify-content:center;
+gap:80px;
+flex-wrap:wrap;
 }
 
-.seccion {
-  padding:80px 20px;
-  text-align:center;
+.columna{
+display:flex;
+flex-direction:column;
+gap:25px;
 }
 
-.panel {
-  margin:auto;
-  margin-top:30px;
-  max-width:900px;
-  background:rgba(0,0,0,0.7);
-  padding:30px;
-  border-radius:20px;
+.partido{
+padding:15px;
+border:1px solid rgba(255,255,255,0.3);
+border-radius:10px;
+font-weight:700;
+min-width:220px;
 }
 
-.partido {
-  padding:15px;
-  margin:10px 0;
-  border:1px solid rgba(255,255,255,0.3);
-  border-radius:10px;
-  font-weight:700;
+.ganador{
+background:#00ff88;
+color:black;
+font-weight:900;
+}
+
+.subtitulo{
+margin-top:10px;
+font-size:14px;
+opacity:0.8;
 }
 
 /* Responsive */
-@media (max-width: 900px) {
 
-  h1 {
-    font-size:32px;
-  }
+@media (max-width:900px){
 
-  .layout {
-    grid-template-columns:1fr;
-  }
+.layout{grid-template-columns:1fr;}
 
-  .trofeos {
-    justify-content:center;
-  }
+.trofeos{justify-content:center;}
 
-  model-viewer {
-    width:250px;
-    height:320px;
-  }
+model-viewer{
+width:250px;
+height:320px;
+}
+
+.bracket{
+flex-direction:column;
+align-items:center;
+}
 
 }
 
@@ -134,17 +151,17 @@ video {
 
 <div class="copa">
 <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#liga">Liga Argentina – Octavos</a></h3>
+<h3><a href="#liga">AFA Clausura 2025</a></h3>
 </div>
 
 <div class="copa">
 <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#libertadores">Libertadores – Cuartos</a></h3>
+<h3><a href="#libertadores">CONMEBOL Libertadores 2025</a></h3>
 </div>
 
 <div class="copa">
 <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#sudamericana">Sudamericana – Final</a></h3>
+<h3><a href="#sudamericana">CONMEBOL Sudamericana 2025</a></h3>
 </div>
 
 </div>
@@ -155,42 +172,71 @@ video {
 
 </div>
 
-<!-- LIGA ARGENTINA -->
+<!-- AFA CLAUSURA -->
 <section id="liga" class="seccion">
-<h2>Octavos de Final – Liga Argentina</h2>
+<h2>Octavos de Final – AFA Clausura 2025</h2>
 <div class="panel">
+<div class="bracket">
+<div class="columna">
 
-<div class="partido">Boca vs Estudiantes</div>
-<div class="partido">River vs Independiente</div>
-<div class="partido">Racing vs San Lorenzo</div>
-<div class="partido">Vélez vs Talleres</div>
-<div class="partido">Newell's vs Lanús</div>
-<div class="partido">Defensa vs Argentinos</div>
-<div class="partido">Rosario Central vs Huracán</div>
-<div class="partido">Platense vs Colón</div>
+<div class="partido ganador">Boca 3 - 1 Estudiantes</div>
+<div class="partido">River 2 - 2 Independiente</div>
+<div class="partido">Racing 1 - 0 San Lorenzo</div>
+<div class="partido">Vélez 0 - 1 Talleres</div>
 
+</div>
+</div>
 </div>
 </section>
 
 <!-- LIBERTADORES -->
 <section id="libertadores" class="seccion">
-<h2>Cuartos de Final – CONMEBOL Libertadores</h2>
+<h2>Cuartos de Final – CONMEBOL Libertadores 2025</h2>
 <div class="panel">
 
-<div class="partido">Boca vs Flamengo</div>
-<div class="partido">River vs Palmeiras</div>
-<div class="partido">Inter vs Racing</div>
-<div class="partido">Nacional vs Peñarol</div>
+<div class="bracket">
+
+<div class="columna">
+<div class="partido ganador">
+Boca 2 - 1 Flamengo
+<div class="subtitulo">Global: 4 - 3</div>
+</div>
+
+<div class="partido">
+River 1 - 0 Palmeiras
+<div class="subtitulo">Global: 2 - 2</div>
+</div>
+</div>
+
+<div class="columna">
+<div class="partido">
+Inter 0 - 2 Racing
+<div class="subtitulo">Global: 1 - 3</div>
+</div>
+
+<div class="partido ganador">
+Nacional 3 - 2 Peñarol
+<div class="subtitulo">Global: 5 - 4</div>
+</div>
+</div>
+
+</div>
 
 </div>
 </section>
 
 <!-- SUDAMERICANA -->
 <section id="sudamericana" class="seccion">
-<h2>Final – CONMEBOL Sudamericana</h2>
+<h2>Final – CONMEBOL Sudamericana 2025</h2>
 <div class="panel">
 
-<div class="partido">San Lorenzo vs LDU Quito</div>
+<div class="bracket">
+<div class="columna">
+<div class="partido">
+San Lorenzo vs LDU Quito
+</div>
+</div>
+</div>
 
 </div>
 </section>
