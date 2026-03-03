@@ -12,8 +12,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 <style>
+
 html { scroll-behavior:smooth; }
 
 body{
@@ -86,6 +89,8 @@ padding:40px;
 border-radius:20px;
 }
 
+/* BRACKET GRID */
+
 .bracket-grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
@@ -119,6 +124,8 @@ font-size:13px;
 opacity:0.7;
 font-weight:400;
 }
+
+/* Equipos con escudo */
 
 .fila-partido{
 display:flex;
@@ -154,12 +161,15 @@ padding:20px;
 font-size:18px;
 }
 
+/* Responsive */
+
 @media (max-width:900px){
 .layout{grid-template-columns:1fr;}
 .trofeos{justify-content:center;}
 model-viewer{width:250px;height:320px;}
 .bracket-grid{grid-template-columns:1fr;}
 }
+
 </style>
 </head>
 
@@ -194,11 +204,13 @@ model-viewer{width:250px;height:320px;}
 
 </div>
 
-<!-- 🇦🇷 LIGA -->
+<!-- 🇦🇷 LIGA ARGENTINA -->
 <section id="liga" class="seccion">
 <h2>Playoffs – AFA Clausura 2025</h2>
+
 <div class="panel">
 <div class="bracket-grid">
+
 <div class="col">
 <h3>Octavos</h3>
 <div class="partido">Boca vs Estudiantes</div>
@@ -237,10 +249,13 @@ model-viewer{width:250px;height:320px;}
 <!-- 🏆 LIBERTADORES -->
 <section id="libertadores" class="seccion">
 <h2>CONMEBOL Libertadores 2025</h2>
+
 <div class="panel">
 <div class="bracket-grid">
+
 <div class="col">
 <h3>Cuartos</h3>
+
 <div class="partido">
 <div class="fila-partido">
 <div class="equipo"><span>Racing Club</span><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghWvSJWCrUF8u2JceuoExqUlFdSH_8ikgsw-3Mv8-CblPsDANkhTcB3yCOFufq7FH8rgreONKj2yjO4dIAVZAOjM0LP5Stm6dvBbp78TSLkNSDvXcV_qhvm3nsUKHNNbBkXcwU5pD8Sak/s1600/Racing+Club128x.png"></div>
@@ -277,6 +292,8 @@ model-viewer{width:250px;height:320px;}
 <div class="subtitulo">Global: -</div>
 </div>
 
+</div>
+
 <div class="col">
 <h3>Semifinales</h3>
 <div class="partido">Ganador 1<div class="subtitulo">Global: -</div></div>
@@ -295,6 +312,7 @@ model-viewer{width:250px;height:320px;}
 <!-- 🏆 SUDAMERICANA -->
 <section id="sudamericana" class="seccion">
 <h2>Final – CONMEBOL Sudamericana 2025</h2>
+
 <div class="panel">
 <div style="display:flex; justify-content:center;">
 <div class="col">
