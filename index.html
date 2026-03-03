@@ -4,10 +4,10 @@
 Competencias actuales FIFA
 </h1>
 
-<div style="display:flex;">
+<div style="display:flex; flex-wrap:wrap;">
 
-  <!-- BLOQUE TROFEOS -->
-  <div style="display:flex; justify-content:flex-start; gap:40px; flex-wrap:wrap; padding:40px; flex:2;">
+  <!-- TROFEOS -->
+  <div style="flex:3; min-width:900px; display:flex; gap:40px; flex-wrap:wrap; padding:40px;">
 
     <div style="text-align:center;">
       <model-viewer 
@@ -41,15 +41,15 @@ Competencias actuales FIFA
 
   </div>
 
-  <!-- BLOQUE VIDEO -->
-  <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <!-- VIDEO -->
+  <div style="flex:1; min-width:300px; display:flex; align-items:center; justify-content:center; padding:20px;">
     <video 
       src="intro.mp4" 
       autoplay 
       muted 
       loop 
       playsinline 
-      style="max-width:100%; border-radius:15px;">
+      style="width:100%; max-width:400px; border-radius:15px;">
     </video>
   </div>
 
