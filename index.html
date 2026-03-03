@@ -1,13 +1,13 @@
-<body style="background:black; margin:0;">
+<body style="background:black; margin:0; font-family:Arial;">
 
-<h1 style="color:white; text-align:center; font-size:40px; padding-top:20px;">
+<h1 style="color:white; text-align:center; font-size:40px; padding:20px 0;">
 Competencias actuales FIFA
 </h1>
 
-<div style="display:flex; align-items:flex-start; padding:40px; gap:40px;">
+<div style="display:grid; grid-template-columns: 3fr 1fr; gap:40px; padding:40px;">
 
   <!-- TROFEOS -->
-  <div style="display:flex; gap:40px;">
+  <div style="display:flex; gap:40px; flex-wrap:wrap;">
 
     <div style="text-align:center;">
       <model-viewer 
@@ -42,14 +42,14 @@ Competencias actuales FIFA
   </div>
 
   <!-- VIDEO -->
-  <div>
+  <div style="display:flex; justify-content:center; align-items:flex-start;">
     <video 
       src="intro.mp4"
       autoplay
       muted
       loop
       playsinline
-      style="width:350px; border-radius:15px;">
+      style="width:100%; max-width:350px; border-radius:15px;">
     </video>
   </div>
 
