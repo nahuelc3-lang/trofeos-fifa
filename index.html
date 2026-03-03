@@ -3,39 +3,43 @@
 <head>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
-<body style="background:black; text-align:center;">
 
-<h1 style="color:white; font-size:40px;"> Competencias actuales FIFA</h1>
+<body style="background:black; margin:0;">
 
-<div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:40px;">
+<h1 style="color:white; text-align:center; font-size:40px; margin-top:20px;">
+Competencias actuales FIFA
+</h1>
 
-  <model-viewer 
-    src="AFA_LPF.glb"
-    auto-rotate
-    camera-controls
-    style="width: 300px; height: 400px;">
-  </model-viewer>
+<div style="display:flex; justify-content:flex-start; gap:40px; flex-wrap:wrap; margin-top:40px; padding:40px;">
+
+  <div style="text-align:center;">
+    <model-viewer 
+      src="AFA_LPF.glb"
+      auto-rotate
+      camera-controls
+      style="width: 300px; height: 400px;">
+    </model-viewer>
     <h3 style="color:white;">AFA Clausura 2025</h3>
   </div>
 
-  <div>
-  <model-viewer 
-    src="CONMEBOL_Libertadores.glb"
-    auto-rotate
-    camera-controls
-    style="width: 300px; height: 400px;">
-  </model-viewer>
+  <div style="text-align:center;">
+    <model-viewer 
+      src="CONMEBOL_Libertadores.glb"
+      auto-rotate
+      camera-controls
+      style="width: 300px; height: 400px;">
+    </model-viewer>
     <h3 style="color:white;">CONMEBOL Libertadores 2025</h3>
   </div>
 
-  <div>
-  <model-viewer 
-    src="CONMEBOL_Sudamericana.glb"
-    auto-rotate
-    camera-controls
-    style="width: 300px; height: 400px;">
-  </model-viewer>
-    <h3 style="color:white;">CONMEBOL Sudamericana 2025o</h3>
+  <div style="text-align:center;">
+    <model-viewer 
+      src="CONMEBOL_Sudamericana.glb"
+      auto-rotate
+      camera-controls
+      style="width: 300px; height: 400px;">
+    </model-viewer>
+    <h3 style="color:white;">CONMEBOL Sudamericana 2025</h3>
   </div>
 
 </div>
