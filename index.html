@@ -83,26 +83,25 @@ padding:40px;
 border-radius:20px;
 }
 
-/* 🔥 BRACKET LIGA FORMATO REAL */
+/* 🔥 NUEVO BRACKET EN COLUMNAS */
 
-.bracket-liga{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:60px;
-flex-wrap:wrap;
+.bracket-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:40px;
+text-align:center;
 }
 
-.lado{
-display:flex;
-gap:60px;
-}
-
-.ronda{
+.col{
 display:flex;
 flex-direction:column;
-justify-content:space-around;
-gap:30px;
+gap:20px;
+}
+
+.col h3{
+font-size:16px;
+letter-spacing:2px;
+opacity:0.8;
 }
 
 .partido{
@@ -111,22 +110,20 @@ border:1px solid rgba(255,255,255,0.3);
 border-radius:10px;
 font-weight:700;
 min-width:220px;
-text-align:center;
 background:rgba(255,255,255,0.05);
 }
 
-.final-centro{
-display:flex;
-align-items:center;
+.final-col{
+justify-content:center;
 }
 
-.final-centro .partido{
-font-size:20px;
-padding:20px 40px;
+.final-match{
 border:2px solid white;
+padding:20px;
+font-size:18px;
 }
 
-/* LIBERTADORES */
+/* LIBERTADORES Y SUDAMERICANA */
 
 .bracket-simple{
 display:flex;
@@ -158,13 +155,8 @@ width:250px;
 height:320px;
 }
 
-.bracket-liga{
-flex-direction:column;
-}
-
-.lado{
-flex-direction:column;
-align-items:center;
+.bracket-grid{
+grid-template-columns:1fr;
 }
 
 }
@@ -205,13 +197,12 @@ align-items:center;
 
 <!-- 🇦🇷 AFA CLAUSURA -->
 <section id="liga" class="seccion">
-<h2>Octavos de Final – AFA Clausura 2025</h2>
+<h2>Playoffs – AFA Clausura 2025</h2>
 
 <div class="panel">
 
 <div class="bracket-grid">
 
-<!-- OCTAVOS -->
 <div class="col">
 <h3>Octavos</h3>
 <div class="partido">Boca vs Estudiantes</div>
@@ -224,7 +215,6 @@ align-items:center;
 <div class="partido">Belgrano vs Unión</div>
 </div>
 
-<!-- CUARTOS -->
 <div class="col">
 <h3>Cuartos</h3>
 <div class="partido">Ganador 1</div>
@@ -233,14 +223,12 @@ align-items:center;
 <div class="partido">Ganador 4</div>
 </div>
 
-<!-- SEMIS -->
 <div class="col">
 <h3>Semifinales</h3>
 <div class="partido">Semifinal 1</div>
 <div class="partido">Semifinal 2</div>
 </div>
 
-<!-- FINAL -->
 <div class="col final-col">
 <h3>Final</h3>
 <div class="partido final-match">FINAL</div>
@@ -297,7 +285,6 @@ San Lorenzo vs LDU Quito
 </div>
 </div>
 </div>
-
 </section>
 
 </body>
