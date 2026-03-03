@@ -83,7 +83,7 @@ padding:40px;
 border-radius:20px;
 }
 
-/* 🔥 BRACKET GRID GENERAL */
+/* BRACKET GRID */
 
 .bracket-grid{
 display:grid;
@@ -112,7 +112,14 @@ font-weight:700;
 background:rgba(255,255,255,0.05);
 }
 
-/* EQUIPOS CON ESCUDO */
+.subtitulo{
+margin-top:8px;
+font-size:13px;
+opacity:0.7;
+font-weight:400;
+}
+
+/* Equipos con escudo */
 
 .fila-partido{
 display:flex;
@@ -138,13 +145,6 @@ opacity:0.7;
 font-weight:400;
 }
 
-.subtitulo{
-margin-top:8px;
-font-size:13px;
-opacity:0.7;
-font-weight:400;
-}
-
 .final-col{
 justify-content:center;
 }
@@ -155,22 +155,13 @@ padding:20px;
 font-size:18px;
 }
 
-/* RESPONSIVE */
+/* Responsive */
 
 @media (max-width:900px){
-
 .layout{grid-template-columns:1fr;}
 .trofeos{justify-content:center;}
-
-model-viewer{
-width:250px;
-height:320px;
-}
-
-.bracket-grid{
-grid-template-columns:1fr;
-}
-
+model-viewer{width:250px;height:320px;}
+.bracket-grid{grid-template-columns:1fr;}
 }
 
 </style>
@@ -207,7 +198,49 @@ grid-template-columns:1fr;
 
 </div>
 
-<!-- LIBERTADORES -->
+<!-- 🇦🇷 LIGA ARGENTINA -->
+<section id="liga" class="seccion">
+<h2>Playoffs – AFA Clausura 2025</h2>
+
+<div class="panel">
+<div class="bracket-grid">
+
+<div class="col">
+<h3>Octavos</h3>
+<div class="partido">Boca vs Estudiantes</div>
+<div class="partido">River vs Independiente</div>
+<div class="partido">Racing vs San Lorenzo</div>
+<div class="partido">Vélez vs Talleres</div>
+<div class="partido">Lanús vs Newell's</div>
+<div class="partido">Huracán vs Rosario Central</div>
+<div class="partido">Argentinos vs Defensa</div>
+<div class="partido">Belgrano vs Unión</div>
+</div>
+
+<div class="col">
+<h3>Cuartos</h3>
+<div class="partido">Ganador 1</div>
+<div class="partido">Ganador 2</div>
+<div class="partido">Ganador 3</div>
+<div class="partido">Ganador 4</div>
+</div>
+
+<div class="col">
+<h3>Semifinales</h3>
+<div class="partido">Semifinal 1</div>
+<div class="partido">Semifinal 2</div>
+</div>
+
+<div class="col final-col">
+<h3>Final</h3>
+<div class="partido final-match">FINAL</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- 🏆 LIBERTADORES -->
 <section id="libertadores" class="seccion">
 <h2>CONMEBOL Libertadores 2025</h2>
 
@@ -219,60 +252,36 @@ grid-template-columns:1fr;
 
 <div class="partido">
 <div class="fila-partido">
-<div class="equipo">
-<span>Racing Club</span>
-<img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Escudo_de_Racing_Club.svg">
-</div>
+<div class="equipo"><span>Racing Club</span><img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Escudo_de_Racing_Club.svg"></div>
 <span class="vs">vs</span>
-<div class="equipo">
-<img src="https://upload.wikimedia.org/wikipedia/en/6/60/Universitario_de_Deportes_logo.svg">
-<span>Universitario</span>
-</div>
+<div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/en/6/60/Universitario_de_Deportes_logo.svg"><span>Universitario</span></div>
 </div>
 <div class="subtitulo">Global: -</div>
 </div>
 
 <div class="partido">
 <div class="fila-partido">
-<div class="equipo">
-<span>Palmeiras</span>
-<img src="https://upload.wikimedia.org/wikipedia/en/1/10/Palmeiras_logo.svg">
-</div>
+<div class="equipo"><span>Palmeiras</span><img src="https://upload.wikimedia.org/wikipedia/en/1/10/Palmeiras_logo.svg"></div>
 <span class="vs">vs</span>
-<div class="equipo">
-<img src="https://upload.wikimedia.org/wikipedia/en/5/5b/Club_Atl%C3%A9tico_Pe%C3%B1arol_logo.svg">
-<span>Peñarol</span>
-</div>
+<div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/en/5/5b/Club_Atl%C3%A9tico_Pe%C3%B1arol_logo.svg"><span>Peñarol</span></div>
 </div>
 <div class="subtitulo">Global: -</div>
 </div>
 
 <div class="partido">
 <div class="fila-partido">
-<div class="equipo">
-<span>River Plate</span>
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_River_Plate.svg">
-</div>
+<div class="equipo"><span>River Plate</span><img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_River_Plate.svg"></div>
 <span class="vs">vs</span>
-<div class="equipo">
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Estudiantes_de_La_Plata_logo.svg">
-<span>Estudiantes</span>
-</div>
+<div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Estudiantes_de_La_Plata_logo.svg"><span>Estudiantes</span></div>
 </div>
 <div class="subtitulo">Global: -</div>
 </div>
 
 <div class="partido">
 <div class="fila-partido">
-<div class="equipo">
-<span>LDU Quito</span>
-<img src="https://upload.wikimedia.org/wikipedia/en/4/4f/LDU_Quito_logo.svg">
-</div>
+<div class="equipo"><span>LDU Quito</span><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/LDU_Quito_logo.svg"></div>
 <span class="vs">vs</span>
-<div class="equipo">
-<img src="https://upload.wikimedia.org/wikipedia/en/4/4f/Botafogo_de_Futebol_e_Regatas_logo.svg">
-<span>Botafogo</span>
-</div>
+<div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/Botafogo_de_Futebol_e_Regatas_logo.svg"><span>Botafogo</span></div>
 </div>
 <div class="subtitulo">Global: -</div>
 </div>
@@ -281,17 +290,8 @@ grid-template-columns:1fr;
 
 <div class="col">
 <h3>Semifinales</h3>
-
-<div class="partido">
-Ganador 1
-<div class="subtitulo">Global: -</div>
-</div>
-
-<div class="partido">
-Ganador 2
-<div class="subtitulo">Global: -</div>
-</div>
-
+<div class="partido">Ganador 1<div class="subtitulo">Global: -</div></div>
+<div class="partido">Ganador 2<div class="subtitulo">Global: -</div></div>
 </div>
 
 <div class="col final-col">
@@ -299,6 +299,21 @@ Ganador 2
 <div class="partido final-match">FINAL</div>
 </div>
 
+</div>
+</div>
+</section>
+
+<!-- 🏆 SUDAMERICANA -->
+<section id="sudamericana" class="seccion">
+<h2>Final – CONMEBOL Sudamericana 2025</h2>
+
+<div class="panel">
+<div style="display:flex; justify-content:center;">
+<div class="col">
+<div class="partido final-match">
+San Lorenzo vs LDU Quito
+</div>
+</div>
 </div>
 </div>
 </section>
