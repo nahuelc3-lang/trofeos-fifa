@@ -83,7 +83,7 @@ padding:40px;
 border-radius:20px;
 }
 
-/* 🔥 NUEVO BRACKET EN COLUMNAS */
+/* 🔥 BRACKET GRID GENERAL */
 
 .bracket-grid{
 display:grid;
@@ -123,31 +123,11 @@ padding:20px;
 font-size:18px;
 }
 
-/* LIBERTADORES Y SUDAMERICANA */
-
-.bracket-simple{
-display:flex;
-justify-content:center;
-}
-
-.columna{
-display:flex;
-flex-direction:column;
-gap:25px;
-}
-
-.subtitulo{
-margin-top:8px;
-font-size:13px;
-opacity:0.8;
-}
-
 /* RESPONSIVE */
 
 @media (max-width:900px){
 
 .layout{grid-template-columns:1fr;}
-
 .trofeos{justify-content:center;}
 
 model-viewer{
@@ -200,7 +180,6 @@ grid-template-columns:1fr;
 <h2>Playoffs – AFA Clausura 2025</h2>
 
 <div class="panel">
-
 <div class="bracket-grid">
 
 <div class="col">
@@ -235,39 +214,35 @@ grid-template-columns:1fr;
 </div>
 
 </div>
-
 </div>
 </section>
 
 <!-- 🏆 LIBERTADORES -->
 <section id="libertadores" class="seccion">
-<h2>Cuartos de Final – CONMEBOL Libertadores 2025</h2>
+<h2>CONMEBOL Libertadores 2025</h2>
 
 <div class="panel">
-<div class="bracket-simple">
-<div class="columna">
+<div class="bracket-grid">
 
-<div class="partido">
-Boca vs Flamengo
-<div class="subtitulo">Global: -</div>
+<div class="col">
+<h3>Cuartos</h3>
+<div class="partido">Boca vs Flamengo</div>
+<div class="partido">River vs Palmeiras</div>
+<div class="partido">Inter vs Racing</div>
+<div class="partido">Nacional vs Peñarol</div>
 </div>
 
-<div class="partido">
-River vs Palmeiras
-<div class="subtitulo">Global: -</div>
+<div class="col">
+<h3>Semifinales</h3>
+<div class="partido">Ganador 1</div>
+<div class="partido">Ganador 2</div>
 </div>
 
-<div class="partido">
-Inter vs Racing
-<div class="subtitulo">Global: -</div>
+<div class="col final-col">
+<h3>Final</h3>
+<div class="partido final-match">FINAL</div>
 </div>
 
-<div class="partido">
-Nacional vs Peñarol
-<div class="subtitulo">Global: -</div>
-</div>
-
-</div>
 </div>
 </div>
 </section>
@@ -277,9 +252,9 @@ Nacional vs Peñarol
 <h2>Final – CONMEBOL Sudamericana 2025</h2>
 
 <div class="panel">
-<div class="bracket-simple">
-<div class="columna">
-<div class="partido">
+<div style="display:flex; justify-content:center;">
+<div class="col">
+<div class="partido final-match">
 San Lorenzo vs LDU Quito
 </div>
 </div>
