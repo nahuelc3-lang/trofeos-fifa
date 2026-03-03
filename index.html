@@ -2,141 +2,198 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Torneos Oficiales – FC 26</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC 26 Hub</title>
 
-  <!-- Vista responsive -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <!-- Fuente estilo FC -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
 
-  <!-- Script modelos 3D -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+html {
+  scroll-behavior: smooth;
+}
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background-image: url('fondo.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-    }
+body {
+  margin:0;
+  font-family:'Montserrat', sans-serif;
+  background-image:url('fondo.png');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+  color:white;
+}
 
-    h1 {
-      color: white;
-      text-align: center;
-      font-size: 48px;
-      font-weight: 900;
-      letter-spacing: 3px;
-      padding: 30px 0;
-    }
+h1 {
+  text-align:center;
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:3px;
+  padding:30px 0;
+}
 
-    .layout {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      gap: 40px;
-      padding: 40px;
-    }
+.layout {
+  display:grid;
+  grid-template-columns: 3fr 1fr;
+  gap:40px;
+  padding:40px;
+}
 
-    .trofeos {
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
+.trofeos {
+  display:flex;
+  gap:40px;
+  flex-wrap:wrap;
+}
 
-    .copa {
-      text-align: center;
-    }
+.copa {
+  text-align:center;
+}
 
-    model-viewer {
-      width: 300px;
-      height: 400px;
-    }
+model-viewer {
+  width:300px;
+  height:400px;
+}
 
-    h3 {
-      color: white;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
+a {
+  color:white;
+  text-decoration:none;
+}
 
-    .video-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
+a:hover {
+  opacity:0.7;
+}
 
-    video {
-      width: 100%;
-      max-width: 350px;
-      border-radius: 15px;
-    }
+.video-container {
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
 
-    /* 📱 RESPONSIVE PARA CELULAR */
-    @media (max-width: 900px) {
+video {
+  width:100%;
+  max-width:350px;
+  border-radius:15px;
+}
 
-      h1 {
-        font-size: 32px;
-      }
+.seccion {
+  padding:80px 20px;
+  text-align:center;
+}
 
-      .layout {
-        grid-template-columns: 1fr;
-      }
+.panel {
+  margin:auto;
+  margin-top:30px;
+  max-width:900px;
+  background:rgba(0,0,0,0.7);
+  padding:30px;
+  border-radius:20px;
+}
 
-      .trofeos {
-        justify-content: center;
-      }
+.partido {
+  padding:15px;
+  margin:10px 0;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:10px;
+  font-weight:700;
+}
 
-      model-viewer {
-        width: 260px;
-        height: 350px;
-      }
+/* Responsive */
+@media (max-width: 900px) {
 
-      .video-container {
-        margin-top: 30px;
-      }
+  h1 {
+    font-size:32px;
+  }
 
-      video {
-        max-width: 90%;
-      }
-    }
-  </style>
+  .layout {
+    grid-template-columns:1fr;
+  }
+
+  .trofeos {
+    justify-content:center;
+  }
+
+  model-viewer {
+    width:250px;
+    height:320px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Torneos Oficiales – FC 26</h1>
+<h1>FC 26 Hub</h1>
 
 <div class="layout">
 
-  <!-- TROFEOS -->
-  <div class="trofeos">
+<div class="trofeos">
 
-    <div class="copa">
-      <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
-      <h3>AFA Clausura 2025</h3>
-    </div>
+<div class="copa">
+<model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
+<h3><a href="#liga">Liga Argentina – Octavos</a></h3>
+</div>
 
-    <div class="copa">
-      <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
-      <h3>CONMEBOL Libertadores 2025</h3>
-    </div>
+<div class="copa">
+<model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
+<h3><a href="#libertadores">Libertadores – Cuartos</a></h3>
+</div>
 
-    <div class="copa">
-      <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
-      <h3>CONMEBOL Sudamericana 2025</h3>
-    </div>
-
-  </div>
-
-  <!-- VIDEO -->
-  <div class="video-container">
-    <video src="intro.mp4" autoplay muted loop playsinline></video>
-  </div>
+<div class="copa">
+<model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
+<h3><a href="#sudamericana">Sudamericana – Final</a></h3>
+</div>
 
 </div>
+
+<div class="video-container">
+<video src="intro.mp4" autoplay muted loop playsinline></video>
+</div>
+
+</div>
+
+<!-- LIGA ARGENTINA -->
+<section id="liga" class="seccion">
+<h2>Octavos de Final – Liga Argentina</h2>
+<div class="panel">
+
+<div class="partido">Boca vs Estudiantes</div>
+<div class="partido">River vs Independiente</div>
+<div class="partido">Racing vs San Lorenzo</div>
+<div class="partido">Vélez vs Talleres</div>
+<div class="partido">Newell's vs Lanús</div>
+<div class="partido">Defensa vs Argentinos</div>
+<div class="partido">Rosario Central vs Huracán</div>
+<div class="partido">Platense vs Colón</div>
+
+</div>
+</section>
+
+<!-- LIBERTADORES -->
+<section id="libertadores" class="seccion">
+<h2>Cuartos de Final – CONMEBOL Libertadores</h2>
+<div class="panel">
+
+<div class="partido">Boca vs Flamengo</div>
+<div class="partido">River vs Palmeiras</div>
+<div class="partido">Inter vs Racing</div>
+<div class="partido">Nacional vs Peñarol</div>
+
+</div>
+</section>
+
+<!-- SUDAMERICANA -->
+<section id="sudamericana" class="seccion">
+<h2>Final – CONMEBOL Sudamericana</h2>
+<div class="panel">
+
+<div class="partido">San Lorenzo vs LDU Quito</div>
+
+</div>
+</section>
 
 </body>
 </html>
