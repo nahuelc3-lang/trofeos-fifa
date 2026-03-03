@@ -77,19 +77,60 @@ text-align:center;
 .panel{
 margin:auto;
 margin-top:30px;
-max-width:1200px;
+max-width:1400px;
 background:rgba(0,0,0,0.75);
 padding:40px;
 border-radius:20px;
 }
 
-/* BRACKET GENERAL */
+/* 🔥 BRACKET LIGA FORMATO REAL */
 
-.bracket{
+.bracket-liga{
 display:flex;
 justify-content:center;
+align-items:center;
 gap:60px;
 flex-wrap:wrap;
+}
+
+.lado{
+display:flex;
+gap:60px;
+}
+
+.ronda{
+display:flex;
+flex-direction:column;
+justify-content:space-around;
+gap:30px;
+}
+
+.partido{
+padding:15px 20px;
+border:1px solid rgba(255,255,255,0.3);
+border-radius:10px;
+font-weight:700;
+min-width:220px;
+text-align:center;
+background:rgba(255,255,255,0.05);
+}
+
+.final-centro{
+display:flex;
+align-items:center;
+}
+
+.final-centro .partido{
+font-size:20px;
+padding:20px 40px;
+border:2px solid white;
+}
+
+/* LIBERTADORES */
+
+.bracket-simple{
+display:flex;
+justify-content:center;
 }
 
 .columna{
@@ -98,27 +139,13 @@ flex-direction:column;
 gap:25px;
 }
 
-.partido{
-padding:15px;
-border:1px solid rgba(255,255,255,0.3);
-border-radius:10px;
-font-weight:700;
-min-width:220px;
-}
-
 .subtitulo{
 margin-top:8px;
 font-size:13px;
 opacity:0.8;
 }
 
-/* FINAL CENTRADA */
-
-.final-col{
-display:flex;
-flex-direction:column;
-justify-content:center;
-}
+/* RESPONSIVE */
 
 @media (max-width:900px){
 
@@ -131,7 +158,11 @@ width:250px;
 height:320px;
 }
 
-.bracket{
+.bracket-liga{
+flex-direction:column;
+}
+
+.lado{
 flex-direction:column;
 align-items:center;
 }
@@ -177,14 +208,43 @@ align-items:center;
 <h2>Octavos de Final – AFA Clausura 2025</h2>
 
 <div class="panel">
-<div class="bracket">
+
+<div class="bracket-liga">
+
+<!-- LADO IZQUIERDO -->
+<div class="lado">
 
 <!-- OCTAVOS -->
-<div class="columna">
+<div class="ronda">
 <div class="partido">Boca vs Estudiantes</div>
 <div class="partido">River vs Independiente</div>
 <div class="partido">Racing vs San Lorenzo</div>
 <div class="partido">Vélez vs Talleres</div>
+</div>
+
+<!-- CUARTOS -->
+<div class="ronda">
+<div class="partido">Ganador 1</div>
+<div class="partido">Ganador 2</div>
+</div>
+
+<!-- SEMI -->
+<div class="ronda">
+<div class="partido">Semifinal 1</div>
+</div>
+
+</div>
+
+<!-- FINAL CENTRO -->
+<div class="final-centro">
+<div class="partido">FINAL</div>
+</div>
+
+<!-- LADO DERECHO -->
+<div class="lado">
+
+<!-- OCTAVOS -->
+<div class="ronda">
 <div class="partido">Lanús vs Newell's</div>
 <div class="partido">Huracán vs Rosario Central</div>
 <div class="partido">Argentinos vs Defensa</div>
@@ -192,25 +252,20 @@ align-items:center;
 </div>
 
 <!-- CUARTOS -->
-<div class="columna">
-<div class="partido">Ganador 1</div>
-<div class="partido">Ganador 2</div>
+<div class="ronda">
 <div class="partido">Ganador 3</div>
 <div class="partido">Ganador 4</div>
 </div>
 
-<!-- SEMIS -->
-<div class="columna">
-<div class="partido">Semifinal 1</div>
+<!-- SEMI -->
+<div class="ronda">
 <div class="partido">Semifinal 2</div>
 </div>
 
-<!-- FINAL -->
-<div class="columna final-col">
-<div class="partido">Final</div>
 </div>
 
 </div>
+
 </div>
 </section>
 
@@ -219,9 +274,9 @@ align-items:center;
 <h2>Cuartos de Final – CONMEBOL Libertadores 2025</h2>
 
 <div class="panel">
-<div class="bracket">
-
+<div class="bracket-simple">
 <div class="columna">
+
 <div class="partido">
 Boca vs Flamengo
 <div class="subtitulo">Global: -</div>
@@ -241,8 +296,8 @@ Inter vs Racing
 Nacional vs Peñarol
 <div class="subtitulo">Global: -</div>
 </div>
-</div>
 
+</div>
 </div>
 </div>
 </section>
@@ -252,7 +307,7 @@ Nacional vs Peñarol
 <h2>Final – CONMEBOL Sudamericana 2025</h2>
 
 <div class="panel">
-<div class="bracket">
+<div class="bracket-simple">
 <div class="columna">
 <div class="partido">
 San Lorenzo vs LDU Quito
