@@ -3,15 +3,18 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Torneo FIFA</title>
+  <title>Torneos Oficiales – FC 26</title>
 
-  <!-- Script necesario para que funcionen los modelos 3D -->
+  <!-- Fuente estilo FC -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- Script modelos 3D -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 
 <body style="
   margin:0;
-  font-family:Arial;
+  font-family:'Montserrat', sans-serif;
   background-image:url('Fondo.png');
   background-size:cover;
   background-position:center;
@@ -19,8 +22,15 @@
   background-repeat:no-repeat;
 ">
 
-<h1 style="color:white; text-align:center; font-size:40px; padding:20px 0;">
-Competencias actuales FIFA
+<h1 style="
+  color:white;
+  text-align:center;
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:3px;
+  padding:30px 0;
+">
+Torneos Oficiales – FC 26
 </h1>
 
 <div style="display:grid; grid-template-columns: 3fr 1fr; gap:40px; padding:40px;">
@@ -33,9 +43,16 @@ Competencias actuales FIFA
         src="AFA_LPF.glb"
         auto-rotate
         camera-controls
+        shadow-intensity="1"
         style="width:300px; height:400px;">
       </model-viewer>
-      <h3 style="color:white;">AFA Clausura 2025</h3>
+      <h3 style="
+        color:white;
+        font-weight:700;
+        letter-spacing:1px;
+      ">
+        AFA Clausura 2025
+      </h3>
     </div>
 
     <div style="text-align:center;">
@@ -43,9 +60,16 @@ Competencias actuales FIFA
         src="CONMEBOL_Libertadores.glb"
         auto-rotate
         camera-controls
+        shadow-intensity="1"
         style="width:300px; height:400px;">
       </model-viewer>
-      <h3 style="color:white;">CONMEBOL Libertadores 2025</h3>
+      <h3 style="
+        color:white;
+        font-weight:700;
+        letter-spacing:1px;
+      ">
+        CONMEBOL Libertadores 2025
+      </h3>
     </div>
 
     <div style="text-align:center;">
@@ -53,9 +77,16 @@ Competencias actuales FIFA
         src="CONMEBOL_Sudamericana.glb"
         auto-rotate
         camera-controls
+        shadow-intensity="1"
         style="width:300px; height:400px;">
       </model-viewer>
-      <h3 style="color:white;">CONMEBOL Sudamericana 2025</h3>
+      <h3 style="
+        color:white;
+        font-weight:700;
+        letter-spacing:1px;
+      ">
+        CONMEBOL Sudamericana 2025
+      </h3>
     </div>
 
   </div>
@@ -68,7 +99,11 @@ Competencias actuales FIFA
       muted
       loop
       playsinline
-      style="width:100%; max-width:350px; border-radius:15px;">
+      style="
+        width:100%;
+        max-width:350px;
+        border-radius:15px;
+      ">
     </video>
   </div>
 
