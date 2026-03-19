@@ -116,6 +116,14 @@ margin-top:40px;
 margin-top:80px;
 }
 
+.lado.derecha{
+direction: rtl; /* invierte el orden visual */
+}
+
+.lado.derecha .col{
+direction: ltr; /* evita que el texto se invierta */
+}
+
 .col{
 display:flex;
 flex-direction:column;
@@ -371,7 +379,7 @@ font-weight:bold;
   </div>
 
   <!-- DERECHA -->
-  <div class="lado">
+<div class="lado derecha">
     <div class="col">
       <h3>Octavos</h3>
 <div class="partido">
