@@ -97,9 +97,23 @@ border-radius:20px;
 
 .bracket-grid{
 display:grid;
-grid-template-columns: 1fr 200px 1fr; /* izquierda - final - derecha */
+grid-template-columns: 1fr 200px 1fr;
 gap:40px;
 align-items:center;
+}
+
+.lado{
+display:grid;
+grid-template-columns: repeat(3, 1fr);
+gap:20px;
+}
+
+.lado .col:nth-child(2){
+margin-top:40px;
+}
+
+.lado .col:nth-child(3){
+margin-top:80px;
 }
 
 .col{
