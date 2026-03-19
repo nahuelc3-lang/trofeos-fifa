@@ -97,9 +97,9 @@ border-radius:20px;
 
 .bracket-grid{
 display:grid;
-grid-template-columns:repeat(4,1fr);
+grid-template-columns: 1fr 200px 1fr; /* izquierda - final - derecha */
 gap:40px;
-text-align:center;
+align-items:center;
 }
 
 .col{
@@ -277,10 +277,11 @@ font-weight:bold;
 <div class="panel">
 <div class="bracket-grid">
 
-<div class="col">
-<h3>Octavos</h3>
-
-<div class="partido">
+  <!-- IZQUIERDA -->
+  <div class="lado">
+    <div class="col">
+      <h3>Octavos</h3>
+      <div class="partido">
 <div class="fila-partido">
 <div class="equipo">
 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqNkNCiGJBhKbV9_u86I0Bq4wsNgM/s128/Boca%20Juniors128x.png">
@@ -335,7 +336,30 @@ font-weight:bold;
 </div>
 </div>
 </div>
+    </div>
 
+    <div class="col">
+      <h3>Cuartos</h3>
+<div class="partido">Cuartos de final 1</div>
+<div class="partido">Cuartos de final 2</div>
+    </div>
+
+    <div class="col">
+      <h3>Semifinal</h3>
+<div class="partido final-match">Semifinal 1</div>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="final-col">
+    <h3>Final</h3>
+    <div class="partido final-match">FINAL</div>
+  </div>
+
+  <!-- DERECHA -->
+  <div class="lado">
+    <div class="col">
+      <h3>Octavos</h3>
 <div class="partido">
 <div class="fila-partido">
 <div class="equipo">
@@ -391,30 +415,22 @@ font-weight:bold;
 </div>
 </div>
 </div>
+    </div>
+
+    <div class="col">
+      <h3>Cuartos</h3>
+<div class="partido">Cuartos de final 3</div>
+<div class="partido">Cuartos de final 4</div>
+    </div>
+
+    <div class="col">
+      <h3>Semifinal</h3>
+<div class="partido final-match">Semifinal 2</div>
+    </div>
+  </div>
 
 </div>
-
-<div class="col">
-<h3>Cuartos</h3>
-<div class="partido">Ganador 1</div>
-<div class="partido">Ganador 2</div>
-<div class="partido">Ganador 3</div>
-<div class="partido">Ganador 4</div>
-</div>
-
-<div class="col">
-<h3>Semifinales</h3>
-<div class="partido">Semifinal 1</div>
-<div class="partido">Semifinal 2</div>
-</div>
-
-<div class="col final-col">
-<h3>Final</h3>
-<div class="partido final-match">FINAL</div>
-</div>
-
-</div>
-</div>
+  
 </section>
 
 <!-- 🏆 LIBERTADORES -->
