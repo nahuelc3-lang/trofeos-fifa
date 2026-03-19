@@ -164,10 +164,27 @@ border-radius:20px;
 }
 
 .final-match {
-    border: 2px solid white;
+    border: 2px solid #ffd700; /* Borde dorado en vez de blanco */
     padding: 20px;
     font-size: 18px;
     width: 100%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); /* Brillo dorado constante */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Agrega una transición suave a la clase base */
+.partido {
+    transition: all 0.3s ease;
+    cursor: pointer; /* Hace que el cursor sea una manito */
+}
+
+/* Efecto cuando el mouse pasa por encima */
+.partido:hover {
+    transform: scale(1.05); /* Lo agranda un 5% */
+    background: rgba(255, 255, 255, 0.15); /* Lo hace un poco más claro */
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); /* Le da un brillo celeste */
+    border-color: #00e5ff;
 }
 /* Equipos con escudo */
 
