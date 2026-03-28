@@ -6,137 +6,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Torneos Oficiales del Consejo de Fútbol | FC 26</title>
 
-<!-- PWA -->
 <link rel="manifest" href="/trofeos-fifa/manifest.json">
 <meta name="theme-color" content="#000000">
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 <style>
-
 /* 🔥 FIX GLOBAL RESPONSIVE */
-*{
-box-sizing:border-box;
-}
-
+*{ box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-
 body{
-margin:0;
-font-family:'Montserrat',sans-serif;
-background-image:url('fondo.png');
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-background-repeat:no-repeat;
-color:white;
-overflow-x:hidden; /* 🔥 evita desborde lateral */
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background-image:url('fondo.png');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    color:white;
+    overflow-x:hidden; 
 }
 
 h1{
-text-align:center;
-font-size:48px;
-font-weight:900;
-letter-spacing:3px;
-padding:30px 0;
+    text-align:center;
+    font-size:48px;
+    font-weight:900;
+    letter-spacing:3px;
+    padding:30px 0;
 }
 
-.layout{
-display:grid;
-grid-template-columns:3fr 1fr;
-gap:40px;
-padding:40px;
-}
-
-.trofeos{
-display:flex;
-gap:40px;
-flex-wrap:wrap;
-}
-
-.copa{text-align:center;}
-
-model-viewer{
-width:300px;
-height:400px;
-}
-
-a{
-color:white;
-text-decoration:none;
-}
-
-.video-container{
-display:flex;
-justify-content:center;
-align-items:flex-start;
-}
-
-video{
-width:100%;
-max-width:350px;
-border-radius:15px;
-}
+a { color:white; text-decoration:none; }
 
 .seccion{
-padding:80px 20px;
-text-align:center;
+    padding:60px 20px;
+    text-align:center;
 }
 
 .panel{
-margin:auto;
-margin-top:30px;
-max-width:1400px;
-background:rgba(0,0,0,0.75);
-padding:40px;
-border-radius:20px;
+    margin:auto;
+    margin-top:30px;
+    max-width:1400px;
+    background:rgba(0,0,0,0.75);
+    padding:40px;
+    border-radius:20px;
 }
 
-/* BRACKET GRID REWORK */
+/* BRACKET GRID REWORK (Lo dejo por si agregás torneos acá después) */
 .bracket-grid {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    align-items: stretch; /* Obliga a que todas las columnas tengan el mismo alto */
+    align-items: stretch;
 }
-
-.lado {
-    display: flex;
-    flex: 1;
-    gap: 20px;
-}
-
-.lado.derecha {
-    flex-direction: row-reverse; /* Mantiene tu HTML igual, pero invierte el orden visual */
-}
-
-/* 🔥 Eliminamos los margin-top manuales que rompían el diseño */
-
-.col {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
+.lado { display: flex; flex: 1; gap: 20px; }
+.lado.derecha { flex-direction: row-reverse; }
+.col { display: flex; flex-direction: column; flex: 1; }
 .col h3 {
     font-size: 16px;
     letter-spacing: 2px;
     opacity: 0.8;
     text-align: center;
     margin-bottom: 20px;
-    height: 20px; /* Fija la altura del título para que no afecte el centrado */
+    height: 20px;
 }
-
-/* 🔥 NUEVA CLASE: Este contenedor hace la magia del centrado automático */
 .partidos-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-around; 
-    flex: 1; /* Ocupa todo el alto disponible */
+    flex: 1;
     gap: 15px;
 }
-
 .partido {
     padding: 15px 10px;
     border: 1px solid rgba(255,255,255,0.3);
@@ -145,130 +84,52 @@ border-radius:20px;
     background: rgba(255,255,255,0.05);
     width: 100%;
     text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
-
-.subtitulo {
-    margin-top: 8px;
-    font-size: 13px;
-    opacity: 0.7;
-    font-weight: 400;
+.partido:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    border-color: #00e5ff;
 }
-
+.subtitulo { margin-top: 8px; font-size: 13px; opacity: 0.7; font-weight: 400; }
 .final-col {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra la final verticalmente */
+    justify-content: center;
     align-items: center;
     min-width: 160px;
     padding: 0 10px;
 }
-
 .final-match {
-    border: 2px solid #ffd700; /* Borde dorado en vez de blanco */
+    border: 2px solid #ffd700;
     padding: 20px;
     font-size: 18px;
     width: 100%;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); /* Brillo dorado constante */
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-
-/* Agrega una transición suave a la clase base */
-.partido {
-    transition: all 0.3s ease;
-    cursor: pointer; /* Hace que el cursor sea una manito */
-}
-
-/* Efecto cuando el mouse pasa por encima */
-.partido:hover {
-    transform: scale(1.05); /* Lo agranda un 5% */
-    background: rgba(255, 255, 255, 0.15); /* Lo hace un poco más claro */
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); /* Le da un brillo celeste */
-    border-color: #00e5ff;
-}
-/* Equipos con escudo */
-
 .fila-partido{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap; /* 🔥 permite bajar linea en mobile */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap; 
 }
-
-.equipo{
-display:flex;
-align-items:center;
-gap:8px;
-}
-
-.equipo img{
-width:22px;
-height:22px;
-object-fit:contain;
-}
-
-.vs{
-opacity:0.7;
-font-weight:400;
-}
-
-.final-col{
-justify-content:center;
-}
-
-.final-match{
-border:2px solid white;
-padding:20px;
-font-size:18px;
-}
+.equipo{ display:flex; align-items:center; gap:8px; }
+.equipo img{ width:22px; height:22px; object-fit:contain; }
+.vs{ opacity:0.7; font-weight:400; }
 
 /* 🔥 RESPONSIVE MEJORADO */
-
 @media (max-width:900px){
-.bracket-grid {
-        flex-direction: column;
-    }
-    .lado, .lado.derecha {
-        flex-direction: column;
-    }
-.layout{
-grid-template-columns:1fr;
-padding:20px;
-}
-
-.trofeos{
-justify-content:center;
-}
-
-model-viewer{
-width:250px;
-height:320px;
-}
-
-.bracket-grid{
-grid-template-columns:1fr;
-gap:25px;
-}
-
-.panel{
-padding:20px;
-}
-
-.partido{
-width:100%;
-font-size:14px;
-}
-
-.equipo span{
-font-size:14px;
-}
-
-.equipo img{
-width:18px;
-height:18px;
-}
-
+    .bracket-grid { flex-direction: column; }
+    .lado, .lado.derecha { flex-direction: column; }
+    .panel{ padding:20px; }
+    .partido{ font-size:14px; }
+    .equipo span{ font-size:14px; }
+    .equipo img{ width:18px; height:18px; }
 }
 
 </style>
@@ -279,93 +140,17 @@ height:18px;
 <h1>Torneos Oficiales del Consejo de Fútbol | FC 26</h1>
 
 <div style="text-align:center; margin:20px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
-
-<a href="#reglamento" style="
-background:#00e5ff;
-color:#000;
-padding:12px 20px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-">
-📜 Reglamento
-</a>
-
-<a href="#calendario" style="
-background:#00e5ff;
-color:#000;
-padding:12px 20px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-">
-📅 Calendario
-</a>
-
-<a href="temporada-2025.html" style="
-background:#ffd700; 
-color:#000;
-padding:12px 20px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-">
-🏆 Torneo 2025
-</a>
-
-<a href="titulos.html" style="
-background:#ffd700;
-color:#000;
-padding:12px 20px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-">
-🏆 Salón de la Fama
-</a>
-
+  <a href="#reglamento" style="background:#00e5ff; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">📜 Reglamento</a>
+  <a href="#calendario" style="background:#00e5ff; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">📅 Calendario</a>
+  <a href="temporada-2025.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Torneo 2025</a>
+  <a href="titulos.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Salón de la Fama</a>
 </div>
   
-<div class="layout">
-
-<div class="trofeos">
-
-<div class="copa">
-<model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#liga">AFA Clausura 2025</a></h3>
-</div>
-
-<div class="copa">
-<model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#libertadores">CONMEBOL Libertadores 2025</a></h3>
-</div>
-
-<div class="copa">
-<model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
-<h3><a href="#sudamericana">CONMEBOL Sudamericana 2025</a></h3>
-</div>
-
-</div>
-
-<div class="video-container">
-<video src="intro.mp4" autoplay muted loop playsinline></video>
-</div>
-
-</div>
-
-<section id="recopa" class="seccion"> <h2>Final – CONMEBOL Recopa Sudamericana 2026</h2>
-
-  <div class="panel">
-    <div style="display:flex; justify-content:center;">
-      <div class="col">
-        <div class="partido final-match">
-          <div class="fila-partido"> <div class="equipo"><span>Flamengo</span><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhus4SZGFTO0T8qOFRtBmhdp-CFdK_CO9JNlfOIsEQG_-Z2mqj4gRTGwGRqei1fq-YdZZOV_AzSz3RcdkwcWjPUc4pn2zkQAr1lytasg7vQdcWstg8fWQEhTeVuWM4evElEIy-BpufwK_oSxeu3x-W9zdpDqRTAO4mfYZ_RoKOpGCSI68Lt65CcEMPadV4/s128/Clube%20de%20Regatas%20do%20Flamengo128x.png"></div>
-            <span class="vs"> vs</span>
-            <div class="equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY0LCvqZHXem9kWtHYUM9sgTasj7XkYDtm9xGPZcXBWdWzAC9MDJPd9T06FbroMSZjaepTDjao038Vz7grV41lvC0-kY5FCv5YdlVLaDDxRv8R-9-OZ4VZBcloZbV9vRxfyBU_LJF8BYx2FpTOsIw_vKaWAMOYwd1OM3dfw-8VlCF9i2tH-kD-r85UsQ4/s128/CA%20Lanus128x.png"><span>Lanús</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="seccion">
+  <h2>Temporada Actual</h2>
+  <div class="panel" style="padding: 80px 20px;">
+    <h3 style="opacity: 0.5; font-size: 24px;">¡Próximamente nuevos torneos!</h3>
+    <p style="opacity: 0.5;">Acá vas a poder cargar las llaves de los nuevos campeonatos.</p>
   </div>
 </section>
 
