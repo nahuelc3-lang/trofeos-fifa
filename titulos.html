@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salón de la Fama | FC 26</title>
+
+<link rel="manifest" href="/trofeos-fifa/manifest.json">
+<meta name="theme-color" content="#000000">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<style>
+/* ESTILOS GLOBALES BASE */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-image: url('fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: white;
+    overflow-x: hidden;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    padding: 30px 0 10px 0;
+}
+
+.panel {
+    margin: auto;
+    margin-top: 30px;
+    max-width: 1400px;
+    background: rgba(0,0,0,0.85);
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.equipo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.equipo img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+/* 🏆 ESTILOS DE TÍTULOS Y ESTADÍSTICAS */
+.estadisticas-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr; 
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.tabla-contenedor {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.tabla-contenedor h3 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #00e5ff;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+th {
+    text-align: left;
+    padding: 12px 8px;
+    opacity: 0.7;
+    font-weight: normal;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+tr:hover td {
+    background: rgba(255,255,255,0.05);
+}
+
+.td-centro { text-align: center; }
+
+/* VITRINAS DE JUGADORES */
+.vitrinas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px;
+}
+
+.vitrina-jugador {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+
+.vitrina-jugador h3 {
+    color: #ffd700;
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-top: 0;
+}
+
+.trofeos-ganados {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.trofeo-item {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 160px;
+}
+
+.trofeo-item model-viewer {
+    width: 120px;
+    height: 150px;
+}
+
+.trofeo-info {
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.trofeo-info b { color: #00e5ff; }
+
+/* RESPONSIVE */
+@media (max-width:900px) {
+    .estadisticas-grid, .vitrinas-grid {
+        grid-template-columns: 1fr;
+    }
+    .panel { padding: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Salón de la Fama y Estadísticas</h1>
+
+<div style="text-align:center; margin:20px;">
+    <a href="index.html" style="background:#ff4444; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">
+        🔙 Volver al Inicio
+    </a>
+</div>
+
+<div class="panel">
+
+    <div class="estadisticas-grid">
+      
+      <div class="tabla-contenedor">
+        <h3>Historial Oficial</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Torneo</th>
+              <th>Campeón</th>
+              <th>Club</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Clausura 2025</td>
+              <td><b>Jugador 1</b></td>
+              <td>
+                <div class="equipo" style="justify-content: flex-start;">
+                  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png">
+                  <span>Estudiantes</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Libertadores 2025</td>
+              <td><b>Jugador 2</b></td>
+              <td>
+                <div class="equipo" style="justify-content: flex-start;">
+                  <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128">
+                  <span>River Plate</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tabla-contenedor">
+        <h3>Ranking de Títulos</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th class="td-centro">Títulos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Jugador 1</b></td>
+              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">1</td>
+            </tr>
+            <tr>
+              <td><b>Jugador 2</b></td>
+              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">1</td>
+            </tr>
+            <tr>
+              <td><b>Jugador 3</b></td>
+              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">0</td>
+            </tr>
+            <tr>
+              <td><b>Jugador 4</b></td>
+              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <hr style="border-color: rgba(255,255,255,0.1); margin: 40px 0;">
+
+    <h2 style="text-align: center;">Vitrinas Personales</h2>
+    <div class="vitrinas-grid">
+
+      <div class="vitrina-jugador">
+        <h3>Jugador 1</h3>
+        <div class="trofeos-ganados">
+          <div class="trofeo-item">
+            <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
+            <div class="trofeo-info">
+              <b>Clausura 2025</b><br>
+              con Estudiantes
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitrina-jugador">
+        <h3>Jugador 2</h3>
+        <div class="trofeos-ganados">
+          <div class="trofeo-item">
+            <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
+            <div class="trofeo-info">
+              <b>Libertadores 2025</b><br>
+              con River Plate
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vitrina-jugador">
+        <h3>Jugador 3</h3>
+        <div class="trofeos-ganados">
+           <p style="opacity: 0.5; margin-top: 50px;">Aún no tiene títulos</p>
+        </div>
+      </div>
+
+      <div class="vitrina-jugador">
+        <h3>Jugador 4</h3>
+        <div class="trofeos-ganados">
+           <p style="opacity: 0.5; margin-top: 50px;">Aún no tiene títulos</p>
+        </div>
+      </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
