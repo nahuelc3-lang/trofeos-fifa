@@ -20,3 +20,11 @@ self.addEventListener('fetch', event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
+
+self.addEventListener('install', e => {
+  console.log('Service Worker instalado');
+});
+
+self.addEventListener('fetch', e => {
+  // básico, después podés mejorar cache
+});
