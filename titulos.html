@@ -70,12 +70,12 @@ h1 {
     padding: 20px;
 }
 
-.tabla-contenedor h3 {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-bottom: 2px solid #00e5ff;
-    padding-bottom: 10px;
-    margin-top: 0;
+.tabla-contenedor {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    overflow-x: auto; /* 🔥 ESTA ES LA MAGIA: permite deslizar la tabla hacia los costados */
 }
 
 table {
@@ -160,7 +160,20 @@ tr:hover td {
     .estadisticas-grid, .vitrinas-grid {
         grid-template-columns: 1fr;
     }
-    .panel { padding: 20px; }
+    .panel { padding: 15px; } /* Achicamos un poco el padding general para ganar espacio */
+
+    /* 🔥 Ajustes específicos para las tablas en celulares */
+    table {
+        font-size: 13px; /* Letra un poco más chica */
+        min-width: 450px; /* Fuerza a la tabla a tener un ancho mínimo para activar el scroll horizontal */
+    }
+    th, td {
+        padding: 8px 5px; /* Menos espacio de relleno entre columnas */
+    }
+    .equipo img {
+        width: 18px; /* Achicamos un milímetro los escudos en celus */
+        height: 18px;
+    }
 }
 </style>
 </head>
