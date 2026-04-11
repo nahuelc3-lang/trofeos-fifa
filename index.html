@@ -62,6 +62,11 @@ a { color:white; text-decoration:none; }
     color: #38bdf8 !important;
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
+.panel-champions .partido:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: #38bdf8;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
 
 /* 🔥 ESTILO ESPECIAL RECOPA SUDAMERICANA 🔥 */
 .panel-recopa {
@@ -93,6 +98,14 @@ a { color:white; text-decoration:none; }
     align-items: stretch; 
 }
 .col { display: flex; flex-direction: column; flex: 1; }
+.col h3 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    text-align: center;
+    margin-bottom: 20px;
+    height: 20px; 
+}
 .partidos-wrapper {
     display: flex;
     flex-direction: column;
@@ -110,7 +123,6 @@ a { color:white; text-decoration:none; }
     text-align: center;
     transition: all 0.3s ease;
 }
-
 .fila-partido{
     display:flex;
     align-items:center;
@@ -120,10 +132,36 @@ a { color:white; text-decoration:none; }
 }
 .equipo{ display:flex; align-items:center; gap:12px; }
 .equipo img{ width:35px; height:35px; object-fit:contain; }
-.equipo span { font-size: 20px; }
-.vs{ opacity:0.7; font-weight:400; font-size: 18px; }
+.equipo span { font-size: 18px; }
+.vs{ opacity:0.7; font-weight:400; font-size: 16px; }
 
-/* 🔥 RESPONSIVE MEJORADO */
+/* 🔥 ESTILOS RECUPERADOS: GLOBAL Y FINAL 🔥 */
+.subtitulo { 
+    margin-top: 8px; 
+    font-size: 13px; 
+    color: rgba(255, 255, 255, 0.6); 
+    font-weight: normal !important; 
+    letter-spacing: 0.5px;
+}
+.final-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    min-width: 160px;
+    padding: 0 10px;
+}
+.final-match {
+    border: 2px solid #ffd700; 
+    padding: 20px;
+    font-size: 18px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* 🔥 RESPONSIVE MEJORADO 🔥 */
 @media (max-width:900px){
     .bracket-grid { flex-direction: column; }
     .panel{ padding:20px; }
@@ -145,7 +183,7 @@ a { color:white; text-decoration:none; }
   <a href="titulos.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Salón de la Fama</a>
   <a href="sorteo.html" style="background:#ff0055; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🎲 Sorteador</a>
 </div> 
- 
+
 <section class="seccion">
   <h2 style="display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 32px;">
     <img src="champions-icon.png" alt="Champions" style="width: 40px; height: 40px; object-fit: contain;"> 
@@ -223,11 +261,9 @@ a { color:white; text-decoration:none; }
         </div>
       </div>
 
-<div class="col">
+      <div class="col final-col">
         <h3 style="color: #e2e8f0 !important;">Final</h3>
-        
         <div class="partidos-wrapper" style="justify-content: center;">
-          
           <div class="partido final-match">
             <div class="fila-partido">
               <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Finalista 1</span></div>
@@ -235,11 +271,13 @@ a { color:white; text-decoration:none; }
               <div class="equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKpAXuqAvxzsDan7pfHN9ta1luf2zmiOXMBO1AXaGtASLV7S_tFbU7CUm5tL6DvhEjtBdTsNXIgqE56_-tHaPd8BGUsDcD-wjw0tHyusTn4tKqCjS1klmjc8cnxZOJE1JDiNm-GHb8Tg8/s128/FC+Barcelona128x.png"><span>FC Barcelona</span></div>
             </div>
           </div>
-
         </div>
-        </div>
+      </div>
 
-    </div> </div> <h3 style="display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 24px; margin-top: 50px; margin-bottom: 20px;">
+    </div>
+  </div>
+
+  <h3 style="display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 24px; margin-top: 50px; margin-bottom: 20px;">
     <img src="recopasudamericana-icon.png" alt="Recopa" style="width: 35px; height: 35px; object-fit: contain;"> 
     CONMEBOL Recopa Sudamericana 2026
   </h3>
