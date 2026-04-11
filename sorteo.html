@@ -104,7 +104,6 @@ input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
     <button class="btn btn-gold" style="margin-top: 40px; width: 100%;" onclick="iniciarSorteo()">✅ CONFIRMAR Y PASAR AL SORTEO</button>
 </div>
 
-
 <div class="panel" id="zona-sorteo">
     <h3 style="margin-top: 0; color: #00e5ff;" id="contador-equipos">Equipos restantes: 0</h3>
     
@@ -122,19 +121,15 @@ input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
 <script>
     let equiposEnBolillero = [];
     let jugadoresActivos = [];
-    let turnoActual = 0;
+    let bolilleroJugadores = []; // 🔥 Nueva bolsa secreta de jugadores
 
     function iniciarSorteo() {
-        // 1. Agarrar los equipos del texto
         let textoEquipos = document.getElementById("lista-equipos").value;
-        // Separar por salto de línea y limpiar espacios en blanco
         equiposEnBolillero = textoEquipos.split('\n').map(e => e.trim()).filter(e => e !== "");
 
-        // 2. Agarrar qué jugadores están marcados
         let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
         jugadoresActivos = Array.from(checkboxes).map(cb => cb.value);
 
-        // 3. Validar que no se manden macanas
         if (equiposEnBolillero.length === 0) {
             alert("¡Eh! Tenés que cargar al menos un equipo en la lista.");
             return;
@@ -144,12 +139,25 @@ input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
             return;
         }
 
-        // 4. Cambiar de pantalla
+        // 🔥 ARMADO DE LA BOLSA DE JUGADORES 🔥
+        bolilleroJugadores = [];
+        // 1. Creamos la cantidad exacta de "papelitos" por jugador para que sea justo
+        for (let i = 0; i < equiposEnBolillero.length; i++) {
+            bolilleroJugadores.push(jugadoresActivos[i % jugadoresActivos.length]);
+        }
+        
+        // 2. Mezclamos los papelitos súper bien (Algoritmo Fisher-Yates)
+        for (let i = bolilleroJugadores.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [bolilleroJugadores[i], bolilleroJugadores[j]] = [bolilleroJugadores[j], bolilleroJugadores[i]];
+        }
+
+        // Cambiar de pantalla
         document.getElementById("zona-setup").style.display = "none";
         document.getElementById("zona-sorteo").style.display = "block";
         document.getElementById("contador-equipos").innerText = "Equipos en el bolillero: " + equiposEnBolillero.length;
 
-        // 5. Armar las tablitas vacías abajo
+        // Armar las tablitas vacías abajo
         let grilla = document.getElementById("grilla-resultados");
         grilla.innerHTML = "";
         jugadoresActivos.forEach(jugador => {
@@ -169,12 +177,12 @@ input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
             return;
         }
 
-        // Sacar un equipo al azar
+        // 1. Sacar un EQUIPO al azar de la lista
         let indiceAleatorio = Math.floor(Math.random() * equiposEnBolillero.length);
-        let equipoGanador = equiposEnBolillero.splice(indiceAleatorio, 1)[0]; // Lo saca del array
+        let equipoGanador = equiposEnBolillero.splice(indiceAleatorio, 1)[0]; 
 
-        // Ver a quién le toca
-        let jugadorDeTurno = jugadoresActivos[turnoActual];
+        // 2. Sacar un JUGADOR al azar de nuestra bolsa mezclada
+        let jugadorDeTurno = bolilleroJugadores.pop();
 
         // Mostrarlo en grande
         document.getElementById("texto-revelacion").innerHTML = `El <b>${equipoGanador}</b><br>va para... <span style="color:#00e5ff; font-size:40px;">${jugadorDeTurno}</span>!`;
@@ -182,16 +190,10 @@ input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
         // Agregarlo a su listita abajo
         document.getElementById(`lista-${jugadorDeTurno}`).innerHTML += `<li>⚽ ${equipoGanador}</li>`;
 
-        // Actualizar datos
+        // Actualizar el contador de cuántos quedan
         document.getElementById("contador-equipos").innerText = "Equipos en el bolillero: " + equiposEnBolillero.length;
         
-        // Pasar al siguiente jugador (cuando llega al último, vuelve al 0)
-        turnoActual++;
-        if (turnoActual >= jugadoresActivos.length) {
-            turnoActual = 0;
-        }
-
-        // Si se quedó sin equipos en esta misma tirada, avisa
+        // Si no quedan más, cambiar el botón
         if (equiposEnBolillero.length === 0) {
             document.getElementById("btn-sortear").innerText = "VER RESULTADOS FINALES";
         }
