@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteador Oficial | FC 26</title>
+
+<link rel="manifest" href="/trofeos-fifa/manifest.json">
+<meta name="theme-color" content="#000000">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ESTILOS BASE */
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-image: url('fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+h1 { text-align: center; font-size: 40px; font-weight: 900; letter-spacing: 2px; padding: 20px 0; margin:0;}
+.panel {
+    margin: auto; margin-top: 20px; max-width: 900px;
+    background: rgba(0,0,0,0.85); padding: 40px; border-radius: 20px; text-align: center;
+}
+.btn {
+    background: #00e5ff; color: #000; padding: 15px 25px; border: none;
+    border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; transition: 0.3s;
+}
+.btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); }
+.btn-red { background: #ff4444; color: white; }
+.btn-gold { background: #ffd700; color: black; font-size: 20px; padding: 20px 40px;}
+
+/* INPUTS Y CHECKBOXES */
+.controles-setup { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: left; }
+textarea {
+    width: 100%; height: 200px; background: rgba(255,255,255,0.1); color: white;
+    border: 1px solid #00e5ff; border-radius: 10px; padding: 15px;
+    font-family: 'Montserrat', sans-serif; font-size: 15px; resize: none;
+}
+.jugadores-lista { display: flex; flex-direction: column; gap: 15px; }
+.jugador-check {
+    display: flex; align-items: center; gap: 10px; font-size: 20px;
+    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; cursor: pointer;
+}
+input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+
+/* ZONA DE SORTEO */
+#zona-sorteo { display: none; }
+.gran-revelacion {
+    background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700;
+    padding: 40px 20px; border-radius: 15px; margin: 30px 0;
+    min-height: 150px; display: flex; align-items: center; justify-content: center;
+}
+.gran-revelacion h2 { margin: 0; font-size: 30px; color: #ffd700; }
+.resultados-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 30px;
+}
+.columna-jugador {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 15px; text-align: left;
+}
+.columna-jugador h3 { color: #00e5ff; text-align: center; border-bottom: 1px solid #00e5ff; padding-bottom: 10px; margin-top: 0;}
+.columna-jugador ul { list-style: none; padding: 0; margin: 0; }
+.columna-jugador li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px;}
+
+@media (max-width:768px){
+    .controles-setup { grid-template-columns: 1fr; }
+    .panel { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div style="text-align:center; margin:20px;">
+    <a href="index.html" class="btn btn-red" style="text-decoration:none;">🔙 Volver al Inicio</a>
+</div>
+
+<h1>🎲 Sorteador Oficial</h1>
+
+<div class="panel" id="zona-setup">
+    <p style="margin-bottom: 30px; opacity: 0.8;">Cargá los equipos (uno por línea) y marcá quiénes juegan hoy.</p>
+    
+    <div class="controles-setup">
+        <div>
+            <h3 style="color: #00e5ff; margin-top: 0;">1. Equipos</h3>
+            <textarea id="lista-equipos" placeholder="Ejemplo:&#10;Boca&#10;River&#10;Racing&#10;Independiente&#10;San Lorenzo..."></textarea>
+        </div>
+        <div>
+            <h3 style="color: #00e5ff; margin-top: 0;">2. Jugadores Presentes</h3>
+            <div class="jugadores-lista">
+                <label class="jugador-check"><input type="checkbox" value="Joaquín" checked> Joaquín</label>
+                <label class="jugador-check"><input type="checkbox" value="Nico" checked> Nico</label>
+                <label class="jugador-check"><input type="checkbox" value="Mateo" checked> Mateo</label>
+                <label class="jugador-check"><input type="checkbox" value="Nahuel" checked> Nahuel</label>
+            </div>
+        </div>
+    </div>
+    
+    <button class="btn btn-gold" style="margin-top: 40px; width: 100%;" onclick="iniciarSorteo()">✅ CONFIRMAR Y PASAR AL SORTEO</button>
+</div>
+
+
+<div class="panel" id="zona-sorteo">
+    <h3 style="margin-top: 0; color: #00e5ff;" id="contador-equipos">Equipos restantes: 0</h3>
+    
+    <div class="gran-revelacion">
+        <h2 id="texto-revelacion">¿Quién sale primero?</h2>
+    </div>
+
+    <button class="btn btn-gold" id="btn-sortear" onclick="sortearEquipo()">🎲 SACAR EQUIPO</button>
+    <button class="btn btn-red" style="margin-left: 10px;" onclick="location.reload()">🔄 Reiniciar Todo</button>
+
+    <div class="resultados-grid" id="grilla-resultados">
+        </div>
+</div>
+
+<script>
+    let equiposEnBolillero = [];
+    let jugadoresActivos = [];
+    let turnoActual = 0;
+
+    function iniciarSorteo() {
+        // 1. Agarrar los equipos del texto
+        let textoEquipos = document.getElementById("lista-equipos").value;
+        // Separar por salto de línea y limpiar espacios en blanco
+        equiposEnBolillero = textoEquipos.split('\n').map(e => e.trim()).filter(e => e !== "");
+
+        // 2. Agarrar qué jugadores están marcados
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        jugadoresActivos = Array.from(checkboxes).map(cb => cb.value);
+
+        // 3. Validar que no se manden macanas
+        if (equiposEnBolillero.length === 0) {
+            alert("¡Eh! Tenés que cargar al menos un equipo en la lista.");
+            return;
+        }
+        if (jugadoresActivos.length === 0) {
+            alert("¡Che, alguien tiene que jugar! Marcá al menos un jugador.");
+            return;
+        }
+
+        // 4. Cambiar de pantalla
+        document.getElementById("zona-setup").style.display = "none";
+        document.getElementById("zona-sorteo").style.display = "block";
+        document.getElementById("contador-equipos").innerText = "Equipos en el bolillero: " + equiposEnBolillero.length;
+
+        // 5. Armar las tablitas vacías abajo
+        let grilla = document.getElementById("grilla-resultados");
+        grilla.innerHTML = "";
+        jugadoresActivos.forEach(jugador => {
+            grilla.innerHTML += `
+                <div class="columna-jugador">
+                    <h3>${jugador}</h3>
+                    <ul id="lista-${jugador}"></ul>
+                </div>
+            `;
+        });
+    }
+
+    function sortearEquipo() {
+        if (equiposEnBolillero.length === 0) {
+            document.getElementById("texto-revelacion").innerText = "¡SORTEO FINALIZADO! 🏆";
+            document.getElementById("btn-sortear").style.display = "none";
+            return;
+        }
+
+        // Sacar un equipo al azar
+        let indiceAleatorio = Math.floor(Math.random() * equiposEnBolillero.length);
+        let equipoGanador = equiposEnBolillero.splice(indiceAleatorio, 1)[0]; // Lo saca del array
+
+        // Ver a quién le toca
+        let jugadorDeTurno = jugadoresActivos[turnoActual];
+
+        // Mostrarlo en grande
+        document.getElementById("texto-revelacion").innerHTML = `El <b>${equipoGanador}</b><br>va para... <span style="color:#00e5ff; font-size:40px;">${jugadorDeTurno}</span>!`;
+
+        // Agregarlo a su listita abajo
+        document.getElementById(`lista-${jugadorDeTurno}`).innerHTML += `<li>⚽ ${equipoGanador}</li>`;
+
+        // Actualizar datos
+        document.getElementById("contador-equipos").innerText = "Equipos en el bolillero: " + equiposEnBolillero.length;
+        
+        // Pasar al siguiente jugador (cuando llega al último, vuelve al 0)
+        turnoActual++;
+        if (turnoActual >= jugadoresActivos.length) {
+            turnoActual = 0;
+        }
+
+        // Si se quedó sin equipos en esta misma tirada, avisa
+        if (equiposEnBolillero.length === 0) {
+            document.getElementById("btn-sortear").innerText = "VER RESULTADOS FINALES";
+        }
+    }
+</script>
+
+</body>
+</html>
