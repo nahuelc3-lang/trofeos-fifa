@@ -51,12 +51,36 @@ a { color:white; text-decoration:none; }
     border-radius:20px;
 }
 
-/* BRACKET GRID REWORK (Lo dejo por si agregás torneos acá después) */
+/* 🔥 ESTILO ESPECIAL CHAMPIONS LEAGUE 🔥 */
+.panel-champions {
+    background: linear-gradient(135deg, #070b19 0%, #171c38 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+}
+.panel-champions h3 {
+    color: #38bdf8 !important; /* Celeste neon */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+.panel-champions .partido {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(56, 189, 248, 0.4);
+}
+.panel-champions .partido:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: #38bdf8;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
+.panel-champions .final-match {
+    border-color: #e2e8f0; /* Plateado para la final */
+    box-shadow: 0 0 20px rgba(226, 232, 240, 0.3);
+}
+
+/* BRACKET GRID REWORK */
 .bracket-grid {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    align-items: stretch;
+    align-items: stretch; 
 }
 .lado { display: flex; flex: 1; gap: 20px; }
 .lado.derecha { flex-direction: row-reverse; }
@@ -67,13 +91,13 @@ a { color:white; text-decoration:none; }
     opacity: 0.8;
     text-align: center;
     margin-bottom: 20px;
-    height: 20px;
+    height: 20px; 
 }
 .partidos-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-around; 
-    flex: 1;
+    flex: 1; 
     gap: 15px;
 }
 .partido {
@@ -88,26 +112,26 @@ a { color:white; text-decoration:none; }
     cursor: pointer;
 }
 .partido:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    transform: scale(1.05); 
+    background: rgba(255, 255, 255, 0.15); 
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); 
     border-color: #00e5ff;
 }
 .subtitulo { margin-top: 8px; font-size: 13px; opacity: 0.7; font-weight: 400; }
 .final-col {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
     min-width: 160px;
     padding: 0 10px;
 }
 .final-match {
-    border: 2px solid #ffd700;
+    border: 2px solid #ffd700; 
     padding: 20px;
     font-size: 18px;
     width: 100%;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); 
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -144,16 +168,98 @@ a { color:white; text-decoration:none; }
   <a href="#calendario" style="background:#00e5ff; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">📅 Calendario</a>
   <a href="temporada-2025.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Torneo 2025</a>
   <a href="titulos.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Salón de la Fama</a>
-
   <a href="sorteo.html" style="background:#ff0055; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🎲 Sorteador</a>
 </div> 
-</div>
  
 <section class="seccion">
-  <h2>Temporada Actual</h2>
-  <div class="panel" style="padding: 80px 20px;">
-    <h3 style="opacity: 0.5; font-size: 24px;">¡Próximamente nuevos torneos!</h3>
-    <p style="opacity: 0.5;">Champions League y Apertura 2026 en camino.</p>
+  <h2 style="display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 32px;">
+    <img src="champions-icon.png" alt="Champions" style="width: 40px; height: 40px; object-fit: contain;"> 
+    UEFA Champions League 25/26
+  </h2>
+  
+  <div class="panel panel-champions">
+    <div class="bracket-grid">
+
+      <div class="col">
+        <h3>Cuartos de Final</h3>
+        <div class="partidos-wrapper">
+          
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>A confirmar</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col">
+        <h3>Semifinales</h3>
+        <div class="partidos-wrapper">
+          
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Ganador Llave 1</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Ganador Llave 2</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Ganador Llave 3</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Ganador Llave 4</span></div>
+            </div>
+            <div class="subtitulo">Global: -</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col final-col">
+        <h3 style="color: #e2e8f0 !important;">Final</h3>
+        <div class="partido final-match">
+          <div class="fila-partido">
+            <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Finalista 1</span></div>
+            <span class="vs">vs</span>
+            <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>Finalista 2</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
     
