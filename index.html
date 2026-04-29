@@ -51,7 +51,7 @@ a { color:white; text-decoration:none; }
     border-radius:20px;
 }
 
-/* 🔥 ESTILO LIGA PROMIEDOS 🔥 */
+/* 🔥 ESTILO LIGA ARGENTINA (AZUL Y ORO) 🔥 */
 .promiedos-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -59,19 +59,20 @@ a { color:white; text-decoration:none; }
     margin-bottom: 40px;
 }
 .promiedos-box {
-    background: #112b1f; /* Verde oscuro estilo promiedos */
-    border: 1px solid #1e4533;
+    background: #0d1b2a; /* Azul marino profundo */
+    border: 1px solid #c5a059; /* Borde dorado */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 .promiedos-header {
-    background: #1b3d2f;
+    background: #1b263b; /* Azul marino un tono más claro */
     padding: 12px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 2px solid #285a43;
+    border-bottom: 2px solid #c5a059; /* Línea dorada */
+    color: #ffffff;
 }
 .promiedos-table {
     width: 100%;
@@ -81,15 +82,15 @@ a { color:white; text-decoration:none; }
 }
 .promiedos-table th {
     padding: 10px 5px;
-    color: rgba(255,255,255,0.7);
-    font-weight: normal;
-    border-bottom: 1px solid #1e4533;
+    color: #c5a059; /* Dorado para los encabezados */
+    font-weight: bold;
+    border-bottom: 1px solid #415a77;
 }
 .promiedos-table td {
     padding: 12px 5px;
-    border-bottom: 1px solid #163627;
+    border-bottom: 1px solid #1b263b;
 }
-.promiedos-table tr:hover { background: rgba(255,255,255,0.05); }
+.promiedos-table tr:hover { background: rgba(197, 160, 89, 0.08); /* Hover dorado sutil */ }
 .promiedos-table .col-equipo {
     text-align: left;
     display: flex;
@@ -100,8 +101,8 @@ a { color:white; text-decoration:none; }
 .promiedos-table .col-equipo img { width: 22px; height: 22px; object-fit: contain; }
 .promiedos-table .col-pts { font-weight: bold; font-size: 16px; color: #fff;}
 /* Puestos de clasificación (1 y 2) */
-.promiedos-table .zona-clasificacion { background: rgba(0, 229, 255, 0.1); }
-.promiedos-table .zona-clasificacion:hover { background: rgba(0, 229, 255, 0.15); }
+.promiedos-table .zona-clasificacion { background: rgba(197, 160, 89, 0.15); /* Resalte dorado para clasificados */ }
+.promiedos-table .zona-clasificacion:hover { background: rgba(197, 160, 89, 0.25); }
 
 /* 🔥 ESTILO ESPECIAL CHAMPIONS LEAGUE 🔥 */
 .panel-champions {
