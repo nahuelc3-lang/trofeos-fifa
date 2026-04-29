@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Torneos Oficiales del Consejo de Fútbol | FC 26</title>
 
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="/trofeos-fifa/manifest.json">
 <meta name="theme-color" content="#000000">
 
@@ -38,7 +37,6 @@ h1{
 
 a { color:white; text-decoration:none; }
 
-/* SECCIONES */
 .seccion{
     padding:60px 20px;
     text-align:center;
@@ -53,7 +51,59 @@ a { color:white; text-decoration:none; }
     border-radius:20px;
 }
 
-/* 🔥 CHAMPIONS */
+/* 🔥 ESTILO LIGA PROMIEDOS 🔥 */
+.promiedos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+.promiedos-box {
+    background: #112b1f; /* Verde oscuro estilo promiedos */
+    border: 1px solid #1e4533;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+.promiedos-header {
+    background: #1b3d2f;
+    padding: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #285a43;
+}
+.promiedos-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+.promiedos-table th {
+    padding: 10px 5px;
+    color: rgba(255,255,255,0.7);
+    font-weight: normal;
+    border-bottom: 1px solid #1e4533;
+}
+.promiedos-table td {
+    padding: 12px 5px;
+    border-bottom: 1px solid #163627;
+}
+.promiedos-table tr:hover { background: rgba(255,255,255,0.05); }
+.promiedos-table .col-equipo {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+.promiedos-table .col-equipo img { width: 22px; height: 22px; object-fit: contain; }
+.promiedos-table .col-pts { font-weight: bold; font-size: 16px; color: #fff;}
+/* Puestos de clasificación (1 y 2) */
+.promiedos-table .zona-clasificacion { background: rgba(0, 229, 255, 0.1); }
+.promiedos-table .zona-clasificacion:hover { background: rgba(0, 229, 255, 0.15); }
+
+/* 🔥 ESTILO ESPECIAL CHAMPIONS LEAGUE 🔥 */
 .panel-champions {
     background: linear-gradient(135deg, #070b19 0%, #171c38 100%);
     border: 1px solid rgba(56, 189, 248, 0.3);
@@ -62,185 +112,112 @@ a { color:white; text-decoration:none; }
 }
 .panel-champions h3 {
     color: #38bdf8 !important;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 .panel-champions .partido:hover {
     background: rgba(30, 41, 59, 0.9);
     border-color: #38bdf8;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
 }
 
-/* 🔥 RECOPA */
+/* 🔥 ESTILO ESPECIAL RECOPA SUDAMERICANA 🔥 */
 .panel-recopa {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
     border: 2px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
 }
-.panel-recopa h2 {
-    color: #ffd700 !important;
-}
+.panel-recopa h2 { color: #ffd700 !important; }
 .panel-recopa .partido {
     background: rgba(255, 215, 0, 0.05);
     border-color: rgba(255, 215, 0, 0.3);
+    padding: 30px;
 }
 .panel-recopa .marcador {
     font-size: 48px;
     font-weight: 900;
     color: #ffd700;
+    margin: 0 20px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 }
 
-/* 🧠 BRACKET BASE */
+/* BRACKET GRID */
 .bracket-grid {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     align-items: stretch; 
 }
-
-/* LADOS */
-.lado{
-    display:flex;
-    flex-direction:row;
-    gap:20px;
-    flex:1;
+.col { display: flex; flex-direction: column; flex: 1; }
+.col h3 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    text-align: center;
+    margin-bottom: 20px;
+    height: 20px; 
 }
-
-.lado.izquierda{
-    justify-content:flex-end;
+.partidos-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; 
+    flex: 1; 
+    gap: 15px;
 }
-
-.lado.derecha{
-    flex-direction: row-reverse;
-    justify-content:flex-end;
+.partido {
+    padding: 15px 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.05);
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
 }
-
-/* COLUMNAS */
-.col{
-    display:flex;
-    flex-direction:column;
-    flex:1;
-}
-
-.col h3{
-    font-size:16px;
-    letter-spacing:2px;
-    opacity:0.8;
-    margin-bottom:20px;
-    text-align:center;
-}
-
-/* ESPACIADO REALISTA DE TORNEO */
-.col:nth-child(1) .partidos-wrapper{
-    justify-content:space-between;
-}
-.col:nth-child(2) .partidos-wrapper{
-    justify-content:space-around;
-}
-.col:nth-child(3) .partidos-wrapper{
-    justify-content:center;
-}
-
-.partidos-wrapper{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    flex:1;
-}
-
-/* PARTIDOS */
-.partido{
-    padding:15px 10px;
-    border:1px solid rgba(255,255,255,0.3);
-    border-radius:10px;
-    font-weight:700;
-    background:rgba(255,255,255,0.05);
-    width:100%;
-    text-align:center;
-    position:relative;
-    transition:0.3s;
-}
-
-/* líneas conexión */
-.partido::after{
-    display:none;
-}
-
-.lado.derecha .partido::after{
-    display:none;
-}
-
-/* CONTENIDO */
 .fila-partido{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:15px;
-    flex-wrap:wrap;
+    flex-wrap:wrap; 
+}
+.equipo{ display:flex; align-items:center; gap:12px; }
+.equipo img{ width:35px; height:35px; object-fit:contain; }
+.equipo span { font-size: 18px; }
+.vs{ opacity:0.7; font-weight:400; font-size: 16px; }
+
+/* TEXTOS Y FINALES */
+.subtitulo { 
+    margin-top: 8px; 
+    font-size: 13px; 
+    color: rgba(255, 255, 255, 0.6); 
+    font-weight: normal !important; 
+    letter-spacing: 0.5px;
+}
+.final-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    min-width: 160px;
+    padding: 0 10px;
+}
+.final-match {
+    border: 2px solid #ffd700; 
+    padding: 20px;
+    font-size: 18px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); 
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.equipo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.equipo img{
-    width:32px;
-    height:32px;
-    object-fit:contain;
-}
-
-.equipo span{
-    font-size:17px;
-}
-
-.vs{
-    opacity:0.7;
-    font-size:14px;
-}
-
-/* FINAL */
-.final-col{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    min-width:180px;
-}
-
-.final-match{
-    border:2px solid #ffd700;
-    padding:20px;
-    width:100%;
-    box-shadow:0 0 20px rgba(255,215,0,0.3);
-    text-transform:uppercase;
-}
-
-/* TEXTO EXTRA */
-.subtitulo{
-    margin-top:8px;
-    font-size:13px;
-    color:rgba(255,255,255,0.6);
-}
-
-/* 📱 RESPONSIVE */
+/* 🔥 RESPONSIVE MEJORADO 🔥 */
 @media (max-width:900px){
-    .bracket-grid{
-        flex-direction:column;
-    }
-
-    .lado{
-        flex-direction:column;
-    }
-
-    .lado.derecha{
-        flex-direction:column;
-    }
-
-    .partido::after{
-        display:none;
-    }
-
-    .panel{
-        padding:20px;
-    }
+    .bracket-grid { flex-direction: column; }
+    .promiedos-grid { grid-template-columns: 1fr; }
+    .panel{ padding:20px; }
+    .equipo span { font-size: 16px; }
+    .panel-recopa .marcador { font-size: 32px; }
 }
 
 </style>
@@ -258,210 +235,132 @@ a { color:white; text-decoration:none; }
   <a href="sorteo.html" style="background:#ff0055; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🎲 Sorteador</a>
 </div> 
 
-<!-- 🇦🇷 LIGA ARGENTINA -->
 <section id="liga" class="seccion">
-<h2 style="display:flex; justify-content:center; align-items:center; gap:12px;">
-  <img src="lpf-icon.png" style="width:35px; height:35px; object-fit:contain;">
-  AFA Apertura 2026
-</h2>
+  <h2 style="display:flex; justify-content:center; align-items:center; gap:12px; font-size: 32px;">
+    <img src="lpf-icon.png" alt="LPF" style="width:40px; height:40px; object-fit:contain;">
+    AFA Apertura 2026
+  </h2>
 
-<div class="panel">
-<div class="bracket-grid">
-
-  <!-- IZQUIERDA -->
-  <div class="lado izquierda">
-
-    <!-- OCTAVOS -->
-    <div class="col">
-      <h3>Octavos</h3>
-      <div class="partidos-wrapper">
-
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png">
-              <span>Estudiantes [1°A]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOm5IHpBKTvNVI2oQsYF4jEUTPoYIwnqQHBf7h__5zoUpJAUEvM6h5HWH8HQ9AGnqo-t7za54gvJlXOgR80MJHbFWbwur2U_j_-fjtYSnBZqMcxcxC5XY_jD_O_6sKKvJddXl_LpjVA-M/s1600/Sarmiento+de+Junin128x.png">
-              <span>Sarmiento [8°B]</span>
-            </div>
-          </div>
+  <div class="panel">
+    
+    <div class="promiedos-grid">
+      
+      <div class="promiedos-box">
+        <div class="promiedos-header">ZONA A</div>
+        <div style="overflow-x: auto;">
+            <table class="promiedos-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqNkNCiGJBhKbV9_u86I0Bq4wsNgM/s128/Boca%20Juniors128x.png">Boca Juniors</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimsJgFxyJXwpXGV_uPf9mBgwnx_Yp8UDgyOxZGLgUK0HoisEqPNa6rZfFHKEnLKlxII9hFeSRsnQ077Iz9nWR3LMZEvQbEWDl3L_LlpkIpN_X4_GW3vHFtxYNYz0jUmafXGyg1tbvN_0Iokh9SydpqgD72ByRPRCHz01ZgON769GQG6npXUmgIB-heLBw/s128/Club%20Atletico%20Independiente128x.png">Independiente</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png">Estudiantes</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirp6aRrGW9ehZvYes7b_Lsz1nHmke4k3nV_Knh_zcmgVpEbFhqWiN2-tJGGOcNU00R2uudedXBlqZBIX0ldnSOw5W6JNB82FR5Kr8qEjseU6xRTPxRE5gsMRuxjLzX1eN84kwHKugkoZYqLCISFFubWIbCNtPZMIYTXdqU6RgLOh9UcQQj-MOJspTL/s128/Velez%20Sarsfield128x.png">Vélez Sarsfield</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
         </div>
+      </div>
 
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128">
-              <span>River Plate [4°B]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiZEUKPDYSMC8jq9i_h2MW4sW5PAODO1tsTY46lGoIuQMphpA0kLQmmVb_DfE85Fgd6rwct9FF_2LYz7T4qjj4RXqAykFFLLgtwHgDEKyQ7IlSYf8IPh3dCXXITgK_2JMhqaautnTRIoLGaBXB4dxQzpqaciKgnRc51bQBqGetAvooSZiRgBM0_cAH9=s128">
-              <span>Banfield [5°A]</span>
-            </div>
-          </div>
+      <div class="promiedos-box">
+        <div class="promiedos-header">ZONA B</div>
+        <div style="overflow-x: auto;">
+            <table class="promiedos-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128">River Plate</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRRXd7qhjRCrYQcNwKeGcwBd8JTlT5ItZZdA41-KuUWVUD1ILZILsF4H3u2IRNXoDh81vL7_dDIlWvcyWnH3cWmTrb8CEwciWHBGa6e74-71jqcS_Sl4dWXRhsvYRpaUOyiGDYOwl4nzbWBpaf_2KJZriKw9Uf7WUUO9IxEp0_sndSpPSnpb7g9aQyE7k/s128/Racing%20Club.png128x.png">Racing Club</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCm7IJilwhaIvOVMhJmrp42mFKUkPTiqQEBDNAx8IS9xUSvkdjB1YiWUpl_bGptgX6EXHbCS1Pf3Jbwu-f26fGtOldGlJAc-i-QxwIP6NlfPm5mBXJE1YzpGYKR7aTZJ5wJBSIAlrD0y5FCe4D4fuyGkx-7hCRs6-x-cnBbNmiW9jmyB6ZVllbGuDynu0/s128/CA%20Rosario%20Central128x.png">Rosario Central</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkk2WH1z7RF1RE00XXNyolmZZnlf05aYqnCtJBBO19yWDAD-7ATTD5mCVpOSlIzKgUg0lDJWiTOS6txwLrd8N4hlyiZIbajuyTds9yzbuBorkt1ccwr0AwUDSaKsB6xB4v5nHSn19bkihi4uEKO83UFiBr5xbNao89-Xh4T2T1PN3MILM7HUluYgUcnZk/s128/Club%20Atletico%20Belgrano128x.png">Belgrano</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
         </div>
-          
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjlhaXsbedTImUrW4LsuLMzJ714Xo355W4iK-bbQY_6SDwuVGbm1f9RL3rtNkfqmdTmLQprVMVQ-T8aVryTtp1qXvzzm6lKMDChKBXzg3pC-sDefiWyIRStS0czof2sKpAlud6tSfgYLD0/s1600/Argentinos+Juniors128x.png">
-              <span>Argentinos Jrs. [3°A]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi80fnjA1MthG6UeuRC0g50bIY82iC9Vev2JXPkSmexHnf7WIR34BwkcrrxgxD2NMIKP-RUyTiCa6lJ3FRhF64UNVpWkBy58zfo62oz1RgwkL4s5GwtEZOuhAMc7ZZ3EOYzTq4QMqV2aT9dQ9KJzNG3oFi5uxO5M9wv0YtkSxSZP2imTV2CJZK5a2BquQg/s128/Godoy%20Cruz128x.png">
-              <span>Godoy Cruz [6°B]</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimsJgFxyJXwpXGV_uPf9mBgwnx_Yp8UDgyOxZGLgUK0HoisEqPNa6rZfFHKEnLKlxII9hFeSRsnQ077Iz9nWR3LMZEvQbEWDl3L_LlpkIpN_X4_GW3vHFtxYNYz0jUmafXGyg1tbvN_0Iokh9SydpqgD72ByRPRCHz01ZgON769GQG6npXUmgIB-heLBw/s128/Club%20Atletico%20Independiente128x.png">
-              <span>Independiente [2°B]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRRXd7qhjRCrYQcNwKeGcwBd8JTlT5ItZZdA41-KuUWVUD1ILZILsF4H3u2IRNXoDh81vL7_dDIlWvcyWnH3cWmTrb8CEwciWHBGa6e74-71jqcS_Sl4dWXRhsvYRpaUOyiGDYOwl4nzbWBpaf_2KJZriKw9Uf7WUUO9IxEp0_sndSpPSnpb7g9aQyE7k/s128/Racing%20Club.png128x.png">
-              <span>Racing Club [7°A]</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
-    <!-- CUARTOS -->
-    <div class="col">
-      <h3>Cuartos</h3>
-      <div class="partidos-wrapper">
-        <div class="partido"><span>A confirmar</span></div>
-        <div class="partido"><span>A confirmar</span></div>
-      </div>
-    </div>
+    <hr style="border-color: rgba(255,255,255,0.1); margin: 40px 0;">
 
-    <!-- SEMI -->
-    <div class="col">
-      <h3>Semifinal</h3>
-      <div class="partidos-wrapper">
-        <div class="partido"><span>A confirmar</span></div>
-      </div>
-    </div>
+    <h3 style="margin-bottom: 30px; font-size: 22px;">Fase Final (Playoffs)</h3>
+    <div class="bracket-grid">
 
-  </div>
-
-  <!-- FINAL -->
-  <div class="final-col">
-    <h3>Final</h3>
-    <div class="partido final-match">
-      <div class="fila-partido">
-        <div class="equipo">
-          <span>A confirmar</span>
-        </div>
-        <span class="vs"> - </span>
-        <div class="equipo">
-          <span>A confirmar</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DERECHA -->
-  <div class="lado derecha">
-
-    <!-- OCTAVOS -->
-    <div class="col">
-      <h3>Octavos</h3>
-      <div class="partidos-wrapper">
-
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqNkNCiGJBhKbV9_u86I0Bq4wsNgM/s128/Boca%20Juniors128x.png">
-              <span>Boca Juniors [2°A]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRrSFevGRklwVlwuo8iOX1B7g8GpGOR-RU1ud9dz7w2XWH5tJIiOBG731fLpH-9GuoOI9cHM87TUnYZ5-vpaNR_18jx4AsSUOcmK8kNA4dn-WiocZrrhJzxxbk-raS9wPCEKyLWJteZ8ReiHUgXlSvO7KvNuNAxLDmbcR9YqDH9MlHs3nMgPtzPbECITg/s128/Club%20Atletico%20Platense128x.png">
-              <span>Platense [7°B]</span>
+      <div class="col">
+        <h3>Semifinal 1</h3>
+        <div class="partidos-wrapper" style="justify-content: center;">
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>1° Zona A</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>2° Zona B</span></div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirp6aRrGW9ehZvYes7b_Lsz1nHmke4k3nV_Knh_zcmgVpEbFhqWiN2-tJGGOcNU00R2uudedXBlqZBIX0ldnSOw5W6JNB82FR5Kr8qEjseU6xRTPxRE5gsMRuxjLzX1eN84kwHKugkoZYqLCISFFubWIbCNtPZMIYTXdqU6RgLOh9UcQQj-MOJspTL/s128/Velez%20Sarsfield128x.png">
-              <span>Vélez Sarsfield [3°B]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsk-bPNfH9eCqD12pv_CwL1BuNUAxrKPjH0aIKMhsh-tkiNO7ZB6B7sVsH0UVGCK7WJQ1FWGubVs7NUyaW3SPG7DEAiIYbIos_masxv3AMn6NCJeiR5JwEDk3bUoRt90a00T-HgeswNYyiR3HHPx_wnLdq464rw5IS6AWp7t9WzRwDWrt7nFDAmuEO/s128/CA%20Barracas%20Central128x.png">
-              <span>Barracas Central [6°A]</span>
+      <div class="col final-col">
+        <h3 style="color: #e2e8f0 !important;">Final</h3>
+        <div class="partidos-wrapper" style="justify-content: center;">
+          <div class="partido final-match">
+            <div class="fila-partido">
+              <div class="equipo"><span>Ganador Semi 1</span></div>
+              <span class="vs">-</span>
+              <div class="equipo"><span>Ganador Semi 2</span></div>
             </div>
           </div>
         </div>
-          
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkk2WH1z7RF1RE00XXNyolmZZnlf05aYqnCtJBBO19yWDAD-7ATTD5mCVpOSlIzKgUg0lDJWiTOS6txwLrd8N4hlyiZIbajuyTds9yzbuBorkt1ccwr0AwUDSaKsB6xB4v5nHSn19bkihi4uEKO83UFiBr5xbNao89-Xh4T2T1PN3MILM7HUluYgUcnZk/s128/Club%20Atletico%20Belgrano128x.png">
-              <span>Belgrano [4°A]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwYG_qkLvctt1uDooMsd3Cf85QsMELoyh_JwXhfde-B9QF8flb3_gjujJgzFzGOWrRjtwPjgSC-i2Cal2MRxZ5JOvmxneQZ52pWGUPRAmb8DRKegYhKlU1z4XWSMBGkXOJENo1WWayVtUjaprF9BxwrrfHU93PDfZRLqwVrhmCh1XXrgF_IZkSU4mSjbA/s128/Club%20Deportivo%20Riestra128x.png">
-              <span>Dep. Riestra [5°B]</span>
+      </div>
+
+      <div class="col">
+        <h3>Semifinal 2</h3>
+        <div class="partidos-wrapper" style="justify-content: center;">
+          <div class="partido">
+            <div class="fila-partido">
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>1° Zona B</span></div>
+              <span class="vs">vs</span>
+              <div class="equipo"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"><span>2° Zona A</span></div>
             </div>
           </div>
         </div>
-          
-        <div class="partido">
-          <div class="fila-partido">
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCm7IJilwhaIvOVMhJmrp42mFKUkPTiqQEBDNAx8IS9xUSvkdjB1YiWUpl_bGptgX6EXHbCS1Pf3Jbwu-f26fGtOldGlJAc-i-QxwIP6NlfPm5mBXJE1YzpGYKR7aTZJ5wJBSIAlrD0y5FCe4D4fuyGkx-7hCRs6-x-cnBbNmiW9jmyB6ZVllbGuDynu0/s128/CA%20Rosario%20Central128x.png">
-              <span>Rosario Central [1°B]</span>
-            </div>
-            <span class="vs">vs</span>
-            <div class="equipo">
-              <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhH2OEayYViOITgGkRO33d33v9Zer-9OjYv2RYMWpI9JesyTsTGh-Wope5SZx5kH7YvPf1tMjWaWBJDkF8lQTNE8W7vXaJxKeggNo9_m4blMOShfcABgJwq2YEIklhiHvohPB9dY06B1lU/s128/Club+Social+y+Deportivo+Defensa+y+Justicia128x.png">
-              <span>Defensa [8°A]</span>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CUARTOS -->
-    <div class="col">
-      <h3>Cuartos</h3>
-      <div class="partidos-wrapper">
-        <div class="partido"><span>A confirmar</span></div>
-        <div class="partido"><span>A confirmar</span></div>
-      </div>
-    </div>
-
-    <!-- SEMI -->
-    <div class="col">
-      <h3>Semifinal</h3>
-      <div class="partidos-wrapper">
-        <div class="partido"><span>A confirmar</span></div>
-      </div>
     </div>
 
   </div>
-
-</div>
-</div>
 </section>
 
-  </div> </div> </section>
-    
 <section class="seccion">
   <h2 style="display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 32px;">
     <img src="champions-icon.png" alt="Champions" style="width: 40px; height: 40px; object-fit: contain;"> 
@@ -524,7 +423,7 @@ a { color:white; text-decoration:none; }
               <span class="vs">vs</span>
               <div class="equipo"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgc_Sss5ddHdmRHQqQAq3GxA_2DunTkmOU8aGBMtujkZH85TNLBPDKyRbTHQJ93luQTHt81fChryxnzqUtBjr-t3ubWqmH2kunLcdDkywwmpGeTFSmpbgWainlqdNyN3ak6lvSheIS21k1on-emVjGcdxVjBuI1mHxdjvU7fSPUiRBX1Lmv0sY5q1vGIX0/s128/FC%20Bayern%20Munich128x.png"><span>FC Bayern München</span></div>
             </div>
-            <div class="subtitulo">Global: 3-4</div>
+            <div class="subtitulo">Global: 3 - 4</div>
           </div>
 
           <div class="partido">
