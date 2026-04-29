@@ -51,6 +51,65 @@ a { color:white; text-decoration:none; }
     border-radius:20px;
 }
 
+/* 🔥 ESTILO COPA INTERNACIONAL (MUNDIAL) 🔥 */
+.panel-mundial {
+    background: linear-gradient(135deg, #180914 0%, #3a1024 100%); /* Tonos oscuros rojizos/prestigio */
+    border: 2px solid #d4af37; /* Dorado Mundial */
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    margin-bottom: 50px;
+}
+.mundial-box {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+.mundial-header {
+    background: #240a16;
+    padding: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #d4af37;
+    color: #ffffff;
+}
+.mundial-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+.mundial-table th {
+    padding: 10px 5px;
+    color: #d4af37;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+.mundial-table td {
+    padding: 12px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.mundial-table tr:hover { background: rgba(212, 175, 55, 0.1); }
+.mundial-table .col-equipo {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+}
+.mundial-table .col-equipo img { 
+    width: 24px; 
+    height: 16px; 
+    object-fit: cover; 
+    border-radius: 2px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+.mundial-table .col-pts { font-weight: bold; font-size: 16px; color: #fff;}
+.mundial-table .zona-clasificacion { background: rgba(212, 175, 55, 0.15); }
+.mundial-table .zona-clasificacion:hover { background: rgba(212, 175, 55, 0.25); }
+
+
 /* 🔥 ESTILO LIGA ARGENTINA (AZUL Y ORO) 🔥 */
 .promiedos-grid {
     display: grid;
@@ -59,19 +118,19 @@ a { color:white; text-decoration:none; }
     margin-bottom: 40px;
 }
 .promiedos-box {
-    background: #0d1b2a; /* Azul marino profundo */
-    border: 1px solid #c5a059; /* Borde dorado */
+    background: #0d1b2a;
+    border: 1px solid #c5a059;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 .promiedos-header {
-    background: #1b263b; /* Azul marino un tono más claro */
+    background: #1b263b;
     padding: 12px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 2px solid #c5a059; /* Línea dorada */
+    border-bottom: 2px solid #c5a059;
     color: #ffffff;
 }
 .promiedos-table {
@@ -82,7 +141,7 @@ a { color:white; text-decoration:none; }
 }
 .promiedos-table th {
     padding: 10px 5px;
-    color: #c5a059; /* Dorado para los encabezados */
+    color: #c5a059;
     font-weight: bold;
     border-bottom: 1px solid #415a77;
 }
@@ -90,7 +149,7 @@ a { color:white; text-decoration:none; }
     padding: 12px 5px;
     border-bottom: 1px solid #1b263b;
 }
-.promiedos-table tr:hover { background: rgba(197, 160, 89, 0.08); /* Hover dorado sutil */ }
+.promiedos-table tr:hover { background: rgba(197, 160, 89, 0.08); }
 .promiedos-table .col-equipo {
     text-align: left;
     display: flex;
@@ -100,8 +159,7 @@ a { color:white; text-decoration:none; }
 }
 .promiedos-table .col-equipo img { width: 22px; height: 22px; object-fit: contain; }
 .promiedos-table .col-pts { font-weight: bold; font-size: 16px; color: #fff;}
-/* Puestos de clasificación (1 y 2) */
-.promiedos-table .zona-clasificacion { background: rgba(197, 160, 89, 0.15); /* Resalte dorado para clasificados */ }
+.promiedos-table .zona-clasificacion { background: rgba(197, 160, 89, 0.15); }
 .promiedos-table .zona-clasificacion:hover { background: rgba(197, 160, 89, 0.25); }
 
 /* 🔥 ESTILO ESPECIAL CHAMPIONS LEAGUE 🔥 */
@@ -235,6 +293,150 @@ a { color:white; text-decoration:none; }
   <a href="titulos.html" style="background:#ffd700; color:#000; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🏆 Salón de la Fama</a>
   <a href="sorteo.html" style="background:#ff0055; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:bold;">🎲 Sorteador</a>
 </div> 
+
+<section id="copa-internacional" class="seccion">
+  <h2 style="display:flex; justify-content:center; align-items:center; gap:12px; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; color: #d4af37; text-shadow: 0 0 15px rgba(212,175,55,0.5);">
+    🌎 Copa Internacional 2026
+  </h2>
+
+  <div class="panel panel-mundial">
+    <div class="promiedos-grid">
+      
+      <div class="mundial-box">
+        <div class="mundial-header">GRUPO A</div>
+        <div style="overflow-x: auto;">
+            <table class="mundial-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/mx.png" alt="México">México</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/de.png" alt="Alemania">Alemania</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/ma.png" alt="Marruecos">Marruecos</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/gb-sct.png" alt="Escocia">Escocia</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div class="mundial-box">
+        <div class="mundial-header">GRUPO B</div>
+        <div style="overflow-x: auto;">
+            <table class="mundial-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/us.png" alt="Estados Unidos">Estados Unidos</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/fr.png" alt="Francia">Francia</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/qa.png" alt="Catar">Catar</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/no.png" alt="Noruega">Noruega</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div class="mundial-box">
+        <div class="mundial-header">GRUPO C</div>
+        <div style="overflow-x: auto;">
+            <table class="mundial-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/es.png" alt="España">España</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/pt.png" alt="Portugal">Portugal</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/nl.png" alt="Países Bajos">Países Bajos</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/sa.png" alt="Arabia Saudita">Arabia Saudita</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div class="mundial-box">
+        <div class="mundial-header">GRUPO D</div>
+        <div style="overflow-x: auto;">
+            <table class="mundial-table">
+            <thead>
+                <tr><th>#</th><th>Equipos</th><th>PTS</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th></tr>
+            </thead>
+            <tbody>
+                <tr class="zona-clasificacion">
+                    <td>1</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/ar.png" alt="Argentina">Argentina</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr class="zona-clasificacion">
+                    <td>2</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/gb-eng.png" alt="Inglaterra">Inglaterra</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/hr.png" alt="Croacia">Croacia</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><div class="col-equipo"><img src="https://flagcdn.com/w40/gh.png" alt="Ghana">Ghana</div></td>
+                    <td class="col-pts">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <section id="liga" class="seccion">
   <h2 style="display:flex; justify-content:center; align-items:center; gap:12px; font-size: 32px;">
