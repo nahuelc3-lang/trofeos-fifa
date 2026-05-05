@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteo Copa Internacional 2026 | FC 26</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing:border-box; }
+body {
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background-image:url('fondo.png'); /* Usa el mismo fondo que tu web */
+    background-color: #000; /* Color de respaldo */
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:white;
+}
+
+h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; color: #d4af37; padding-top: 30px;}
+
+.container { max-width: 1400px; margin: auto; padding: 20px; }
+
+/* Estilos Mundial */
+.panel-mundial {
+    background: linear-gradient(135deg, #180914 0%, #3a1024 100%);
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.bombos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.bombo-box {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bombo-header {
+    background: #240a16;
+    padding: 10px;
+    text-align: center;
+    font-weight: 900;
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+}
+
+.bombo-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bombo-lista li {
+    padding: 8px 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+.bombo-lista li img { width: 24px; border-radius: 2px; }
+
+.btn-sortear {
+    display: block;
+    width: 300px;
+    margin: 30px auto;
+    background: linear-gradient(135deg, #d4af37 0%, #aa8422 100%);
+    color: #000;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 900;
+    font-size: 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transition: transform 0.2s;
+}
+.btn-sortear:hover { transform: scale(1.05); }
+
+/* Grid de Grupos */
+.grupos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.mundial-table { width: 100%; border-collapse: collapse; text-align: left; }
+.mundial-table th { background: #240a16; padding: 12px; color: #d4af37; text-align: center; border-bottom: 2px solid #d4af37; }
+.mundial-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: bold; }
+.mundial-table img { width: 24px; height: 16px; object-fit: cover; border-radius: 2px;}
+
+.volver { display: block; text-align: center; margin-bottom: 30px; color: #00e5ff; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="volver">⬅ Volver al Menú Principal</a>
+    <h1>🌎 Sorteo Copa Internacional 2026</h1>
+
+    <div class="panel-mundial">
+        <h3 style="text-align: center; color: #d4af37; margin-top:0;">Distribución de Bombos</h3>
+        <p style="text-align: center; font-size: 14px; opacity: 0.8;">Reglas: Max. 3 equipos UEFA por grupo. México (A), Canadá (B) y EE.UU (D) cabezas de serie fijos.</p>
+        
+        <div class="bombos-grid" id="contenedor-bombos">
+            <!-- Se llena con JS -->
+        </div>
+
+        <button class="btn-sortear" onclick="iniciarSorteo()">🎲 Iniciar Sorteo</button>
+    </div>
+
+    <div id="resultado-sorteo" class="panel-mundial" style="display: none;">
+        <h2 style="text-align: center; color: #d4af37;">🏆 Grupos Definidos</h2>
+        <div class="grupos-grid" id="contenedor-grupos">
+            <!-- Se llena con JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+// BASE DE DATOS DE EQUIPOS
+// uefa: true/false | id: codigo para bandera
+const pot1 = [
+    {name: "México", id:"mx", uefa:false}, {name: "Canadá", id:"ca", uefa:false}, 
+    {name: "Estados Unidos", id:"us", uefa:false}, {name: "España", id:"es", uefa:true},
+    {name: "Argentina", id:"ar", uefa:false}, {name: "Francia", id:"fr", uefa:true},
+    {name: "Inglaterra", id:"gb-eng", uefa:true}, {name: "Brasil", id:"br", uefa:false}
+];
+const pot2 = [
+    {name: "Portugal", id:"pt", uefa:true}, {name: "Países Bajos", id:"nl", uefa:true},
+    {name: "Alemania", id:"de", uefa:true}, {name: "Croacia", id:"hr", uefa:true},
+    {name: "Marruecos", id:"ma", uefa:false}, {name: "Italia", id:"it", uefa:true},
+    {name: "Uruguay", id:"uy", uefa:false}, {name: "Dinamarca", id:"dk", uefa:true}
+];
+const pot3 = [
+    {name: "Turquía", id:"tr", uefa:true}, {name: "Ucrania", id:"ua", uefa:true},
+    {name: "Noruega", id:"no", uefa:true}, {name: "Polonia", id:"pl", uefa:true},
+    {name: "Gales", id:"gb-wls", uefa:true}, {name: "Escocia", id:"gb-sct", uefa:true},
+    {name: "Túnez", id:"tn", uefa:false}, {name: "Suecia", id:"se", uefa:true}
+];
+const pot4 = [
+    {name: "República Checa", id:"cz", uefa:true}, {name: "Rumanía", id:"ro", uefa:true},
+    {name: "Catar", id:"qa", uefa:false}, {name: "Irlanda", id:"ie", uefa:true},
+    {name: "Arabia Saudita", id:"sa", uefa:false}, {name: "Irl. del Norte", id:"gb-nir", uefa:true},
+    {name: "Ghana", id:"gh", uefa:false}, {name: "Finlandia", id:"fi", uefa:true}
+];
+
+function renderBombos() {
+    const bombos = [pot1, pot2, pot3, pot4];
+    const html = bombos.map((pot, i) => `
+        <div class="bombo-box">
+            <div class="bombo-header">BOMBO ${i+1}</div>
+            <ul class="bombo-lista">
+                ${pot.map(t => `<li><img src="https://flagcdn.com/w40/${t.id}.png">${t.name} ${t.uefa?'<span style="opacity:0.5; font-size:10px;">(UEFA)</span>':''}</li>`).join('')}
+            </ul>
+        </div>
+    `).join('');
+    document.getElementById("contenedor-bombos").innerHTML = html;
+}
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+function iniciarSorteo() {
+    let success = false;
+    let groups = [];
+    let attempts = 0;
+
+    // Algoritmo de backtracking simple (Bogo-Draw): Intenta sortear hasta que cumpla las reglas estrictas.
+    while (!success && attempts < 2000) {
+        attempts++;
+        groups = Array.from({length: 8}, () => ({teams: [], uefaCount: 0, nonUefaCount: 0}));
+        let valid = true;
+
+        // REGLAS FIJAS BOMBO 1
+        // Mexico (A=0), Canada (B=1), USA (D=3)
+        groups[0].teams.push(pot1[0]); groups[0].nonUefaCount++; // Mexico
+        groups[1].teams.push(pot1[1]); groups[1].nonUefaCount++; // Canada
+        groups[3].teams.push(pot1[2]); groups[3].nonUefaCount++; // USA
+        
+        let p1Rest = shuffle(pot1.slice(3));
+        let emptyP1Slots = shuffle([2, 4, 5, 6, 7]); // C, E, F, G, H
+        for(let i=0; i<p1Rest.length; i++) {
+            let t = p1Rest[i];
+            groups[emptyP1Slots[i]].teams.push(t);
+            if(t.uefa) groups[emptyP1Slots[i]].uefaCount++; else groups[emptyP1Slots[i]].nonUefaCount++;
+        }
+
+        // BOMBO 2, 3 y 4
+        let potsToDraw = [pot2, pot3, pot4];
+        for (let pIndex = 0; pIndex < potsToDraw.length; pIndex++) {
+            let currentPot = shuffle([...potsToDraw[pIndex]]);
+            
+            for (let t of currentPot) {
+                let availableGroups = [];
+                for (let i = 0; i < 8; i++) {
+                    // Solo intentar si el grupo tiene espacio para este bombo
+                    if (groups[i].teams.length === pIndex + 1) {
+                        // REGLAS CONFEDERACIONES: Max 3 UEFA, Max 2 Resto
+                        if (t.uefa && groups[i].uefaCount < 3) availableGroups.push(i);
+                        else if (!t.uefa && groups[i].nonUefaCount < 2) availableGroups.push(i);
+                    }
+                }
+
+                if (availableGroups.length === 0) { valid = false; break; } // Callejón sin salida
+                
+                let chosen = availableGroups[Math.floor(Math.random() * availableGroups.length)];
+                groups[chosen].teams.push(t);
+                if(t.uefa) groups[chosen].uefaCount++; else groups[chosen].nonUefaCount++;
+            }
+            if(!valid) break;
+        }
+
+        // Validar al final que todos tengan 4 y no haya desbordes
+        if (valid) {
+            let uefa3 = 0;
+            for(let g of groups) { if(g.uefaCount === 3) uefa3++; }
+            // Como son 21 uefas, exactamente 5 grupos deben tener 3 uefas.
+            if(uefa3 === 5) success = true; 
+        }
+    }
+
+    if(success) {
+        renderGrupos(groups);
+        document.getElementById('resultado-sorteo').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('resultado-sorteo').offsetTop, behavior: 'smooth' });
+    } else {
+        alert("El algoritmo no pudo encontrar una combinación en este intento. Haz clic de nuevo.");
+    }
+}
+
+function renderGrupos(groups) {
+    const letters = ['A','B','C','D','E','F','G','H'];
+    let html = '';
+    for(let i=0; i<8; i++) {
+        html += `
+        <div class="bombo-box">
+            <table class="mundial-table">
+                <thead><tr><th>GRUPO ${letters[i]}</th></tr></thead>
+                <tbody>
+                    ${groups[i].teams.map(t => `
+                        <tr><td><img src="https://flagcdn.com/w40/${t.id}.png">${t.name}</td></tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>`;
+    }
+    document.getElementById("contenedor-grupos").innerHTML = html;
+}
+
+renderBombos();
+</script>
+
+</body>
+</html>
