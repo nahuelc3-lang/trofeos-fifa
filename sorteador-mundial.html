@@ -12,128 +12,183 @@
 body {
     margin:0;
     font-family:'Montserrat',sans-serif;
-    background-image:url('fondo.png'); /* Usa el mismo fondo que tu web */
-    background-color: #000; /* Color de respaldo */
+    background-image:url('fondo.png'); /* Usa tu fondo */
+    background-color: #050505;
     background-size:cover;
     background-position:center;
     background-attachment:fixed;
     color:white;
 }
 
-h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; color: #d4af37; padding-top: 30px;}
+h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; color: #d4af37; padding-top: 20px;}
 
 .container { max-width: 1400px; margin: auto; padding: 20px; }
+.volver { display: block; text-align: center; margin-bottom: 20px; color: #00e5ff; text-decoration: none; font-weight: bold; }
 
-/* Estilos Mundial */
-.panel-mundial {
+/* PANEL SUPERIOR (EL ESCENARIO DEL SORTEO) */
+.escenario {
     background: linear-gradient(135deg, #180914 0%, #3a1024 100%);
     border: 2px solid #d4af37;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
-    padding: 30px;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
     border-radius: 20px;
-    margin-bottom: 40px;
-}
-
-.bombos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    padding: 30px;
     margin-bottom: 30px;
-}
-
-.bombo-box {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid #d4af37;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.bombo-header {
-    background: #240a16;
-    padding: 10px;
     text-align: center;
-    font-weight: 900;
-    color: #d4af37;
-    border-bottom: 1px solid #d4af37;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.bombo-lista {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.bombo-lista li {
-    padding: 8px 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+.reveal-area {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 14px;
+    justify-content: center;
+    gap: 40px;
+    min-height: 120px;
+    margin-bottom: 20px;
 }
-.bombo-lista li img { width: 24px; border-radius: 2px; }
 
-.btn-sortear {
-    display: block;
-    width: 300px;
-    margin: 30px auto;
+.team-reveal, .group-reveal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.team-reveal img { width: 80px; box-shadow: 0 0 15px rgba(0,0,0,0.8); border-radius: 4px; margin-bottom: 10px; }
+.team-reveal span { font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+
+.group-reveal span { font-size: 36px; font-weight: 900; color: #d4af37; text-shadow: 0 0 15px rgba(212,175,55,0.5); }
+
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+.btn-accion {
     background: linear-gradient(135deg, #d4af37 0%, #aa8422 100%);
     color: #000;
-    padding: 15px 20px;
+    padding: 15px 40px;
     border: none;
     border-radius: 10px;
     font-weight: 900;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     text-transform: uppercase;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
     transition: transform 0.2s;
+    width: 300px;
 }
-.btn-sortear:hover { transform: scale(1.05); }
+.btn-accion:hover { transform: scale(1.05); }
 
-/* Grid de Grupos */
-.grupos-grid {
+/* DISEÑO DIVIDIDO: IZQUIERDA (BOMBOS) Y DERECHA (GRUPOS) */
+.layout-dividido {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* IZQUIERDA: BOMBOS */
+.panel-izquierdo {
+    flex: 1;
+    min-width: 250px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    border-radius: 15px;
+    padding: 15px;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.bombo-mini { margin-bottom: 20px; }
+.bombo-mini h4 { margin: 0 0 10px 0; color: #d4af37; text-align: center; border-bottom: 1px solid #d4af37; padding-bottom: 5px; }
+.lista-paises { list-style: none; padding: 0; margin: 0; }
+.lista-paises li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: opacity 0.3s; }
+.lista-paises li img { width: 18px; }
+.sorteado { opacity: 0.3; text-decoration: line-through; }
+
+/* DERECHA: GRUPOS */
+.panel-derecho {
+    flex: 3;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
 }
 
-.mundial-table { width: 100%; border-collapse: collapse; text-align: left; }
-.mundial-table th { background: #240a16; padding: 12px; color: #d4af37; text-align: center; border-bottom: 2px solid #d4af37; }
-.mundial-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: bold; }
-.mundial-table img { width: 24px; height: 16px; object-fit: cover; border-radius: 2px;}
+.grupo-box {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.grupo-header {
+    background: #240a16;
+    padding: 10px;
+    text-align: center;
+    font-weight: 900;
+    color: #fff;
+    border-bottom: 2px solid #d4af37;
+}
+.grupo-tabla { width: 100%; border-collapse: collapse; }
+.grupo-tabla td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 14px; min-height: 40px; }
+.grupo-tabla img { width: 20px; border-radius: 2px; }
 
-.volver { display: block; text-align: center; margin-bottom: 30px; color: #00e5ff; text-decoration: none; font-weight: bold; }
+/* Responsive */
+@media (max-width: 900px) {
+    .layout-dividido { flex-direction: column; }
+    .panel-izquierdo { max-height: 300px; }
+    .reveal-area { flex-direction: column; gap: 15px; text-align: center; }
+}
 </style>
 </head>
 <body>
 
 <div class="container">
     <a href="index.html" class="volver">⬅ Volver al Menú Principal</a>
-    <h1>🌎 Sorteo Copa Internacional 2026</h1>
+    <h1>🌎 Sorteo Oficial</h1>
 
-    <div class="panel-mundial">
-        <h3 style="text-align: center; color: #d4af37; margin-top:0;">Distribución de Bombos</h3>
-        <p style="text-align: center; font-size: 14px; opacity: 0.8;">Reglas: Max. 3 equipos UEFA por grupo. México (A), Canadá (B) y EE.UU (D) cabezas de serie fijos.</p>
-        
-        <div class="bombos-grid" id="contenedor-bombos">
-            <!-- Se llena con JS -->
+    <!-- ESCENARIO SUPERIOR -->
+    <div class="escenario" id="escenario">
+        <!-- Pantalla inicial -->
+        <div id="pantalla-inicio">
+            <p style="opacity: 0.8; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6;">
+                El sistema aplicará automáticamente las reglas de la FIFA: máximo 3 europeos por grupo y restricciones geográficas. México, Canadá y EE.UU. son cabezas de serie fijos.
+            </p>
+            <button class="btn-accion" onclick="comenzarEvento()">COMENZAR SORTEO</button>
         </div>
 
-        <button class="btn-sortear" onclick="iniciarSorteo()">🎲 Iniciar Sorteo</button>
+        <!-- Pantalla de revelación (Oculta al inicio) -->
+        <div id="pantalla-sorteo" style="display: none; width: 100%;">
+            <div class="reveal-area">
+                <div class="team-reveal" id="team-reveal" style="display:none;">
+                    <img id="reveal-flag" src="">
+                    <span id="reveal-name">País</span>
+                </div>
+                <div class="group-reveal" id="group-reveal" style="display:none;">
+                    <span style="font-size: 20px; color: white; font-weight: normal; letter-spacing: 0;">va al</span>
+                    <span id="reveal-group">GRUPO X</span>
+                </div>
+            </div>
+            <button class="btn-accion" id="btn-paso" onclick="avanzarPaso()">Sacar Bolilla</button>
+        </div>
     </div>
 
-    <div id="resultado-sorteo" class="panel-mundial" style="display: none;">
-        <h2 style="text-align: center; color: #d4af37;">🏆 Grupos Definidos</h2>
-        <div class="grupos-grid" id="contenedor-grupos">
+    <!-- PANELES DE ABAJO (IZQUIERDA BOMBOS, DERECHA GRUPOS) -->
+    <div class="layout-dividido" id="layout-abajo" style="display: none;">
+        
+        <div class="panel-izquierdo" id="contenedor-bombos">
             <!-- Se llena con JS -->
         </div>
+
+        <div class="panel-derecho" id="contenedor-grupos">
+            <!-- Se llena con JS -->
+        </div>
+
     </div>
 </div>
 
 <script>
 // BASE DE DATOS DE EQUIPOS
-// uefa: true/false | id: codigo para bandera
 const pot1 = [
     {name: "México", id:"mx", uefa:false}, {name: "Canadá", id:"ca", uefa:false}, 
     {name: "Estados Unidos", id:"us", uefa:false}, {name: "España", id:"es", uefa:true},
@@ -159,39 +214,59 @@ const pot4 = [
     {name: "Ghana", id:"gh", uefa:false}, {name: "Finlandia", id:"fi", uefa:true}
 ];
 
-function renderBombos() {
+// VARIABLES DE ESTADO
+let secuenciaSorteo = [];
+let pasoActual = 0;
+let estadoFase = 'ESPERANDO'; // ESPERANDO, EQUIPO_REVELADO, GRUPO_REVELADO
+
+// INICIALIZAR VISTAS
+function renderVistasIniciales() {
     const bombos = [pot1, pot2, pot3, pot4];
-    const html = bombos.map((pot, i) => `
-        <div class="bombo-box">
-            <div class="bombo-header">BOMBO ${i+1}</div>
-            <ul class="bombo-lista">
-                ${pot.map(t => `<li><img src="https://flagcdn.com/w40/${t.id}.png">${t.name} ${t.uefa?'<span style="opacity:0.5; font-size:10px;">(UEFA)</span>':''}</li>`).join('')}
-            </ul>
-        </div>
-    `).join('');
-    document.getElementById("contenedor-bombos").innerHTML = html;
+    let htmlBombos = '';
+    bombos.forEach((pot, i) => {
+        htmlBombos += `<div class="bombo-mini"><h4>BOMBO ${i+1}</h4><ul class="lista-paises" id="lista-bombo-${i}">`;
+        pot.forEach(t => {
+            // El ID nos servirá para tacharlo después
+            let safeId = t.name.replace(/\s+/g, '-');
+            htmlBombos += `<li id="pais-${safeId}"><img src="https://flagcdn.com/w40/${t.id}.png">${t.name}</li>`;
+        });
+        htmlBombos += `</ul></div>`;
+    });
+    document.getElementById("contenedor-bombos").innerHTML = htmlBombos;
+
+    const letras = ['A','B','C','D','E','F','G','H'];
+    let htmlGrupos = '';
+    for(let i=0; i<8; i++) {
+        htmlGrupos += `
+        <div class="grupo-box">
+            <div class="grupo-header">GRUPO ${letras[i]}</div>
+            <table class="grupo-tabla" id="tabla-grupo-${i}">
+                <!-- Filas vacías iniciales para mantener el tamaño -->
+                <tr><td style="opacity:0.2;">1. ---</td></tr>
+                <tr><td style="opacity:0.2;">2. ---</td></tr>
+                <tr><td style="opacity:0.2;">3. ---</td></tr>
+                <tr><td style="opacity:0.2;">4. ---</td></tr>
+            </table>
+        </div>`;
+    }
+    document.getElementById("contenedor-grupos").innerHTML = htmlGrupos;
 }
 
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
+// LÓGICA MATEMÁTICA: PRECALCULAR EL SORTEO VÁLIDO
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
-function iniciarSorteo() {
+function generarSorteoValido() {
     let success = false;
     let groups = [];
-    let attempts = 0;
-
-    // Algoritmo de backtracking simple (Bogo-Draw): Intenta sortear hasta que cumpla las reglas estrictas.
-    while (!success && attempts < 2000) {
-        attempts++;
+    
+    while (!success) {
         groups = Array.from({length: 8}, () => ({teams: [], uefaCount: 0, nonUefaCount: 0}));
         let valid = true;
 
-        // REGLAS FIJAS BOMBO 1
-        // Mexico (A=0), Canada (B=1), USA (D=3)
-        groups[0].teams.push(pot1[0]); groups[0].nonUefaCount++; // Mexico
-        groups[1].teams.push(pot1[1]); groups[1].nonUefaCount++; // Canada
-        groups[3].teams.push(pot1[2]); groups[3].nonUefaCount++; // USA
+        // Fijos
+        groups[0].teams.push(pot1[0]); groups[0].nonUefaCount++; // Mexico -> A
+        groups[1].teams.push(pot1[1]); groups[1].nonUefaCount++; // Canada -> B
+        groups[3].teams.push(pot1[2]); groups[3].nonUefaCount++; // USA -> D
         
         let p1Rest = shuffle(pot1.slice(3));
         let emptyP1Slots = shuffle([2, 4, 5, 6, 7]); // C, E, F, G, H
@@ -201,24 +276,18 @@ function iniciarSorteo() {
             if(t.uefa) groups[emptyP1Slots[i]].uefaCount++; else groups[emptyP1Slots[i]].nonUefaCount++;
         }
 
-        // BOMBO 2, 3 y 4
         let potsToDraw = [pot2, pot3, pot4];
         for (let pIndex = 0; pIndex < potsToDraw.length; pIndex++) {
             let currentPot = shuffle([...potsToDraw[pIndex]]);
-            
             for (let t of currentPot) {
                 let availableGroups = [];
                 for (let i = 0; i < 8; i++) {
-                    // Solo intentar si el grupo tiene espacio para este bombo
                     if (groups[i].teams.length === pIndex + 1) {
-                        // REGLAS CONFEDERACIONES: Max 3 UEFA, Max 2 Resto
                         if (t.uefa && groups[i].uefaCount < 3) availableGroups.push(i);
                         else if (!t.uefa && groups[i].nonUefaCount < 2) availableGroups.push(i);
                     }
                 }
-
-                if (availableGroups.length === 0) { valid = false; break; } // Callejón sin salida
-                
+                if (availableGroups.length === 0) { valid = false; break; } 
                 let chosen = availableGroups[Math.floor(Math.random() * availableGroups.length)];
                 groups[chosen].teams.push(t);
                 if(t.uefa) groups[chosen].uefaCount++; else groups[chosen].nonUefaCount++;
@@ -226,45 +295,108 @@ function iniciarSorteo() {
             if(!valid) break;
         }
 
-        // Validar al final que todos tengan 4 y no haya desbordes
         if (valid) {
             let uefa3 = 0;
             for(let g of groups) { if(g.uefaCount === 3) uefa3++; }
-            // Como son 21 uefas, exactamente 5 grupos deben tener 3 uefas.
             if(uefa3 === 5) success = true; 
         }
     }
+    return groups;
+}
 
-    if(success) {
-        renderGrupos(groups);
-        document.getElementById('resultado-sorteo').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('resultado-sorteo').offsetTop, behavior: 'smooth' });
-    } else {
-        alert("El algoritmo no pudo encontrar una combinación en este intento. Haz clic de nuevo.");
+// CREAR LA SECUENCIA DE REVELACIÓN (Orden de los bombos)
+function crearSecuencia(gruposValidos) {
+    let seq = [];
+    const todosLosBombos = [pot1, pot2, pot3, pot4];
+    
+    for(let p = 0; p < 4; p++) {
+        let bomboMezclado = shuffle([...todosLosBombos[p]]);
+        for(let team of bomboMezclado) {
+            // Buscamos a qué grupo fue asignado en el cálculo válido
+            let groupIndex = gruposValidos.findIndex(g => g.teams.some(t => t.name === team.name));
+            seq.push({ team: team, potIndex: p, groupIndex: groupIndex });
+        }
+    }
+    return seq;
+}
+
+// MÁQUINA DE ESTADOS VISUAL
+function comenzarEvento() {
+    let grupos = generarSorteoValido();
+    secuenciaSorteo = crearSecuencia(grupos);
+    
+    document.getElementById('pantalla-inicio').style.display = 'none';
+    document.getElementById('pantalla-sorteo').style.display = 'block';
+    document.getElementById('layout-abajo').style.display = 'flex';
+}
+
+function avanzarPaso() {
+    if (pasoActual >= secuenciaSorteo.length) return;
+
+    let pasoData = secuenciaSorteo[pasoActual];
+    let btn = document.getElementById('btn-paso');
+
+    if (estadoFase === 'ESPERANDO') {
+        // 1. Mostrar País
+        document.getElementById('team-reveal').style.display = 'flex';
+        document.getElementById('group-reveal').style.display = 'none';
+        document.getElementById('reveal-flag').src = `https://flagcdn.com/w80/${pasoData.team.id}.png`;
+        document.getElementById('reveal-name').innerText = pasoData.team.name;
+        
+        btn.innerText = 'Ver Grupo';
+        estadoFase = 'EQUIPO_REVELADO';
+
+    } else if (estadoFase === 'EQUIPO_REVELADO') {
+        // 2. Mostrar Grupo
+        document.getElementById('group-reveal').style.display = 'flex';
+        const letras = ['A','B','C','D','E','F','G','H'];
+        document.getElementById('reveal-group').innerText = `GRUPO ${letras[pasoData.groupIndex]}`;
+        
+        btn.innerText = 'Siguiente';
+        estadoFase = 'GRUPO_REVELADO';
+
+    } else if (estadoFase === 'GRUPO_REVELADO') {
+        // 3. Ubicar en la tabla de abajo, tachar de la izquierda y resetear
+        ubicarEquipoEnUI(pasoData);
+        pasoActual++;
+
+        document.getElementById('team-reveal').style.display = 'none';
+        document.getElementById('group-reveal').style.display = 'none';
+
+        if (pasoActual < secuenciaSorteo.length) {
+            btn.innerText = 'Sacar Bolilla';
+            estadoFase = 'ESPERANDO';
+        } else {
+            // FIN DEL SORTEO
+            document.getElementById('pantalla-sorteo').innerHTML = `
+                <h2 style="font-size: 40px; color:#d4af37; text-transform:uppercase; margin:0;">🏆 ¡Sorteo Finalizado! 🏆</h2>
+                <p>Todos los grupos han sido confirmados.</p>
+            `;
+        }
     }
 }
 
-function renderGrupos(groups) {
-    const letters = ['A','B','C','D','E','F','G','H'];
-    let html = '';
-    for(let i=0; i<8; i++) {
-        html += `
-        <div class="bombo-box">
-            <table class="mundial-table">
-                <thead><tr><th>GRUPO ${letters[i]}</th></tr></thead>
-                <tbody>
-                    ${groups[i].teams.map(t => `
-                        <tr><td><img src="https://flagcdn.com/w40/${t.id}.png">${t.name}</td></tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        </div>`;
+function ubicarEquipoEnUI(pasoData) {
+    // Tachar de la lista izquierda
+    let safeId = pasoData.team.name.replace(/\s+/g, '-');
+    let liElement = document.getElementById(`pais-${safeId}`);
+    if(liElement) liElement.classList.add('sorteado');
+
+    // Agregar a la tabla derecha
+    let tabla = document.getElementById(`tabla-grupo-${pasoData.groupIndex}`);
+    
+    // Si es el primer equipo, limpiamos las filas vacías predeterminadas
+    if(pasoData.potIndex === 0) {
+        tabla.innerHTML = ''; 
     }
-    document.getElementById("contenedor-grupos").innerHTML = html;
+
+    // Insertar el equipo
+    tabla.innerHTML += `<tr><td><img src="https://flagcdn.com/w40/${pasoData.team.id}.png"> ${pasoData.team.name}</td></tr>`;
 }
 
-renderBombos();
+// Iniciar cargando la interfaz estática
+renderVistasIniciales();
+
 </script>
-
 </body>
 </html>
