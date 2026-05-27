@@ -140,7 +140,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 .panel-derecho {
     flex: 3;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 15px;
 }
 
@@ -167,12 +167,16 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 /* Tag del jugador asignado */
 .player-tag {
     font-size: 11px;
-    padding: 3px 6px;
+    padding: 3px 8px;
     border-radius: 4px;
     color: white;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 900;
+    min-width: 75px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: background-color 0.4s, color 0.4s;
 }
 
 /* Responsive */
@@ -193,7 +197,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
         
         <div id="pantalla-inicio" style="width: 100%;">
             <p style="opacity: 0.8; margin: 0 auto 20px auto; max-width: 600px;">
-                Selecciona a los participantes (marcados por defecto). El sistema repartirá <b>exactamente la misma cantidad de equipos por bombo</b> para cada jugador.
+                Mantiene los <b>Grupos Reales</b> del Mundial. El sistema asignará equitativamente de forma aleatoria exactamente 3 equipos de cada bombo por mánager.
             </p>
             
             <div class="jugadores-setup">
@@ -245,20 +249,20 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 </div>
 
 <script>
-// MATRIZ ACTUALIZADA POR BOMBOS SEGÚN IMAGEN OFICIAL
+// MATRIZ DE GRUPOS REALES ACTUALIZADA CON SUS INTEGRANTES FIJOS
 const officialGroups = [
-    { id: 'A', teams: [ {name: 'México', flag: 'mx', bombo: 1}, {name: 'Croacia', flag: 'hr', bombo: 2}, {name: 'Noruega', flag: 'no', bombo: 3}, {name: 'Jordania', flag: 'jo', bombo: 4} ] },
-    { id: 'B', teams: [ {name: 'Canadá', flag: 'ca', bombo: 1}, {name: 'Marruecos', flag: 'ma', bombo: 2}, {name: 'Panamá', flag: 'pa', bombo: 3}, {name: 'Cabo Verde', flag: 'cv', bombo: 4} ] },
-    { id: 'C', teams: [ {name: 'Estados Unidos', flag: 'us', bombo: 1}, {name: 'Colombia', flag: 'co', bombo: 2}, {name: 'Egipto', flag: 'eg', bombo: 3}, {name: 'Ghana', flag: 'gh', bombo: 4} ] },
-    { id: 'D', teams: [ {name: 'España', flag: 'es', bombo: 1}, {name: 'Uruguay', flag: 'uy', bombo: 2}, {name: 'Argelia', flag: 'dz', bombo: 3}, {name: 'Curazao', flag: 'cw', bombo: 4} ] },
-    { id: 'E', teams: [ {name: 'Argentina', flag: 'ar', bombo: 1}, {name: 'Suiza', flag: 'ch', bombo: 2}, {name: 'Escocia', flag: 'gb-sct', bombo: 3}, {name: 'Haití', flag: 'ht', bombo: 4} ] },
-    { id: 'F', teams: [ {name: 'Francia', flag: 'fr', bombo: 1}, {name: 'Japón', flag: 'jp', bombo: 2}, {name: 'Paraguay', flag: 'py', bombo: 3}, {name: 'Nueva Zelanda', flag: 'nz', bombo: 4} ] },
-    { id: 'G', teams: [ {name: 'Inglaterra', flag: 'gb-eng', bombo: 1}, {name: 'Senegal', flag: 'sn', bombo: 2}, {name: 'Túnez', flag: 'tn', bombo: 3}, {name: 'Congo', flag: 'cd', bombo: 4} ] },
-    { id: 'H', teams: [ {name: 'Brasil', flag: 'br', bombo: 1}, {name: 'Irán', flag: 'ir', bombo: 2}, {name: 'Costa de Marfil', flag: 'ci', bombo: 3}, {name: 'Irak', flag: 'iq', bombo: 4} ] },
-    { id: 'I', teams: [ {name: 'Portugal', flag: 'pt', bombo: 1}, {name: 'Corea del Sur', flag: 'kr', bombo: 2}, {name: 'Uzbekistán', flag: 'uz', bombo: 3}, {name: 'Bosnia y Herzegovina', flag: 'ba', bombo: 4} ] },
-    { id: 'J', teams: [ {name: 'Países Bajos', flag: 'nl', bombo: 1}, {name: 'Ecuador', flag: 'ec', bombo: 2}, {name: 'Catar', flag: 'qa', bombo: 3}, {name: 'Suecia', flag: 'se', bombo: 4} ] },
-    { id: 'K', teams: [ {name: 'Bélgica', flag: 'be', bombo: 1}, {name: 'Austria', flag: 'at', bombo: 2}, {name: 'Arabia Saudita', flag: 'sa', bombo: 3}, {name: 'Turquía', flag: 'tr', bombo: 4} ] },
-    { id: 'L', teams: [ {name: 'Alemania', flag: 'de', bombo: 1}, {name: 'Australia', flag: 'au', bombo: 2}, {name: 'Sudáfrica', flag: 'za', bombo: 3}, {name: 'República Checa', flag: 'cz', bombo: 4} ] }
+    { id: 'A', teams: [ {name: 'México', flag: 'mx', bombo: 1}, {name: 'Corea del Sur', flag: 'kr', bombo: 2}, {name: 'Sudáfrica', flag: 'za', bombo: 3}, {name: 'República Checa', flag: 'cz', bombo: 4} ] },
+    { id: 'B', teams: [ {name: 'Canadá', flag: 'ca', bombo: 1}, {name: 'Suiza', flag: 'ch', bombo: 2}, {name: 'Catar', flag: 'qa', bombo: 3}, {name: 'Bosnia y Herzegovina', flag: 'ba', bombo: 4} ] },
+    { id: 'C', teams: [ {name: 'Brasil', flag: 'br', bombo: 1}, {name: 'Marruecos', flag: 'ma', bombo: 2}, {name: 'Escocia', flag: 'gb-sct', bombo: 3}, {name: 'Haití', flag: 'ht', bombo: 4} ] },
+    { id: 'D', teams: [ {name: 'Estados Unidos', flag: 'us', bombo: 1}, {name: 'Australia', flag: 'au', bombo: 2}, {name: 'Paraguay', flag: 'py', bombo: 3}, {name: 'Turquía', flag: 'tr', bombo: 4} ] },
+    { id: 'E', teams: [ {name: 'Alemania', flag: 'de', bombo: 1}, {name: 'Ecuador', flag: 'ec', bombo: 2}, {name: 'Costa de Marfil', flag: 'ci', bombo: 3}, {name: 'Curazao', flag: 'cw', bombo: 4} ] },
+    { id: 'F', teams: [ {name: 'Países Bajos', flag: 'nl', bombo: 1}, {name: 'Japón', flag: 'jp', bombo: 2}, {name: 'Túnez', flag: 'tn', bombo: 3}, {name: 'Suecia', flag: 'se', bombo: 4} ] },
+    { id: 'G', teams: [ {name: 'Bélgica', flag: 'be', bombo: 1}, {name: 'Irán', flag: 'ir', bombo: 2}, {name: 'Egipto', flag: 'eg', bombo: 3}, {name: 'Nueva Zelanda', flag: 'nz', bombo: 4} ] },
+    { id: 'H', teams: [ {name: 'España', flag: 'es', bombo: 1}, {name: 'Uruguay', flag: 'uy', bombo: 2}, {name: 'Arabia Saudita', flag: 'sa', bombo: 3}, {name: 'Cabo Verde', flag: 'cv', bombo: 4} ] },
+    { id: 'I', teams: [ {name: 'Francia', flag: 'fr', bombo: 1}, {name: 'Senegal', flag: 'sn', bombo: 2}, {name: 'Noruega', flag: 'no', bombo: 3}, {name: 'Irak', flag: 'iq', bombo: 4} ] },
+    { id: 'J', teams: [ {name: 'Argentina', flag: 'ar', bombo: 1}, {name: 'Austria', flag: 'at', bombo: 2}, {name: 'Argelia', flag: 'dz', bombo: 3}, {name: 'Jordania', flag: 'jo', bombo: 4} ] },
+    { id: 'K', teams: [ {name: 'Portugal', flag: 'pt', bombo: 1}, {name: 'Colombia', flag: 'co', bombo: 2}, {name: 'Uzbekistán', flag: 'uz', bombo: 3}, {name: 'RD del Congo', flag: 'cd', bombo: 4} ] },
+    { id: 'L', teams: [ {name: 'Inglaterra', flag: 'gb-eng', bombo: 1}, {name: 'Croacia', flag: 'hr', bombo: 2}, {name: 'Panamá', flag: 'pa', bombo: 3}, {name: 'Ghana', flag: 'gh', bombo: 4} ] }
 ];
 
 let jugadoresActivos = [];
@@ -269,14 +273,14 @@ let estadoFase = 'ESPERANDO';
 function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
 function renderEstructuraUI() {
+    // 1. Renderizar panel izquierdo por Bombos
     let htmlIzq = '';
-    // Mostramos los bombos del 1 al 4
     for (let b = 1; b <= 4; b++) { 
         htmlIzq += `<div class="bombo-mini"><h4>BOMBO ${b}</h4><ul class="lista-paises">`;
         officialGroups.forEach(g => {
             let team = g.teams.find(t => t.bombo === b);
             if(team) {
-                let safeId = team.name.replace(/[\s\.]+/g, '-');
+                let safeId = team.name.replace(/[\s\.\(\)]+/g, '-');
                 htmlIzq += `<li id="left-${safeId}"><img src="https://flagcdn.com/w40/${team.flag}.png">${team.name}</li>`;
             }
         });
@@ -284,80 +288,103 @@ function renderEstructuraUI() {
     }
     document.getElementById("contenedor-bombos").innerHTML = htmlIzq;
 
+    // 2. Renderizar panel derecho con los Grupos Reales vacíos esperándose rellenar
     let htmlDer = '';
     officialGroups.forEach(g => {
         htmlDer += `
         <div class="grupo-box">
             <div class="grupo-header">GRUPO ${g.id}</div>
-            <table class="grupo-tabla" id="table-group-${g.id}"></table>
+            <table class="grupo-tabla">
+                <tbody id="table-group-${g.id}">`;
+                
+        // Colocamos los equipos ordenados por su bombo (del 1 al 4) para un diseño limpio
+        let teamsOrdenados = [...g.teams].sort((a, b) => a.bombo - b.bombo);
+        teamsOrdenados.forEach(t => {
+            let safeId = t.name.replace(/[\s\.\(\)]+/g, '-');
+            htmlDer += `
+                <tr>
+                    <td>
+                        <div class="team-row">
+                            <div class="team-info">
+                                <img src="https://flagcdn.com/w40/${t.flag}.png"> 
+                                <span>${t.name}</span>
+                            </div>
+                            <div class="player-tag" id="tag-${safeId}" style="background-color: rgba(255,255,255,0.05); color: #666;">
+                                POR REVELAR
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
+        });
+        
+        htmlDer += `
+                </tbody>
+            </table>
         </div>`;
     });
     document.getElementById("contenedor-grupos").innerHTML = htmlDer;
 }
 
-// LOGICA CORREGIDA: Distribución PERFECTA por bombo para cada jugador
+// LOGICA BALANCIADA EXACTA: 3 Equipos por bombo sin repetir mánager en el mismo grupo
 function generarSecuenciaSorteo() {
     let preAsignaciones = [];
     let numPlayers = jugadoresActivos.length;
-
-    // Creamos un "pool" maestro de exactamente 12 lugares (para un bombo).
-    // Si son 4 jugadores, habrá exactamente 3 de cada uno (12/4 = 3).
-    let poolPorBombo = [];
-    let repeticiones = Math.ceil(12 / numPlayers);
-    for(let p of jugadoresActivos) {
-        for(let i=0; i<repeticiones; i++) {
-            poolPorBombo.push(p);
-        }
-    }
-    poolPorBombo = poolPorBombo.slice(0, 12); // Aseguramos que siempre sean 12
-
-    // Para evitar que un jugador caiga 2 veces en el mismo grupo si no es necesario
-    let groupPlayers = {};
-    officialGroups.forEach(g => groupPlayers[g.id] = []);
-
-    // El orden de los bombos (del 4 al 1)
-    let ordenBombos = [4, 3, 2, 1];
+    let ordenBombos = [4, 3, 2, 1]; // Sorteo del bombo 4 al bombo 1
     
+    let asignacionFinal = {};
+    officialGroups.forEach(g => { asignacionFinal[g.id] = {}; });
+    
+    // Si juegan exactamente 4 mánagers, usamos un cuadrado latino perfecto precargado
+    // Esto asegura matemáticamente 3 selecciones de cada bombo por cabeza sin fallas
+    if (numPlayers === 4) {
+        let baseMatrix = [
+            [0, 1, 2, 3], [1, 2, 3, 0], [2, 3, 0, 1], [3, 0, 1, 2],
+            [0, 2, 3, 1], [1, 3, 0, 2], [2, 0, 1, 3], [3, 1, 2, 0],
+            [0, 3, 1, 2], [1, 0, 2, 3], [2, 1, 3, 0], [3, 2, 0, 1]
+        ];
+        baseMatrix = shuffle(baseMatrix); // Aleatoriedad de distribución por grupos
+        let jugadoresMezclados = shuffle([...jugadoresActivos]); // Aleatoriedad de roles numéricos
+        
+        officialGroups.forEach((g, idx) => {
+            let fila = baseMatrix[idx];
+            // Índices de columnas mapeados a Bombos: col 0->B4, col 1->B3, col 2->B2, col 3->B1
+            asignacionFinal[g.id][4] = jugadoresMezclados[fila[0]];
+            asignacionFinal[g.id][3] = jugadoresMezclados[fila[1]];
+            asignacionFinal[g.id][2] = jugadoresMezclados[fila[2]];
+            asignacionFinal[g.id][1] = jugadoresMezclados[fila[3]];
+        });
+    } else {
+        // Fallback dinámico adaptativo equitativo en caso de cambiar a 2 o 3 mánagers activos
+        ordenBombos.forEach(bombo => {
+            let pool = [];
+            for (let i = 0; i < 12; i++) {
+                pool.push(jugadoresActivos[i % numPlayers]);
+            }
+            pool = shuffle(pool);
+            
+            officialGroups.forEach(g => {
+                let idx = pool.findIndex(p => !Object.values(asignacionFinal[g.id]).some(x => x.name === p.name));
+                if (idx === -1) idx = 0;
+                asignacionFinal[g.id][bombo] = pool.splice(idx, 1)[0];
+            });
+        });
+    }
+    
+    // Armamos la lista secuencial de salida oficial (bombo por bombo estricto)
     for (let bombo of ordenBombos) {
-        // Obtenemos los 12 equipos que corresponden a ESTE bombo
-        let teamsDeEsteBombo = [];
+        let listaEquiposBombo = [];
         officialGroups.forEach(g => {
             let team = g.teams.find(t => t.bombo === bombo);
-            if(team) {
-                teamsDeEsteBombo.push({ group: g.id, team: team });
-            }
+            listaEquiposBombo.push({
+                group: g.id,
+                team: team,
+                player: asignacionFinal[g.id][bombo]
+            });
         });
-
-        // Mezclamos los equipos para que salgan al azar durante el sorteo del bombo
-        teamsDeEsteBombo = shuffle(teamsDeEsteBombo);
-
-        // Mezclamos a los jugadores
-        let pool = shuffle([...poolPorBombo]); 
-        
-        // Asignamos jugador por jugador a los equipos del bombo
-        for (let item of teamsDeEsteBombo) {
-            
-            // Ordenamos a los jugadores que quedan en la bolsa:
-            // Priorizamos a los que MENOS veces hayan salido en el mismo GRUPO.
-            // (Así mantenemos los grupos parejos)
-            pool.sort((a, b) => {
-                let countA = groupPlayers[item.group].filter(p => p.name === a.name).length;
-                let countB = groupPlayers[item.group].filter(p => p.name === b.name).length;
-                return countA - countB;
-            });
-
-            // Sacamos al jugador más apto de la bolsa
-            let elegido = pool.shift(); 
-            groupPlayers[item.group].push(elegido);
-
-            preAsignaciones.push({
-                group: item.group,
-                team: item.team,
-                player: elegido
-            });
-        }
+        // Mezclamos el orden en el que saldrán las 12 balotas de este bombo en pantalla
+        preAsignaciones.push(...shuffle(listaEquiposBombo));
     }
-
+    
     return preAsignaciones;
 }
 
@@ -371,7 +398,7 @@ function comenzarEvento() {
     });
 
     if(jugadoresActivos.length < 2) {
-        alert("¡Debes marcar al menos 2 jugadores para el sorteo!");
+        alert("¡Debes marcar al menos 2 mánagers para el sorteo!");
         return;
     }
 
@@ -422,7 +449,7 @@ function avanzarPaso() {
         } else {
             document.getElementById('pantalla-sorteo').innerHTML = `
                 <h2 style="font-size: 40px; color:#d4af37; text-transform:uppercase; margin:0;">🏆 ¡Equipos Asignados! 🏆</h2>
-                <p>La distribución ha concluido exitosamente.</p>
+                <p>La distribución ha concluido exitosamente respetando los grupos.</p>
             `;
         }
     }
@@ -430,25 +457,18 @@ function avanzarPaso() {
 
 function ubicarEnTablas(data) {
     let safeId = data.team.name.replace(/[\s\.]+/g, '-');
+    
+    // Tachamos del panel izquierdo (bombos)
     let liElement = document.getElementById(`left-${safeId}`);
     if(liElement) liElement.classList.add('sorteado');
 
-    let tabla = document.getElementById(`table-group-${data.group}`);
-    tabla.innerHTML += `
-        <tr>
-            <td>
-                <div class="team-row">
-                    <div class="team-info">
-                        <img src="https://flagcdn.com/w40/${data.team.flag}.png"> 
-                        <span>${data.team.name}</span>
-                    </div>
-                    <div class="player-tag" style="background-color: ${data.player.color};">
-                        ${data.player.name}
-                    </div>
-                </div>
-            </td>
-        </tr>
-    `;
+    // Iluminamos el mánager en su grupo oficial correspondiente de la derecha
+    let tagElement = document.getElementById(`tag-${safeId}`);
+    if(tagElement) {
+        tagElement.innerText = data.player.name;
+        tagElement.style.backgroundColor = data.player.color;
+        tagElement.style.color = "#000";
+    }
 }
 </script>
 </body>
