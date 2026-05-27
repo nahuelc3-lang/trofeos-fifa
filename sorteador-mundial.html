@@ -132,4 +132,293 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 .bombo-mini { margin-bottom: 20px; }
 .bombo-mini h4 { margin: 0 0 10px 0; color: #d4af37; text-align: center; border-bottom: 1px solid #d4af37; padding-bottom: 5px; }
 .lista-paises { list-style: none; padding: 0; margin: 0; }
-.lista-paises li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5
+.lista-paises li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: opacity 0.3s; }
+.lista-paises li img { width: 18px; }
+.sorteado { opacity: 0.2; text-decoration: line-through; filter: grayscale(100%); }
+
+/* DERECHA: GRUPOS ASIGNADOS */
+.panel-derecho {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.grupo-box {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #d4af37;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.grupo-header {
+    background: #240a16;
+    padding: 10px;
+    text-align: center;
+    font-weight: 900;
+    color: #fff;
+    border-bottom: 2px solid #d4af37;
+}
+.grupo-tabla { width: 100%; border-collapse: collapse; }
+.grupo-tabla td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: bold; font-size: 14px; min-height: 40px; }
+.team-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.team-row .team-info { display: flex; align-items: center; gap: 8px; }
+.team-row img { width: 20px; border-radius: 2px; }
+
+/* Tag del jugador asignado */
+.player-tag {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 900;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .layout-dividido { flex-direction: column; }
+    .panel-izquierdo { max-height: 300px; }
+    .reveal-area { flex-direction: column; gap: 15px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="volver">⬅ Volver al Menú Principal</a>
+    <h1>🌎 The World's Game 2026</h1>
+
+    <div class="escenario" id="escenario">
+        
+        <div id="pantalla-inicio" style="width: 100%;">
+            <p style="opacity: 0.8; margin: 0 auto 20px auto; max-width: 600px;">
+                Selecciona a los participantes (marcados por defecto). El sistema repartirá equitativamente las selecciones para asegurar un grupo parejo.
+            </p>
+            
+            <div class="jugadores-setup">
+                <label class="jugador-row">
+                    <input type="checkbox" class="j-check" value="Joaquín" data-color="#e63946" checked>
+                    <div class="color-box" style="background: #e63946;"></div>
+                    <span>Joaquín</span>
+                </label>
+                <label class="jugador-row">
+                    <input type="checkbox" class="j-check" value="Mateo" data-color="#4cc9f0" checked>
+                    <div class="color-box" style="background: #4cc9f0;"></div>
+                    <span>Mateo</span>
+                </label>
+                <label class="jugador-row">
+                    <input type="checkbox" class="j-check" value="Nahuel" data-color="#f77f00" checked>
+                    <div class="color-box" style="background: #f77f00;"></div>
+                    <span>Nahuel</span>
+                </label>
+                <label class="jugador-row">
+                    <input type="checkbox" class="j-check" value="Nico" data-color="#06d6a0" checked>
+                    <div class="color-box" style="background: #06d6a0;"></div>
+                    <span>Nico</span>
+                </label>
+            </div>
+
+            <button class="btn-accion" onclick="comenzarEvento()">Iniciar Sorteo</button>
+        </div>
+
+        <div id="pantalla-sorteo" style="display: none; width: 100%;">
+            <div class="reveal-area">
+                <div class="team-reveal" id="team-reveal" style="display:none;">
+                    <img id="reveal-flag" src="">
+                    <span id="reveal-name">País</span>
+                    <div class="grupo-info" id="reveal-grupo-info">GRUPO X</div>
+                </div>
+                <div class="player-reveal" id="player-reveal" style="display:none;">
+                    <span style="font-size: 16px; font-weight: normal; margin-bottom: 5px; color: #aaa;">Mánager Asignado:</span>
+                    <span id="reveal-player">Jugador</span>
+                </div>
+            </div>
+            <button class="btn-accion" id="btn-paso" onclick="avanzarPaso()">Sacar Selección</button>
+        </div>
+    </div>
+
+    <div class="layout-dividido" id="layout-abajo" style="display: none;">
+        <div class="panel-izquierdo" id="contenedor-bombos"></div>
+        <div class="panel-derecho" id="contenedor-grupos"></div>
+    </div>
+</div>
+
+<script>
+// LOS 12 GRUPOS OFICIALES DE THE WORLD'S GAME 2026 (EA FC)
+const officialGroups = [
+    { id: 'A', teams: [ {name: 'México', flag: 'mx'}, {name: 'Corea del Sur', flag: 'kr'}, {name: 'Sudáfrica', flag: 'za'}, {name: 'República Checa', flag: 'cz'} ] },
+    { id: 'B', teams: [ {name: 'Canadá', flag: 'ca'}, {name: 'Suiza', flag: 'ch'}, {name: 'Qatar', flag: 'qa'}, {name: 'Bosnia y Herzegovina', flag: 'ba'} ] },
+    { id: 'C', teams: [ {name: 'Brasil', flag: 'br'}, {name: 'Marruecos', flag: 'ma'}, {name: 'Escocia', flag: 'gb-sct'}, {name: 'Haití', flag: 'ht'} ] },
+    { id: 'D', teams: [ {name: 'Estados Unidos', flag: 'us'}, {name: 'Australia', flag: 'au'}, {name: 'Paraguay', flag: 'py'}, {name: 'Turquía', flag: 'tr'} ] },
+    { id: 'E', teams: [ {name: 'Alemania', flag: 'de'}, {name: 'Ecuador', flag: 'ec'}, {name: 'Costa de Marfil', flag: 'ci'}, {name: 'Curazao', flag: 'cw'} ] },
+    { id: 'F', teams: [ {name: 'Países Bajos', flag: 'nl'}, {name: 'Japón', flag: 'jp'}, {name: 'Suecia', flag: 'se'}, {name: 'Túnez', flag: 'tn'} ] },
+    { id: 'G', teams: [ {name: 'Bélgica', flag: 'be'}, {name: 'Irán', flag: 'ir'}, {name: 'Egipto', flag: 'eg'}, {name: 'Nueva Zelanda', flag: 'nz'} ] },
+    { id: 'H', teams: [ {name: 'España', flag: 'es'}, {name: 'Uruguay', flag: 'uy'}, {name: 'Arabia Saudita', flag: 'sa'}, {name: 'Cabo Verde', flag: 'cv'} ] },
+    { id: 'I', teams: [ {name: 'Francia', flag: 'fr'}, {name: 'Irak', flag: 'iq'}, {name: 'Noruega', flag: 'no'}, {name: 'Senegal', flag: 'sn'} ] },
+    { id: 'J', teams: [ {name: 'Argentina', flag: 'ar'}, {name: 'Argelia', flag: 'dz'}, {name: 'Austria', flag: 'at'}, {name: 'Jordania', flag: 'jo'} ] },
+    { id: 'K', teams: [ {name: 'Portugal', flag: 'pt'}, {name: 'Colombia', flag: 'co'}, {name: 'Uzbekistán', flag: 'uz'}, {name: 'Rep. Dem. Congo', flag: 'cd'} ] },
+    { id: 'L', teams: [ {name: 'Inglaterra', flag: 'gb-eng'}, {name: 'Croacia', flag: 'hr'}, {name: 'Ghana', flag: 'gh'}, {name: 'Panamá', flag: 'pa'} ] }
+];
+
+let jugadoresActivos = [];
+let secuenciaSorteo = []; 
+let pasoActual = 0;
+let estadoFase = 'ESPERANDO';
+
+function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+
+function renderEstructuraUI() {
+    let htmlIzq = '';
+    officialGroups.forEach(g => {
+        htmlIzq += `<div class="bombo-mini"><h4>GRUPO ${g.id}</h4><ul class="lista-paises">`;
+        g.teams.forEach(t => {
+            let safeId = t.name.replace(/\s+/g, '-');
+            htmlIzq += `<li id="left-${safeId}"><img src="https://flagcdn.com/w40/${t.flag}.png">${t.name}</li>`;
+        });
+        htmlIzq += `</ul></div>`;
+    });
+    document.getElementById("contenedor-bombos").innerHTML = htmlIzq;
+
+    let htmlDer = '';
+    officialGroups.forEach(g => {
+        htmlDer += `
+        <div class="grupo-box">
+            <div class="grupo-header">GRUPO ${g.id}</div>
+            <table class="grupo-tabla" id="table-group-${g.id}"></table>
+        </div>`;
+    });
+    document.getElementById("contenedor-grupos").innerHTML = htmlDer;
+}
+
+// LOGICA DE REPARTO CORREGIDA (Libre de congelamientos)
+function generarSecuenciaSorteo() {
+    let preAsignaciones = [];
+    let numPlayers = jugadoresActivos.length;
+
+    if (numPlayers === 4 || numPlayers === 2) {
+        // Para 2 o 4 jugadores, se asegura matemáticamente que los grupos queden parejos (1 o 2 por grupo).
+        officialGroups.forEach(grupo => {
+            let poolGrupo = [];
+            if (numPlayers === 4) poolGrupo = shuffle([...jugadoresActivos]);
+            if (numPlayers === 2) poolGrupo = shuffle([jugadoresActivos[0], jugadoresActivos[0], jugadoresActivos[1], jugadoresActivos[1]]);
+            
+            grupo.teams.forEach((team, index) => {
+                preAsignaciones.push({ group: grupo.id, team: team, player: poolGrupo[index] });
+            });
+        });
+    } else {
+        // Para otras cantidades (ej: 3 jugadores), reparte total equitativo y mezcla, 
+        // para asegurar que fluya sin bucles infinitos.
+        let poolGlobal = [];
+        let repeticiones = Math.floor(48 / numPlayers);
+        for(let p of jugadoresActivos) {
+            for(let i=0; i<repeticiones; i++) poolGlobal.push(p);
+        }
+        poolGlobal = shuffle(poolGlobal);
+        
+        let idx = 0;
+        officialGroups.forEach(grupo => {
+            grupo.teams.forEach(team => {
+                preAsignaciones.push({ group: grupo.id, team: team, player: poolGlobal[idx] });
+                idx++;
+            });
+        });
+    }
+
+    return shuffle(preAsignaciones);
+}
+
+function comenzarEvento() {
+    jugadoresActivos = [];
+    
+    // Captura a los jugadores que tengan el tilde marcado
+    document.querySelectorAll('.j-check').forEach(chk => {
+        if(chk.checked) {
+            jugadoresActivos.push({ name: chk.value, color: chk.getAttribute('data-color') });
+        }
+    });
+
+    if(jugadoresActivos.length < 2) {
+        alert("¡Debes marcar al menos 2 jugadores para el sorteo!");
+        return;
+    }
+
+    renderEstructuraUI();
+    secuenciaSorteo = generarSecuenciaSorteo();
+    
+    document.getElementById('pantalla-inicio').style.display = 'none';
+    document.getElementById('pantalla-sorteo').style.display = 'block';
+    document.getElementById('layout-abajo').style.display = 'flex';
+}
+
+function avanzarPaso() {
+    if (pasoActual >= secuenciaSorteo.length) return;
+    let dataActual = secuenciaSorteo[pasoActual];
+    let btn = document.getElementById('btn-paso');
+
+    if (estadoFase === 'ESPERANDO') {
+        document.getElementById('team-reveal').style.display = 'flex';
+        document.getElementById('player-reveal').style.display = 'none';
+        
+        document.getElementById('reveal-flag').src = `https://flagcdn.com/w80/${dataActual.team.flag}.png`;
+        document.getElementById('reveal-name').innerText = dataActual.team.name;
+        document.getElementById('reveal-grupo-info').innerText = `PERTENECE AL GRUPO ${dataActual.group}`;
+        
+        btn.innerText = '¿A quién le toca?';
+        estadoFase = 'EQUIPO_REVELADO';
+
+    } else if (estadoFase === 'EQUIPO_REVELADO') {
+        document.getElementById('player-reveal').style.display = 'flex';
+        
+        let pName = document.getElementById('reveal-player');
+        pName.innerText = dataActual.player.name;
+        pName.style.color = dataActual.player.color;
+        
+        btn.innerText = 'Siguiente Equipo';
+        estadoFase = 'JUGADOR_REVELADO';
+
+    } else if (estadoFase === 'JUGADOR_REVELADO') {
+        ubicarEnTablas(dataActual);
+        pasoActual++;
+
+        document.getElementById('team-reveal').style.display = 'none';
+        document.getElementById('player-reveal').style.display = 'none';
+
+        if (pasoActual < secuenciaSorteo.length) {
+            btn.innerText = 'Sacar Selección';
+            estadoFase = 'ESPERANDO';
+        } else {
+            document.getElementById('pantalla-sorteo').innerHTML = `
+                <h2 style="font-size: 40px; color:#d4af37; text-transform:uppercase; margin:0;">🏆 ¡Equipos Asignados! 🏆</h2>
+                <p>La distribución ha concluido exitosamente.</p>
+            `;
+        }
+    }
+}
+
+function ubicarEnTablas(data) {
+    let safeId = data.team.name.replace(/\s+/g, '-');
+    let liElement = document.getElementById(`left-${safeId}`);
+    if(liElement) liElement.classList.add('sorteado');
+
+    let tabla = document.getElementById(`table-group-${data.group}`);
+    tabla.innerHTML += `
+        <tr>
+            <td>
+                <div class="team-row">
+                    <div class="team-info">
+                        <img src="https://flagcdn.com/w40/${data.team.flag}.png"> 
+                        <span>${data.team.name}</span>
+                    </div>
+                    <div class="player-tag" style="background-color: ${data.player.color};">
+                        ${data.player.name}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `;
+}
+</script>
+</body>
+</html>
