@@ -41,7 +41,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
     align-items: center;
 }
 
-/* INPUTS JUGADORES (NUEVO ESTILO CON TILDE) */
+/* INPUTS JUGADORES */
 .jugadores-setup {
     display: flex;
     flex-direction: column;
@@ -117,7 +117,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
     align-items: flex-start;
 }
 
-/* IZQUIERDA: LISTA DE GRUPOS FIJOS */
+/* IZQUIERDA: LISTA DE BOMBOS */
 .panel-izquierdo {
     flex: 1;
     min-width: 250px;
@@ -193,7 +193,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
         
         <div id="pantalla-inicio" style="width: 100%;">
             <p style="opacity: 0.8; margin: 0 auto 20px auto; max-width: 600px;">
-                Selecciona a los participantes (marcados por defecto). El sistema repartirá equitativamente las selecciones para asegurar un grupo parejo.
+                Selecciona a los participantes (marcados por defecto). El sistema repartirá equitativamente las selecciones comenzando por el <b>Bombo 4</b> hasta llegar al <b>Bombo 1</b>.
             </p>
             
             <div class="jugadores-setup">
@@ -245,20 +245,21 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 </div>
 
 <script>
-// LOS 12 GRUPOS OFICIALES DE THE WORLD'S GAME 2026 ACTUALIZADOS
+// MATRIZ ACTUALIZADA POR BOMBOS SEGÚN IMAGEN OFICIAL
+// Se incluye propiedad 'bombo' a cada país para organizar el sorteo (orden 4, 3, 2, 1)
 const officialGroups = [
-    { id: 'A', teams: [ {name: 'México', flag: 'mx'}, {name: 'Sudáfrica', flag: 'za'}, {name: 'Corea del Sur', flag: 'kr'}, {name: 'República Checa', flag: 'cz'} ] },
-    { id: 'B', teams: [ {name: 'Canadá', flag: 'ca'}, {name: 'Bosnia y Herzegovina', flag: 'ba'}, {name: 'Catar', flag: 'qa'}, {name: 'Suiza', flag: 'ch'} ] },
-    { id: 'C', teams: [ {name: 'Brasil', flag: 'br'}, {name: 'Marruecos', flag: 'ma'}, {name: 'Haití', flag: 'ht'}, {name: 'Escocia', flag: 'gb-sct'} ] },
-    { id: 'D', teams: [ {name: 'Estados Unidos', flag: 'us'}, {name: 'Paraguay', flag: 'py'}, {name: 'Australia', flag: 'au'}, {name: 'Turquía', flag: 'tr'} ] },
-    { id: 'E', teams: [ {name: 'Alemania', flag: 'de'}, {name: 'Curazao', flag: 'cw'}, {name: 'Costa de Marfil', flag: 'ci'}, {name: 'Ecuador', flag: 'ec'} ] },
-    { id: 'F', teams: [ {name: 'Países Bajos', flag: 'nl'}, {name: 'Japón', flag: 'jp'}, {name: 'Suecia', flag: 'se'}, {name: 'Túnez', flag: 'tn'} ] },
-    { id: 'G', teams: [ {name: 'Bélgica', flag: 'be'}, {name: 'Egipto', flag: 'eg'}, {name: 'Irán', flag: 'ir'}, {name: 'Nueva Zelanda', flag: 'nz'} ] },
-    { id: 'H', teams: [ {name: 'España', flag: 'es'}, {name: 'Cabo Verde', flag: 'cv'}, {name: 'Arabia Saudita', flag: 'sa'}, {name: 'Uruguay', flag: 'uy'} ] },
-    { id: 'I', teams: [ {name: 'Francia', flag: 'fr'}, {name: 'Senegal', flag: 'sn'}, {name: 'Irak', flag: 'iq'}, {name: 'Noruega', flag: 'no'} ] },
-    { id: 'J', teams: [ {name: 'Argentina', flag: 'ar'}, {name: 'Argelia', flag: 'dz'}, {name: 'Austria', flag: 'at'}, {name: 'Jordania', flag: 'jo'} ] },
-    { id: 'K', teams: [ {name: 'Portugal', flag: 'pt'}, {name: 'RD del Congo', flag: 'cd'}, {name: 'Uzbekistán', flag: 'uz'}, {name: 'Colombia', flag: 'co'} ] },
-    { id: 'L', teams: [ {name: 'Inglaterra', flag: 'gb-eng'}, {name: 'Croacia', flag: 'hr'}, {name: 'Ghana', flag: 'gh'}, {name: 'Panamá', flag: 'pa'} ] }
+    { id: 'A', teams: [ {name: 'México', flag: 'mx', bombo: 1}, {name: 'Croacia', flag: 'hr', bombo: 2}, {name: 'Noruega', flag: 'no', bombo: 3}, {name: 'Jordania', flag: 'jo', bombo: 4} ] },
+    { id: 'B', teams: [ {name: 'Canadá', flag: 'ca', bombo: 1}, {name: 'Marruecos', flag: 'ma', bombo: 2}, {name: 'Panamá', flag: 'pa', bombo: 3}, {name: 'Cabo Verde', flag: 'cv', bombo: 4} ] },
+    { id: 'C', teams: [ {name: 'Estados Unidos', flag: 'us', bombo: 1}, {name: 'Colombia', flag: 'co', bombo: 2}, {name: 'Egipto', flag: 'eg', bombo: 3}, {name: 'Ghana', flag: 'gh', bombo: 4} ] },
+    { id: 'D', teams: [ {name: 'España', flag: 'es', bombo: 1}, {name: 'Uruguay', flag: 'uy', bombo: 2}, {name: 'Argelia', flag: 'dz', bombo: 3}, {name: 'Curazao', flag: 'cw', bombo: 4} ] },
+    { id: 'E', teams: [ {name: 'Argentina', flag: 'ar', bombo: 1}, {name: 'Suiza', flag: 'ch', bombo: 2}, {name: 'Escocia', flag: 'gb-sct', bombo: 3}, {name: 'Haití', flag: 'ht', bombo: 4} ] },
+    { id: 'F', teams: [ {name: 'Francia', flag: 'fr', bombo: 1}, {name: 'Japón', flag: 'jp', bombo: 2}, {name: 'Paraguay', flag: 'py', bombo: 3}, {name: 'Nueva Zelanda', flag: 'nz', bombo: 4} ] },
+    { id: 'G', teams: [ {name: 'Inglaterra', flag: 'gb-eng', bombo: 1}, {name: 'Senegal', flag: 'sn', bombo: 2}, {name: 'Túnez', flag: 'tn', bombo: 3}, {name: 'Congo', flag: 'cd', bombo: 4} ] },
+    { id: 'H', teams: [ {name: 'Brasil', flag: 'br', bombo: 1}, {name: 'Irán', flag: 'ir', bombo: 2}, {name: 'Costa de Marfil', flag: 'ci', bombo: 3}, {name: 'Irak', flag: 'iq', bombo: 4} ] },
+    { id: 'I', teams: [ {name: 'Portugal', flag: 'pt', bombo: 1}, {name: 'Corea del Sur', flag: 'kr', bombo: 2}, {name: 'Uzbekistán', flag: 'uz', bombo: 3}, {name: 'Bosnia y Herzegovina', flag: 'ba', bombo: 4} ] },
+    { id: 'J', teams: [ {name: 'Países Bajos', flag: 'nl', bombo: 1}, {name: 'Ecuador', flag: 'ec', bombo: 2}, {name: 'Catar', flag: 'qa', bombo: 3}, {name: 'Suecia', flag: 'se', bombo: 4} ] },
+    { id: 'K', teams: [ {name: 'Bélgica', flag: 'be', bombo: 1}, {name: 'Austria', flag: 'at', bombo: 2}, {name: 'Arabia Saudita', flag: 'sa', bombo: 3}, {name: 'Turquía', flag: 'tr', bombo: 4} ] },
+    { id: 'L', teams: [ {name: 'Alemania', flag: 'de', bombo: 1}, {name: 'Australia', flag: 'au', bombo: 2}, {name: 'Sudáfrica', flag: 'za', bombo: 3}, {name: 'República Checa', flag: 'cz', bombo: 4} ] }
 ];
 
 let jugadoresActivos = [];
@@ -270,14 +271,18 @@ function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
 function renderEstructuraUI() {
     let htmlIzq = '';
-    officialGroups.forEach(g => {
-        htmlIzq += `<div class="bombo-mini"><h4>GRUPO ${g.id}</h4><ul class="lista-paises">`;
-        g.teams.forEach(t => {
-            let safeId = t.name.replace(/\s+/g, '-');
-            htmlIzq += `<li id="left-${safeId}"><img src="https://flagcdn.com/w40/${t.flag}.png">${t.name}</li>`;
+    // Mostramos los bombos del 1 al 4 visualmente
+    for (let b = 1; b <= 4; b++) { 
+        htmlIzq += `<div class="bombo-mini"><h4>BOMBO ${b}</h4><ul class="lista-paises">`;
+        officialGroups.forEach(g => {
+            let team = g.teams.find(t => t.bombo === b);
+            if(team) {
+                let safeId = team.name.replace(/[\s\.]+/g, '-');
+                htmlIzq += `<li id="left-${safeId}"><img src="https://flagcdn.com/w40/${team.flag}.png">${team.name}</li>`;
+            }
         });
         htmlIzq += `</ul></div>`;
-    });
+    }
     document.getElementById("contenedor-bombos").innerHTML = htmlIzq;
 
     let htmlDer = '';
@@ -291,13 +296,13 @@ function renderEstructuraUI() {
     document.getElementById("contenedor-grupos").innerHTML = htmlDer;
 }
 
-// LOGICA DE REPARTO CORREGIDA (Libre de congelamientos)
+// LOGICA MODIFICADA PARA QUE EL SORTEO SEA 100% POR BOMBOS (4, 3, 2, 1)
 function generarSecuenciaSorteo() {
     let preAsignaciones = [];
     let numPlayers = jugadoresActivos.length;
 
+    // Reparto equitativo
     if (numPlayers === 4 || numPlayers === 2) {
-        // Para 2 o 4 jugadores, se asegura matemáticamente que los grupos queden parejos (1 o 2 por grupo).
         officialGroups.forEach(grupo => {
             let poolGrupo = [];
             if (numPlayers === 4) poolGrupo = shuffle([...jugadoresActivos]);
@@ -308,8 +313,6 @@ function generarSecuenciaSorteo() {
             });
         });
     } else {
-        // Para otras cantidades (ej: 3 jugadores), reparte total equitativo y mezcla, 
-        // para asegurar que fluya sin bucles infinitos.
         let poolGlobal = [];
         let repeticiones = Math.floor(48 / numPlayers);
         for(let p of jugadoresActivos) {
@@ -326,13 +329,19 @@ function generarSecuenciaSorteo() {
         });
     }
 
-    return shuffle(preAsignaciones);
+    // EXTRAER Y MEZCLAR POR BOMBOS INDEPENDIENTES
+    let bombo4 = shuffle(preAsignaciones.filter(a => a.team.bombo === 4));
+    let bombo3 = shuffle(preAsignaciones.filter(a => a.team.bombo === 3));
+    let bombo2 = shuffle(preAsignaciones.filter(a => a.team.bombo === 2));
+    let bombo1 = shuffle(preAsignaciones.filter(a => a.team.bombo === 1));
+
+    // Retorna la secuencia concatenada (Empieza en 4 y termina en 1)
+    return [...bombo4, ...bombo3, ...bombo2, ...bombo1];
 }
 
 function comenzarEvento() {
     jugadoresActivos = [];
     
-    // Captura a los jugadores que tengan el tilde marcado
     document.querySelectorAll('.j-check').forEach(chk => {
         if(chk.checked) {
             jugadoresActivos.push({ name: chk.value, color: chk.getAttribute('data-color') });
@@ -363,7 +372,8 @@ function avanzarPaso() {
         
         document.getElementById('reveal-flag').src = `https://flagcdn.com/w80/${dataActual.team.flag}.png`;
         document.getElementById('reveal-name').innerText = dataActual.team.name;
-        document.getElementById('reveal-grupo-info').innerText = `PERTENECE AL GRUPO ${dataActual.group}`;
+        // Ahora indica el Bombo también
+        document.getElementById('reveal-grupo-info').innerHTML = `BOMBO ${dataActual.team.bombo} &nbsp;|&nbsp; GRUPO ${dataActual.group}`;
         
         btn.innerText = '¿A quién le toca?';
         estadoFase = 'EQUIPO_REVELADO';
@@ -398,7 +408,7 @@ function avanzarPaso() {
 }
 
 function ubicarEnTablas(data) {
-    let safeId = data.team.name.replace(/\s+/g, '-');
+    let safeId = data.team.name.replace(/[\s\.]+/g, '-');
     let liElement = document.getElementById(`left-${safeId}`);
     if(liElement) liElement.classList.add('sorteado');
 
