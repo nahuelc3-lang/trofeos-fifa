@@ -193,7 +193,7 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
         
         <div id="pantalla-inicio" style="width: 100%;">
             <p style="opacity: 0.8; margin: 0 auto 20px auto; max-width: 600px;">
-                Selecciona a los participantes (marcados por defecto). El sistema repartirá equitativamente las selecciones comenzando por el <b>Bombo 4</b> hasta llegar al <b>Bombo 1</b>.
+                Selecciona a los participantes (marcados por defecto). El sistema repartirá <b>exactamente la misma cantidad de equipos por bombo</b> para cada jugador.
             </p>
             
             <div class="jugadores-setup">
@@ -246,7 +246,6 @@ h1 { text-align:center; font-size:36px; font-weight:900; letter-spacing:2px; col
 
 <script>
 // MATRIZ ACTUALIZADA POR BOMBOS SEGÚN IMAGEN OFICIAL
-// Se incluye propiedad 'bombo' a cada país para organizar el sorteo (orden 4, 3, 2, 1)
 const officialGroups = [
     { id: 'A', teams: [ {name: 'México', flag: 'mx', bombo: 1}, {name: 'Croacia', flag: 'hr', bombo: 2}, {name: 'Noruega', flag: 'no', bombo: 3}, {name: 'Jordania', flag: 'jo', bombo: 4} ] },
     { id: 'B', teams: [ {name: 'Canadá', flag: 'ca', bombo: 1}, {name: 'Marruecos', flag: 'ma', bombo: 2}, {name: 'Panamá', flag: 'pa', bombo: 3}, {name: 'Cabo Verde', flag: 'cv', bombo: 4} ] },
@@ -271,7 +270,7 @@ function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
 function renderEstructuraUI() {
     let htmlIzq = '';
-    // Mostramos los bombos del 1 al 4 visualmente
+    // Mostramos los bombos del 1 al 4
     for (let b = 1; b <= 4; b++) { 
         htmlIzq += `<div class="bombo-mini"><h4>BOMBO ${b}</h4><ul class="lista-paises">`;
         officialGroups.forEach(g => {
@@ -296,47 +295,70 @@ function renderEstructuraUI() {
     document.getElementById("contenedor-grupos").innerHTML = htmlDer;
 }
 
-// LOGICA MODIFICADA PARA QUE EL SORTEO SEA 100% POR BOMBOS (4, 3, 2, 1)
+// LOGICA CORREGIDA: Distribución PERFECTA por bombo para cada jugador
 function generarSecuenciaSorteo() {
     let preAsignaciones = [];
     let numPlayers = jugadoresActivos.length;
 
-    // Reparto equitativo
-    if (numPlayers === 4 || numPlayers === 2) {
-        officialGroups.forEach(grupo => {
-            let poolGrupo = [];
-            if (numPlayers === 4) poolGrupo = shuffle([...jugadoresActivos]);
-            if (numPlayers === 2) poolGrupo = shuffle([jugadoresActivos[0], jugadoresActivos[0], jugadoresActivos[1], jugadoresActivos[1]]);
-            
-            grupo.teams.forEach((team, index) => {
-                preAsignaciones.push({ group: grupo.id, team: team, player: poolGrupo[index] });
-            });
-        });
-    } else {
-        let poolGlobal = [];
-        let repeticiones = Math.floor(48 / numPlayers);
-        for(let p of jugadoresActivos) {
-            for(let i=0; i<repeticiones; i++) poolGlobal.push(p);
+    // Creamos un "pool" maestro de exactamente 12 lugares (para un bombo).
+    // Si son 4 jugadores, habrá exactamente 3 de cada uno (12/4 = 3).
+    let poolPorBombo = [];
+    let repeticiones = Math.ceil(12 / numPlayers);
+    for(let p of jugadoresActivos) {
+        for(let i=0; i<repeticiones; i++) {
+            poolPorBombo.push(p);
         }
-        poolGlobal = shuffle(poolGlobal);
-        
-        let idx = 0;
-        officialGroups.forEach(grupo => {
-            grupo.teams.forEach(team => {
-                preAsignaciones.push({ group: grupo.id, team: team, player: poolGlobal[idx] });
-                idx++;
-            });
+    }
+    poolPorBombo = poolPorBombo.slice(0, 12); // Aseguramos que siempre sean 12
+
+    // Para evitar que un jugador caiga 2 veces en el mismo grupo si no es necesario
+    let groupPlayers = {};
+    officialGroups.forEach(g => groupPlayers[g.id] = []);
+
+    // El orden de los bombos (del 4 al 1)
+    let ordenBombos = [4, 3, 2, 1];
+    
+    for (let bombo of ordenBombos) {
+        // Obtenemos los 12 equipos que corresponden a ESTE bombo
+        let teamsDeEsteBombo = [];
+        officialGroups.forEach(g => {
+            let team = g.teams.find(t => t.bombo === bombo);
+            if(team) {
+                teamsDeEsteBombo.push({ group: g.id, team: team });
+            }
         });
+
+        // Mezclamos los equipos para que salgan al azar durante el sorteo del bombo
+        teamsDeEsteBombo = shuffle(teamsDeEsteBombo);
+
+        // Mezclamos a los jugadores
+        let pool = shuffle([...poolPorBombo]); 
+        
+        // Asignamos jugador por jugador a los equipos del bombo
+        for (let item of teamsDeEsteBombo) {
+            
+            // Ordenamos a los jugadores que quedan en la bolsa:
+            // Priorizamos a los que MENOS veces hayan salido en el mismo GRUPO.
+            // (Así mantenemos los grupos parejos)
+            pool.sort((a, b) => {
+                let countA = groupPlayers[item.group].filter(p => p.name === a.name).length;
+                let countB = groupPlayers[item.group].filter(p => p.name === b.name).length;
+                return countA - countB;
+            });
+
+            // Sacamos al jugador más apto de la bolsa
+            let elegido = pool.shift(); 
+            groupPlayers[item.group].push(elegido);
+
+            preAsignaciones.push({
+                group: item.group,
+                team: item.team,
+                player: elegido
+            });
+        }
     }
 
-    // EXTRAER Y MEZCLAR POR BOMBOS INDEPENDIENTES
-    let bombo4 = shuffle(preAsignaciones.filter(a => a.team.bombo === 4));
-    let bombo3 = shuffle(preAsignaciones.filter(a => a.team.bombo === 3));
-    let bombo2 = shuffle(preAsignaciones.filter(a => a.team.bombo === 2));
-    let bombo1 = shuffle(preAsignaciones.filter(a => a.team.bombo === 1));
-
-    // Retorna la secuencia concatenada (Empieza en 4 y termina en 1)
-    return [...bombo4, ...bombo3, ...bombo2, ...bombo1];
+    return preAsignaciones;
 }
 
 function comenzarEvento() {
@@ -372,7 +394,6 @@ function avanzarPaso() {
         
         document.getElementById('reveal-flag').src = `https://flagcdn.com/w80/${dataActual.team.flag}.png`;
         document.getElementById('reveal-name').innerText = dataActual.team.name;
-        // Ahora indica el Bombo también
         document.getElementById('reveal-grupo-info').innerHTML = `BOMBO ${dataActual.team.bombo} &nbsp;|&nbsp; GRUPO ${dataActual.group}`;
         
         btn.innerText = '¿A quién le toca?';
