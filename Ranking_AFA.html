@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Ranking AFA</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,27 +46,25 @@
             <th>Puntos</th>
         </tr>
     </thead>
-
     <tbody>
     </tbody>
 </table>
 
-
 <script>
-
 async function cargarCSV(archivo) {
-
     const respuesta = await fetch(archivo);
+    
+    // Verificamos que la respuesta de red sea correcta antes de procesar
+    if (!respuesta.ok) {
+        throw new Error(`No se pudo encontrar el archivo: ${respuesta.status}`);
+    }
+    
     const texto = await respuesta.text();
-
     const filas = texto.trim().split("\n");
-
     const cabecera = filas[0].split(",");
 
     return filas.slice(1).map(fila => {
-
         const valores = fila.split(",");
-
         let objeto = {};
 
         cabecera.forEach((columna, i) => {
@@ -75,56 +72,42 @@ async function cargarCSV(archivo) {
         });
 
         return objeto;
-
     });
 }
 
-
 async function cargarRanking(){
-
     try {
-
-        const ranking = await cargarCSV("ranking.csv");
-
+        // Apuntamos al nombre del archivo que armamos
+        const ranking = await cargarCSV("equipos.csv");
 
         ranking.sort((a,b)=> 
             Number(b.puntos) - Number(a.puntos)
         );
 
-
         const tabla = document.querySelector("#tablaRanking tbody");
 
-
         ranking.forEach((equipo,index)=>{
-
+            // Usamos equipo.Equipo con la E mayúscula como está en el CSV
             let fila = `
             <tr>
                 <td>${index+1}</td>
-                <td>${equipo.equipo}</td>
+                <td>${equipo.Equipo}</td>
                 <td>${equipo.puntos}</td>
             </tr>
             `;
 
             tabla.innerHTML += fila;
-
         });
 
-
     } catch(error){
-
         document.body.innerHTML += 
         "<h2>Error cargando archivos CSV</h2>" +
-        "<p>"+error+"</p>";
-
+        "<p>" + error.message + "</p>";
     }
-
 }
 
-
 cargarRanking();
-
 </script>
-
 
 </body>
 </html>
