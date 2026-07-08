@@ -54,12 +54,12 @@
 async function cargarCSV(archivo) {
     const respuesta = await fetch(archivo);
     
-    // Verificamos que la respuesta de red sea correcta antes de procesar
     if (!respuesta.ok) {
         throw new Error(`No se pudo encontrar el archivo: ${respuesta.status}`);
     }
     
     const texto = await respuesta.text();
+    // Limpiamos los saltos de línea para evitar problemas con archivos guardados en Windows
     const filas = texto.trim().split("\n");
     const cabecera = filas[0].split(",");
 
@@ -68,6 +68,7 @@ async function cargarCSV(archivo) {
         let objeto = {};
 
         cabecera.forEach((columna, i) => {
+            // El trim() acá es clave para limpiar espacios invisibles o retornos de carro
             objeto[columna.trim()] = valores[i]?.trim();
         });
 
@@ -77,22 +78,21 @@ async function cargarCSV(archivo) {
 
 async function cargarRanking(){
     try {
-        // Apuntamos al nombre del archivo que armamos
-        const ranking = await cargarCSV("equipos.csv");
+        // Apuntamos al archivo ranking.csv que subiste
+        const ranking = await cargarCSV("ranking.csv");
 
-        ranking.sort((a,b)=> 
-            Number(b.puntos) - Number(a.puntos)
-        );
+        // Ordenamos usando Puntos con "P" mayúscula, como está en tu CSV
+        ranking.sort((a, b) => Number(b.Puntos) - Number(a.Puntos));
 
         const tabla = document.querySelector("#tablaRanking tbody");
 
-        ranking.forEach((equipo,index)=>{
-            // Usamos equipo.Equipo con la E mayúscula como está en el CSV
+        ranking.forEach((equipo, index) => {
+            // Usamos equipo.Equipo y equipo.Puntos respetando las mayúsculas de la cabecera
             let fila = `
             <tr>
-                <td>${index+1}</td>
+                <td>${index + 1}</td>
                 <td>${equipo.Equipo}</td>
-                <td>${equipo.puntos}</td>
+                <td>${equipo.Puntos}</td>
             </tr>
             `;
 
