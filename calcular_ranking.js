@@ -17,7 +17,6 @@ async function leerCSV(archivo) {
     const respuesta = await fetch(archivo);
     if (!respuesta.ok) throw new Error(`No se pudo cargar ${archivo}`);
     
-    // Volvemos al estándar de la web (UTF-8) que es el que usan los CSV nuevos
     let texto = await respuesta.text();
     texto = texto.replace(/^\uFEFF/, ''); 
     
@@ -44,18 +43,17 @@ function normalizarNombre(nombre) {
     if (!nombre) return "";
     let limpio = nombre.trim().toLowerCase();
     
-    // MAPA DE ERRORES: Si el CSV se guardó mal y rompió las tildes, esto lo repara en el aire
     const mapaErrores = {
         'ã¡': 'a', 'ã©': 'e', 'ã­': 'i', 'ã³': 'o', 'ãº': 'u', 'ã±': 'n',
         'Ã¡': 'a', 'Ã©': 'e', 'Ã­': 'i', 'Ã³': 'o', 'Ãº': 'u', 'Ã±': 'n',
         '': ''
     };
     
-    for (let mal en mapaErrores) {
+    // ACÁ ESTABA EL ERROR: Cambié "en" por "in"
+    for (let mal in mapaErrores) {
         limpio = limpio.split(mal).join(mapaErrores[mal]);
     }
     
-    // Luego sacamos las tildes normales
     limpio = limpio.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
     return aliasEquipos[limpio] || limpio;
@@ -77,7 +75,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
     let diccionarioEquipos = {};
     let indiceTorneoObjetivo = torneosOrdenados.indexOf(torneoObjetivo);
 
-    // PASO 1: Descubrir equipos
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -100,7 +97,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
-    // PASO 2: Calcular puntos
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -127,7 +123,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
-    // PASO 3: Filtrar descensos
     let ranking = Object.values(diccionarioEquipos).filter(eq => eq.ultimoTorneo === indiceTorneoObjetivo);
     
     ranking.sort((a, b) => b.puntos - a.puntos);
@@ -200,7 +195,7 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
 
 async function iniciarApp() {
     try {
-        datosPartidos = await leerCSV("partidos.csv");
+        datosPartidos = await leerCSV("partidos.csv"); // ASUMO QUE EL ARCHIVO ESTÁ COMO partidos.csv
 
         let colTorneo = datosPartidos[0].Torneo !== undefined ? 'Torneo' : 'torneo';
         torneosOrdenados = [...new Set(datosPartidos.map(p => (p[colTorneo] || "").trim()).filter(t => t !== ""))];
