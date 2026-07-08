@@ -177,8 +177,8 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
 
 async function iniciarApp() {
     try {
-        // AHORA SOLO CARGA EL CSV DE PARTIDOS
-        datosPartidos = await leerCSV("torneo_inicial_2012.csv"); // RECORDÁ CAMBIAR ESTE NOMBRE CUANDO LO RENOMBRES A partidos.csv
+        // LÍNEA CORREGIDA: Ahora busca "partidos.csv"
+        datosPartidos = await leerCSV("partidos.csv"); 
 
         let colTorneo = datosPartidos[0].Torneo !== undefined ? 'Torneo' : 'torneo';
         torneosOrdenados = [...new Set(datosPartidos.map(p => (p[colTorneo] || "").trim()).filter(t => t !== ""))];
