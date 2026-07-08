@@ -5,14 +5,13 @@ async function leerCSV(archivo) {
         throw new Error(`No se pudo cargar ${archivo}. Estado: ${respuesta.status}`);
     }
     
-    const texto = await respuesta.text();
+    // CORRECCIÓN DE NOMBRES (Tildes y eñes):
+    // Leemos el archivo en crudo y lo decodificamos forzando el formato de Windows/Excel
+    const buffer = await respuesta.arrayBuffer();
+    const texto = new TextDecoder("windows-1252").decode(buffer);
     
-    // CORRECCIÓN CLAVE: 
-    // Separamos usando saltos de línea (soportando Windows \r\n y Mac/Linux \n)
-    // Y filtramos (eliminamos) automáticamente cualquier línea que esté vacía
     const filas = texto.trim().split(/\r?\n/).filter(fila => fila.trim() !== "");
     
-    // Si el archivo está vacío, devolvemos un arreglo vacío para no romper el código
     if (filas.length === 0) return []; 
 
     const columnas = filas[0].split(",");
@@ -23,7 +22,6 @@ async function leerCSV(archivo) {
 
         columnas.forEach((columna, i) => {
             if (columna) {
-                // Si hay un valor, le hacemos trim, sino lo dejamos vacío
                 objeto[columna.trim()] = valores[i] ? valores[i].trim() : "";
             }
         });
@@ -60,7 +58,6 @@ async function generarRanking() {
         let equipos = {};
 
         equiposCSV.forEach(e => {
-            // Soportamos "Equipo" o "equipo" por si en el futuro cambias el CSV
             let nombreEquipo = e.Equipo || e.equipo;
             if(nombreEquipo) {
                 equipos[nombreEquipo] = {
@@ -75,7 +72,6 @@ async function generarRanking() {
             let local = equipos[partido.Local];
             let visitante = equipos[partido.Visitante];
 
-            // Si algún equipo está mal escrito en el CSV de partidos, lo salta y te avisa en consola
             if(!local || !visitante){
                 console.warn(`Partido ignorado (Equipo no encontrado): ${partido.Local} vs ${partido.Visitante}`);
                 return; 
@@ -86,13 +82,13 @@ async function generarRanking() {
             let resultado;
 
             if(golesLocal > golesVisitante){
-                resultado = 1; // Gana local
+                resultado = 1; 
             } 
             else if(golesLocal < golesVisitante){
-                resultado = 0; // Gana visitante
+                resultado = 0; 
             }
             else {
-                resultado = 0.5; // Empate
+                resultado = 0.5; 
             }
 
             actualizarPuntos(local, visitante, resultado);
@@ -106,12 +102,10 @@ async function generarRanking() {
 
     } catch (error) {
         console.error(error);
-        // Ahora si hay error, te va a decir exactamente en qué línea falló (error.stack)
         document.body.innerHTML += `
             <div style="color: red; border: 1px solid red; padding: 15px; background: #ffe6e6; margin-top: 20px;">
                 <h2>Error cargando los datos</h2>
                 <p><strong>Mensaje:</strong> ${error.message}</p>
-                <p style="font-size: 12px; color: #555;">${error.stack}</p>
             </div>
         `;
     }
