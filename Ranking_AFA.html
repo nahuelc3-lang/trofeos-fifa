@@ -2,53 +2,118 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking AFA</title>
+    <title>Ranking AFA Estilo FIFA</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         h1 {
             text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .controles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        select {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
         }
 
         table {
-            width: 80%;
-            margin: auto;
+            width: 100%;
             border-collapse: collapse;
-            background: white;
         }
 
         th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
+            border-bottom: 1px solid #eee;
+            padding: 12px 15px;
             text-align: center;
         }
 
         th {
-            background: #222;
+            background: #00285e; /* Azul oscuro onda AFA/FIFA */
             color: white;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .equipo-nombre {
+            text-align: left;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        /* Colores para las variaciones */
+        .sube { color: #28a745; font-weight: bold; }
+        .baja { color: #dc3545; font-weight: bold; }
+        .igual { color: #6c757d; font-weight: bold; }
+        
+        .puntos-totales {
+            font-weight: bold;
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body>
 
-<h1>Ranking AFA</h1>
+<div class="contenedor">
+    <h1>Ranking AFA (Torneo Inicial 2012)</h1>
+    
+    <div class="controles">
+        <label for="selectorFecha"><strong>Ver ranking hasta la fecha:</strong></label>
+        <select id="selectorFecha">
+            <option value="0">Inicio del torneo</option>
+            </select>
+    </div>
 
-<table id="tablaRanking">
-    <thead>
-        <tr>
-            <th>Posición</th>
-            <th>Equipo</th>
-            <th>Puntos</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+    <table id="tablaRanking">
+        <thead>
+            <tr>
+                <th>Pos</th>
+                <th>+/-</th>
+                <th style="text-align: left;">Equipo</th>
+                <th>Puntos</th>
+                <th>Dif. Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</div>
 
 <script src="calcular_ranking.js"></script>
 
