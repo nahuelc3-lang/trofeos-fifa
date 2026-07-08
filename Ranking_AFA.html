@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ranking AFA Estilo FIFA</title>
+    <title>Ranking AFA Histórico</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,7 +11,6 @@
             background: #f0f2f5;
             color: #333;
         }
-
         .contenedor {
             max-width: 900px;
             margin: auto;
@@ -20,84 +19,75 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
         h1 {
             text-align: center;
             color: #1a1a1a;
             margin-bottom: 10px;
         }
-
         .controles {
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             margin-bottom: 20px;
-            gap: 10px;
+            gap: 15px;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 6px;
             border: 1px solid #ddd;
         }
-
+        .grupo-control {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
         select {
             padding: 8px 12px;
             font-size: 16px;
             border-radius: 4px;
             border: 1px solid #ccc;
             cursor: pointer;
+            min-width: 200px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
         th, td {
             border-bottom: 1px solid #eee;
             padding: 12px 15px;
             text-align: center;
         }
-
         th {
-            background: #00285e; /* Azul oscuro onda AFA/FIFA */
+            background: #00285e;
             color: white;
             text-transform: uppercase;
             font-size: 13px;
             letter-spacing: 1px;
         }
-
-        tr:hover {
-            background: #f5f5f5;
-        }
-
-        .equipo-nombre {
-            text-align: left;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        /* Colores para las variaciones */
+        tr:hover { background: #f5f5f5; }
+        .equipo-nombre { text-align: left; font-weight: bold; font-size: 15px; }
         .sube { color: #28a745; font-weight: bold; }
         .baja { color: #dc3545; font-weight: bold; }
         .igual { color: #6c757d; font-weight: bold; }
-        
-        .puntos-totales {
-            font-weight: bold;
-            font-size: 16px;
-        }
+        .puntos-totales { font-weight: bold; font-size: 16px; }
     </style>
 </head>
-
 <body>
 
 <div class="contenedor">
-    <h1>Ranking AFA (Torneo Inicial 2012)</h1>
+    <h1>Ranking AFA Histórico</h1>
     
     <div class="controles">
-        <label for="selectorFecha"><strong>Ver ranking hasta la fecha:</strong></label>
-        <select id="selectorFecha">
-            <option value="0">Inicio del torneo</option>
-            </select>
+        <div class="grupo-control">
+            <label for="selectorTorneo"><strong>Torneo:</strong></label>
+            <select id="selectorTorneo"></select>
+        </div>
+        
+        <div class="grupo-control">
+            <label for="selectorFecha"><strong>Fecha:</strong></label>
+            <select id="selectorFecha"></select>
+        </div>
     </div>
 
     <table id="tablaRanking">
