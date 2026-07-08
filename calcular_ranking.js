@@ -2,10 +2,22 @@ let datosPartidos = [];
 let torneosOrdenados = []; 
 let fechasPorTorneo = {}; 
 
+const aliasEquipos = {
+    "estudiantes": "estudiantes (lp)",
+    "estudiantes de la plata": "estudiantes (lp)",
+    "argentinos": "argentinos juniors",
+    "boca": "boca juniors",
+    "river": "river plate",
+    "gimnasia": "gimnasia (lp)",
+    "san martin": "san martin (sj)",
+    "san martin sj": "san martin (sj)"
+};
+
 async function leerCSV(archivo) {
     const respuesta = await fetch(archivo);
     if (!respuesta.ok) throw new Error(`No se pudo cargar ${archivo}`);
     
+    // Volvemos al estándar de la web (UTF-8) que es el que usan los CSV nuevos
     let texto = await respuesta.text();
     texto = texto.replace(/^\uFEFF/, ''); 
     
@@ -30,7 +42,23 @@ async function leerCSV(archivo) {
 
 function normalizarNombre(nombre) {
     if (!nombre) return "";
-    return nombre.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    let limpio = nombre.trim().toLowerCase();
+    
+    // MAPA DE ERRORES: Si el CSV se guardó mal y rompió las tildes, esto lo repara en el aire
+    const mapaErrores = {
+        'ã¡': 'a', 'ã©': 'e', 'ã­': 'i', 'ã³': 'o', 'ãº': 'u', 'ã±': 'n',
+        'Ã¡': 'a', 'Ã©': 'e', 'Ã­': 'i', 'Ã³': 'o', 'Ãº': 'u', 'Ã±': 'n',
+        '': ''
+    };
+    
+    for (let mal en mapaErrores) {
+        limpio = limpio.split(mal).join(mapaErrores[mal]);
+    }
+    
+    // Luego sacamos las tildes normales
+    limpio = limpio.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    return aliasEquipos[limpio] || limpio;
 }
 
 function calcularResultadoEsperado(puntosA, puntosB) {
@@ -45,12 +73,11 @@ function actualizarPuntos(equipoA, equipoB, resultadoA) {
     equipoB.puntos -= cambio;
 }
 
-// NUEVA LÓGICA: Descubrimiento automático de equipos (Ascensos y Descensos)
 function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
     let diccionarioEquipos = {};
     let indiceTorneoObjetivo = torneosOrdenados.indexOf(torneoObjetivo);
 
-    // PASO 1: Descubrir todos los equipos históricos hasta el torneo actual
+    // PASO 1: Descubrir equipos
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -59,7 +86,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
             let nombreLocalLimpio = normalizarNombre(partido.Local);
             let nombreVisitanteLimpio = normalizarNombre(partido.Visitante);
 
-            // Si es la primera vez en la historia que vemos al equipo, le damos 1500 pts
             if (!diccionarioEquipos[nombreLocalLimpio]) {
                 diccionarioEquipos[nombreLocalLimpio] = { nombre: (partido.Local).trim(), puntos: 1500, ultimoTorneo: indiceEsteTorneo };
             } else {
@@ -74,7 +100,7 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
-    // PASO 2: Calcular los puntos cronológicamente
+    // PASO 2: Calcular puntos
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -83,7 +109,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         
         let procesar = false;
 
-        // Procesamos todos los torneos anteriores enteros, y el actual hasta la fecha elegida
         if (indiceEsteTorneo < indiceTorneoObjetivo) {
             procesar = true;
         } else if (indiceEsteTorneo === indiceTorneoObjetivo && fechaDelPartido <= fechaObjetivo) {
@@ -102,7 +127,7 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
-    // PASO 3: Filtrar descensos. Solo mostramos a los equipos que jugaron en el Torneo Objetivo
+    // PASO 3: Filtrar descensos
     let ranking = Object.values(diccionarioEquipos).filter(eq => eq.ultimoTorneo === indiceTorneoObjetivo);
     
     ranking.sort((a, b) => b.puntos - a.puntos);
@@ -126,7 +151,6 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
     rankingActual.forEach((equipo) => {
         let datosAyer = mapaAnterior[equipo.nombre];
         
-        // Si no tiene datos de "ayer", es porque acaba de ascender o es la fecha 0
         let difPosicion = datosAyer ? datosAyer.posicion - equipo.posicion : 0; 
         let difPuntos = datosAyer ? equipo.puntos - datosAyer.puntos : 0;
 
@@ -140,8 +164,7 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
         else if (difPuntos < -0.01) textoPts = `<span class="baja">${difPuntos.toFixed(2)}</span>`;
         if (fechaSeleccionada === 0 || !datosAyer) textoPts = `<span class="igual">-</span>`;
 
-        // Si el equipo recién asciende, lo destacamos
-        let tagAscenso = (!datosAyer && fechaSeleccionada === 0) ? `<span style="font-size:10px; background:#ffd700; padding:2px 5px; border-radius:3px; margin-left:5px;">NUEVO</span>` : "";
+        let tagAscenso = (!datosAyer && fechaSeleccionada === 0) ? `<span style="font-size:10px; background:#ffd700; padding:2px 5px; border-radius:3px; margin-left:5px; color:black;">NUEVO</span>` : "";
 
         tabla.innerHTML += `
         <tr>
@@ -177,8 +200,7 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
 
 async function iniciarApp() {
     try {
-        // LÍNEA CORREGIDA: Ahora busca "partidos.csv"
-        datosPartidos = await leerCSV("partidos.csv"); 
+        datosPartidos = await leerCSV("partidos.csv");
 
         let colTorneo = datosPartidos[0].Torneo !== undefined ? 'Torneo' : 'torneo';
         torneosOrdenados = [...new Set(datosPartidos.map(p => (p[colTorneo] || "").trim()).filter(t => t !== ""))];
