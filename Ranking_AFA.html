@@ -50,64 +50,7 @@
     </tbody>
 </table>
 
-<script>
-async function cargarCSV(archivo) {
-    const respuesta = await fetch(archivo);
-    
-    if (!respuesta.ok) {
-        throw new Error(`No se pudo encontrar el archivo: ${respuesta.status}`);
-    }
-    
-    const texto = await respuesta.text();
-    // Limpiamos los saltos de línea para evitar problemas con archivos guardados en Windows
-    const filas = texto.trim().split("\n");
-    const cabecera = filas[0].split(",");
-
-    return filas.slice(1).map(fila => {
-        const valores = fila.split(",");
-        let objeto = {};
-
-        cabecera.forEach((columna, i) => {
-            // El trim() acá es clave para limpiar espacios invisibles o retornos de carro
-            objeto[columna.trim()] = valores[i]?.trim();
-        });
-
-        return objeto;
-    });
-}
-
-async function cargarRanking(){
-    try {
-        // Apuntamos al archivo ranking.csv que subiste
-        const ranking = await cargarCSV("ranking.csv");
-
-        // Ordenamos usando Puntos con "P" mayúscula, como está en tu CSV
-        ranking.sort((a, b) => Number(b.Puntos) - Number(a.Puntos));
-
-        const tabla = document.querySelector("#tablaRanking tbody");
-
-        ranking.forEach((equipo, index) => {
-            // Usamos equipo.Equipo y equipo.Puntos respetando las mayúsculas de la cabecera
-            let fila = `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${equipo.Equipo}</td>
-                <td>${equipo.Puntos}</td>
-            </tr>
-            `;
-
-            tabla.innerHTML += fila;
-        });
-
-    } catch(error){
-        document.body.innerHTML += 
-        "<h2>Error cargando archivos CSV</h2>" +
-        "<p>" + error.message + "</p>";
-    }
-}
-
-cargarRanking();
-</script>
+<script src="calcular_ranking.js"></script>
 
 </body>
 </html>
