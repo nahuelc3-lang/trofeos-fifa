@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ranking AFA</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #222;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Ranking AFA</h1>
+
+<table id="tablaRanking">
+    <thead>
+        <tr>
+            <th>Posición</th>
+            <th>Equipo</th>
+            <th>Puntos</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
+
+
+<script>
+
+async function cargarCSV(archivo) {
+
+    const respuesta = await fetch(archivo);
+    const texto = await respuesta.text();
+
+    const filas = texto.trim().split("\n");
+
+    const cabecera = filas[0].split(",");
+
+    return filas.slice(1).map(fila => {
+
+        const valores = fila.split(",");
+
+        let objeto = {};
+
+        cabecera.forEach((columna, i) => {
+            objeto[columna.trim()] = valores[i]?.trim();
+        });
+
+        return objeto;
+
+    });
+}
+
+
+async function cargarRanking(){
+
+    try {
+
+        const ranking = await cargarCSV("ranking.csv");
+
+
+        ranking.sort((a,b)=> 
+            Number(b.puntos) - Number(a.puntos)
+        );
+
+
+        const tabla = document.querySelector("#tablaRanking tbody");
+
+
+        ranking.forEach((equipo,index)=>{
+
+            let fila = `
+            <tr>
+                <td>${index+1}</td>
+                <td>${equipo.equipo}</td>
+                <td>${equipo.puntos}</td>
+            </tr>
+            `;
+
+            tabla.innerHTML += fila;
+
+        });
+
+
+    } catch(error){
+
+        document.body.innerHTML += 
+        "<h2>Error cargando archivos CSV</h2>" +
+        "<p>"+error+"</p>";
+
+    }
+
+}
+
+
+cargarRanking();
+
+</script>
+
+
+</body>
+</html>
