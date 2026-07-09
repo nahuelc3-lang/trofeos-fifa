@@ -13,12 +13,28 @@ const aliasEquipos = {
     "san martin sj": "san martin (sj)"
 };
 
+// 1. FUNCIÓN PARA ARREGLAR LOS SÍMBOLOS RAROS DE EXCEL
+function arreglarCodificacion(texto) {
+    const mapa = {
+        'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ã³': 'ó', 'Ãº': 'ú', 'Ã±': 'ñ', 'Ã‘': 'Ñ',
+        'ã¡': 'á', 'ã©': 'é', 'ã­': 'í', 'ã³': 'ó', 'ãº': 'ú', 'ã±': 'ñ'
+    };
+    let resultado = texto;
+    for (let mal in mapa) {
+        resultado = resultado.split(mal).join(mapa[mal]);
+    }
+    return resultado;
+}
+
 async function leerCSV(archivo) {
     const respuesta = await fetch(archivo);
     if (!respuesta.ok) throw new Error(`No se pudo cargar ${archivo}`);
     
     let texto = await respuesta.text();
     texto = texto.replace(/^\uFEFF/, ''); 
+    
+    // Aplicamos la limpieza de símbolos a todo el archivo apenas lo leemos
+    texto = arreglarCodificacion(texto);
     
     const filas = texto.trim().split(/\r?\n/).filter(fila => fila.trim() !== "");
     if (filas.length === 0) return []; 
@@ -43,17 +59,6 @@ function normalizarNombre(nombre) {
     if (!nombre) return "";
     let limpio = nombre.trim().toLowerCase();
     
-    const mapaErrores = {
-        'ã¡': 'a', 'ã©': 'e', 'ã­': 'i', 'ã³': 'o', 'ãº': 'u', 'ã±': 'n',
-        'Ã¡': 'a', 'Ã©': 'e', 'Ã­': 'i', 'Ã³': 'o', 'Ãº': 'u', 'Ã±': 'n',
-        '': ''
-    };
-    
-    // ACÁ ESTABA EL ERROR: Cambié "en" por "in"
-    for (let mal in mapaErrores) {
-        limpio = limpio.split(mal).join(mapaErrores[mal]);
-    }
-    
     limpio = limpio.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
     return aliasEquipos[limpio] || limpio;
@@ -75,6 +80,7 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
     let diccionarioEquipos = {};
     let indiceTorneoObjetivo = torneosOrdenados.indexOf(torneoObjetivo);
 
+    // Descubrir equipos y darles los 1500 puntos si son nuevos
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -97,6 +103,7 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
+    // Calcular los puntos partido a partido
     datosPartidos.forEach(partido => {
         let nombreTorneo = (partido.Torneo || "").trim();
         let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
@@ -123,6 +130,7 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     });
 
+    // Filtrar descensos: Este es el filtro que permite que haya 20 o 30 equipos dinámicamente
     let ranking = Object.values(diccionarioEquipos).filter(eq => eq.ultimoTorneo === indiceTorneoObjetivo);
     
     ranking.sort((a, b) => b.puntos - a.puntos);
@@ -195,7 +203,7 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
 
 async function iniciarApp() {
     try {
-        datosPartidos = await leerCSV("partidos.csv"); // ASUMO QUE EL ARCHIVO ESTÁ COMO partidos.csv
+        datosPartidos = await leerCSV("partidos.csv");
 
         let colTorneo = datosPartidos[0].Torneo !== undefined ? 'Torneo' : 'torneo';
         torneosOrdenados = [...new Set(datosPartidos.map(p => (p[colTorneo] || "").trim()).filter(t => t !== ""))];
@@ -231,7 +239,8 @@ async function iniciarApp() {
             renderizarTabla(selectorTorneo.value, Number(e.target.value));
         });
 
-        let torneoInicial = torneosOrdenados[0];
+        // 2. MOSTRAR EL ÚLTIMO TORNEO POR DEFECTO
+        let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
         selectorTorneo.value = torneoInicial;
         actualizarDesplegableFechas(torneoInicial);
         renderizarTabla(torneoInicial, Number(selectorFecha.value));
