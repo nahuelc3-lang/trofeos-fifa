@@ -4,14 +4,12 @@ let fechasPorTorneo = {};
 let partidosPorFechaYTorneo = {}; 
 let miGrafico = null; 
 
-// Base de Datos en Caché del recorrido histórico de cada club
 let cacheHistorialGlobal = {}; 
 
-// Variables de estado del modal actual
 let clubSeleccionadoActivo = "";
-let filtroTipoActivo = "torneo"; // "torneo" o "tiempo"
-let filtroValorActivo = "ultimo"; // "ultimo", "2", "5", "todo", "1año", "2años", "5años"
-let modoMetricaActivo = "posicion"; // "posicion" o "elo"
+let filtroTipoActivo = "torneo"; 
+let filtroValorActivo = "ultimo"; 
+let modoMetricaActivo = "posicion"; 
 
 const aliasEquipos = {
     "estudiantes": "estudiantes (lp)",
@@ -23,6 +21,42 @@ const aliasEquipos = {
     "san martin": "san martin (sj)",
     "san martin sj": "san martin (sj)"
 };
+
+// DICCIONARIO DE ESCUDOS ONLINE (Wikipedia / Wikimedia Commons)
+const logosEquipos = {
+    "boca juniors": "https://upload.wikimedia.org/wikipedia/commons/4/41/Club_Atl%C3%A9tico_Boca_Juniors_logo.svg",
+    "river plate": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Escudo_del_Club_Atl%C3%A9tico_River_Plate.svg",
+    "racing club": "https://upload.wikimedia.org/wikipedia/commons/7/75/Racing_Club_logo.svg",
+    "independiente": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg",
+    "san lorenzo": "https://upload.wikimedia.org/wikipedia/commons/7/76/Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg",
+    "estudiantes (lp)": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Escudo_del_Club_Estudiantes_de_La_Plata.svg",
+    "gimnasia (lp)": "https://upload.wikimedia.org/wikipedia/commons/a/af/Escudo_del_Club_de_Gimnasia_y_Esgrima_La_Plata.svg",
+    "rosario central": "https://upload.wikimedia.org/wikipedia/commons/9/91/Escudo_del_Club_Atl%C3%A9tico_Rosario_Central.svg",
+    "newells old boys": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys.svg",
+    "velez sarsfield": "https://upload.wikimedia.org/wikipedia/commons/3/30/Escudo_del_Club_Atl%C3%A9tico_V%C3%A9lez_Sarsfield.svg",
+    "lanus": "https://upload.wikimedia.org/wikipedia/commons/2/23/Escudo_del_Club_Atl%C3%A9tico_Lan%C3%BA.svg",
+    "banfield": "https://upload.wikimedia.org/wikipedia/commons/4/43/Escudo_del_Club_Atl%C3%A9tico_Banfield.svg",
+    "argentinos juniors": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Escudo_del_Asociaci%C3%B3n_Atl%C3%A9tica_Argentinos_Juniors.svg",
+    "huracan": "https://upload.wikimedia.org/wikipedia/commons/8/87/Escudo_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg",
+    "talleres (c)": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_del_Club_Atl%C3%A9tico_Talleres_%28C%C3%B3rdoba%29.svg",
+    "belgrano": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Escudo_del_Club_Atl%C3%A9tico_Belgrano.svg",
+    "colon": "https://upload.wikimedia.org/wikipedia/commons/1/15/Escudo_del_Club_Atl%C3%A9tico_Col%C3%B3n.svg",
+    "union": "https://upload.wikimedia.org/wikipedia/commons/3/36/Escudo_del_Club_Atl%C3%A9tico_Uni%C3%B3n.svg",
+    "atletico tucuman": "https://upload.wikimedia.org/wikipedia/commons/6/60/Escudo_del_Club_Atl%C3%A9tico_Tucum%C3%A1n.svg",
+    "godoy cruz": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Escudo_del_Club_Deportivo_Godoy_Cruz_Antonio_Tomba.svg",
+    "defensa y justicia": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Escudo_del_Club_Social_y_Deportivo_Defensa_y_Justicia.svg",
+    "tigre": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Escudo_del_Club_Atl%C3%A9tico_Tigre.svg",
+    "arsenal": "https://upload.wikimedia.org/wikipedia/commons/6/60/Escudo_del_Arsenal_F%C3%BAtbol_Club.svg",
+    "quilmes": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Escudo_del_Quilmes_Atl%C3%A9tico_Club.svg"
+};
+
+function obtenerURL_Escudo(nombreNormalizado, nombreReal) {
+    if (logosEquipos[nombreNormalizado]) {
+        return logosEquipos[nombreNormalizado];
+    }
+    // Si no está en el diccionario, crea un avatar de iniciales automático
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreReal)}&background=00285e&color=fff&rounded=true&bold=true`;
+}
 
 function arreglarCodificacion(texto) {
     const mapa = {
@@ -52,7 +86,6 @@ function parsearFechaStr(fechaStr) {
     if (!fechaStr) return new Date();
     let partes = fechaStr.split('/');
     if (partes.length === 3) {
-        // Formato DD/MM/YYYY
         return new Date(partes[2], partes[1] - 1, partes[0]);
     }
     return new Date(fechaStr);
@@ -142,9 +175,6 @@ function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitan
     equipoVisitante.puntos -= cambio;
 }
 
-// -------------------------------------------------------------------------
-// REVOLUCIONARIO MOTOR DE PRECALCULO (Un solo bucle de alta velocidad)
-// -------------------------------------------------------------------------
 function precalcularHistorialCompleto() {
     cacheHistorialGlobal = {};
     let diccionarioEquipos = {};
@@ -199,7 +229,6 @@ function precalcularHistorialCompleto() {
         let fechasValidas = fechas.filter(n => !isNaN(n) && n > 0);
         let maxFechas = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
 
-        // Registro Fecha 0 (Inicio)
         let activeTeams = Array.from(equiposEsteTorneo);
         let rankingTemp = activeTeams.map(nameNorm => ({
             nameNorm: nameNorm,
@@ -224,7 +253,6 @@ function precalcularHistorialCompleto() {
             });
         });
 
-        // Simular Fecha por Fecha
         for (let f = 1; f <= maxFechas; f++) {
             let partidosFecha = partidosDeEsteTorneo.filter(p => Number(obtenerCampo(p, 'Fecha_del_Torneo')) === f);
             
@@ -301,12 +329,7 @@ function precalcularHistorialCompleto() {
     }
 }
 
-// Para mantener compatibilidad con el renderizador de la tabla principal
 function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
-    let indicesFiltrados = {};
-    let indicesOrdenados = torneosOrdenados.indexOf(torneoObjetivo);
-    
-    // Obtenemos los datos instantáneos de nuestra caché global
     let rankingActual = [];
     
     for (let nameNorm in cacheHistorialGlobal) {
@@ -322,7 +345,6 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
         }
     }
 
-    // Traducir nombres reales
     let nombresOriginales = {};
     datosPartidos.forEach(p => {
         nombresOriginales[normalizarNombre(obtenerCampo(p, 'Local'))] = obtenerCampo(p, 'Local').trim();
@@ -369,11 +391,19 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
 
         let tagAscenso = (!datosAyer && fechaSeleccionada === 0) ? `<span style="font-size:10px; background:#ffd700; padding:2px 5px; border-radius:3px; margin-left:5px; color:black;">NUEVO</span>` : "";
 
+        // AQUÍ ESTÁ LA MAGIA DEL ESCUDO EN LA TABLA
+        let escudoHtml = `<img src="${obtenerURL_Escudo(normalizarNombre(equipo.nombre), equipo.nombre)}" style="width:24px; height:24px; object-fit:contain;" alt="logo">`;
+
         tabla.innerHTML += `
         <tr>
             <td><strong>${equipo.posicion}</strong></td>
             <td>${iconoPos}</td>
-            <td class="equipo-nombre" onclick="abrirFichaClub('${equipo.nombre}')">${equipo.nombre} ${tagAscenso}</td>
+            <td class="equipo-nombre" onclick="abrirFichaClub('${equipo.nombre}')">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    ${escudoHtml}
+                    <span>${equipo.nombre} ${tagAscenso}</span>
+                </div>
+            </td>
             <td class="puntos-totales">${Math.round(equipo.puntos)}</td>
             <td>${textoPts}</td>
         </tr>
@@ -381,9 +411,6 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
     });
 }
 
-// -------------------------------------------------------------------------
-// NUEVAS FUNCIONES DE LA INTERFAZ: FICHA COMPLETA DEL CLUB (Sofascore style)
-// -------------------------------------------------------------------------
 function abrirFichaClub(nombreClub) {
     clubSeleccionadoActivo = nombreClub;
     const norm = normalizarNombre(nombreClub);
@@ -391,19 +418,21 @@ function abrirFichaClub(nombreClub) {
 
     if (!historialCompleto || historialCompleto.length === 0) return;
 
-    // Abrir Modal
     const modal = document.getElementById("modalGrafico");
     modal.style.display = "flex";
 
-    // Titular del Club
-    document.getElementById("tituloModal").innerText = nombreClub;
+    // AGREGAMOS EL ESCUDO AL TÍTULO DEL MODAL
+    let escudoUrl = obtenerURL_Escudo(norm, nombreClub);
+    document.getElementById("tituloModal").innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${escudoUrl}" style="width:36px; height:36px; object-fit:contain;">
+            <span>${nombreClub}</span>
+        </div>`;
 
-    // Calcular estadísticas históricas hasta la fecha actualmente seleccionada
     const torneoSelect = document.getElementById("selectorTorneo").value;
     const fechaSelect = Number(document.getElementById("selectorFecha").value);
     const limTorneoIdx = torneosOrdenados.indexOf(torneoSelect);
 
-    // Filtrar todo el historial hasta el momento de visualización
     const histFiltrado = historialCompleto.filter(h => {
         let tIdx = torneosOrdenados.indexOf(h.torneo);
         if (tIdx < limTorneoIdx) return true;
@@ -411,35 +440,30 @@ function abrirFichaClub(nombreClub) {
         return false;
     });
 
-    // 1. Snapshot Actual
     let snapActual = histFiltrado[histFiltrado.length - 1];
     let snapAnterior = histFiltrado.length > 1 ? histFiltrado[histFiltrado.length - 2] : null;
 
     document.getElementById("statPosicion").innerText = `${snapActual.posicion}°`;
     document.getElementById("statElo").innerText = Math.round(snapActual.puntos);
 
-    // Cambios (Deltas) en tarjetas principales
     if (snapAnterior) {
         let difPos = snapAnterior.posicion - snapActual.posicion;
         let difElo = snapActual.puntos - snapAnterior.puntos;
 
-        // Posición cambio
         let pCambio = document.getElementById("statCambioPos");
         if (difPos > 0) { pCambio.className = "stat-change sube"; pCambio.innerText = `▲ +${difPos}`; }
         else if (difPos < 0) { pCambio.className = "stat-change baja"; pCambio.innerText = `▼ ${difPos}`; }
         else { pCambio.className = "stat-change igual"; pCambio.innerText = `-`; }
 
-        // Elo cambio
         let eCambio = document.getElementById("statCambioElo");
         if (difElo > 0) { eCambio.className = "stat-change sube"; eCambio.innerText = `▲ +${difElo.toFixed(1)}`; }
-        else if (difElo < 0) { eCambio.className = "stat-change baja"; eCambio.innerText = `▼ ${difElo.toFixed(1)}`; }
+        else if (difElo < 0) { eCambio.className = "stat-change baja"; eCambio.innerText = `▼ ${Math.abs(difElo).toFixed(1)}`; }
         else { eCambio.className = "stat-change igual"; eCambio.innerText = `-`; }
     } else {
         document.getElementById("statCambioPos").innerText = "-";
         document.getElementById("statCambioElo").innerText = "-";
     }
 
-    // 2. Estadísticas Secundarias
     let posicionesList = histFiltrado.map(h => h.posicion);
     let mejorPos = Math.min(...posicionesList);
     let peorPos = Math.max(...posicionesList);
@@ -456,7 +480,6 @@ function abrirFichaClub(nombreClub) {
     document.getElementById("statMayorSubida").innerText = `+${mayorSubida.toFixed(1)}`;
     document.getElementById("statMayorBajada").innerText = `${mayorBajada.toFixed(1)}`;
 
-    // Estado del club (Si jugó en el torneo seleccionado o descendió)
     let tagEstado = document.getElementById("tagEstadoClub");
     let juegaHoy = snapActual.torneo === torneoSelect;
     if (juegaHoy) {
@@ -469,7 +492,6 @@ function abrirFichaClub(nombreClub) {
         tagEstado.style.color = "var(--text-muted)";
     }
 
-    // Dibujar el gráfico con los filtros activos por defecto
     actualizarVisualizacionGrafico();
 }
 
@@ -481,7 +503,6 @@ function actualizarVisualizacionGrafico() {
     const fechaSelect = Number(document.getElementById("selectorFecha").value);
     const limTorneoIdx = torneosOrdenados.indexOf(torneoSelect);
 
-    // 1. Filtrar base límite de tiempo actual
     let datosFiltrados = historialCompleto.filter(h => {
         let tIdx = torneosOrdenados.indexOf(h.torneo);
         if (tIdx < limTorneoIdx) return true;
@@ -491,7 +512,6 @@ function actualizarVisualizacionGrafico() {
 
     let fechaLimiteReal = datosFiltrados[datosFiltrados.length - 1].fechaReal;
 
-    // 2. Aplicar Filtro de Rango (Torneo o Tiempo)
     if (filtroTipoActivo === "torneo") {
         if (filtroValorActivo === "ultimo") {
             datosFiltrados = datosFiltrados.filter(h => h.torneo === torneoSelect);
@@ -508,9 +528,7 @@ function actualizarVisualizacionGrafico() {
                 return idx >= inicioIdx && idx <= limTorneoIdx;
             });
         }
-        // En filtros de Torneo mostramos TODOS los puntos (Fechas completas)
     } else {
-        // Filtro por tiempo
         let msLimite = fechaLimiteReal.getTime();
         let msFiltro = 0;
 
@@ -522,12 +540,8 @@ function actualizarVisualizacionGrafico() {
             datosFiltrados = datosFiltrados.filter(h => (msLimite - h.fechaReal.getTime()) <= msFiltro);
         }
 
-        // LIMPIEZA DE GRÁFICO (Estilo Sofascore): 
-        // Si hay rango temporal amplio, reducimos a un único punto por torneo (la fecha de cierre),
-        // manteniendo solo detallada la fecha actual seleccionada para evitar saturar el canvas.
         if (filtroValorActivo !== "1año") {
             datosFiltrados = datosFiltrados.filter((h, idx) => {
-                // Dejar siempre el inicio (fecha 0), final de torneo, o el último punto de la lista
                 let partidosDelTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === h.torneo);
                 let fechas = [...new Set(partidosDelTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
                 let maxF = fechas.filter(n => !isNaN(n) && n > 0).length > 0 ? Math.max(...fechas.filter(n => !isNaN(n) && n > 0)) : 0;
@@ -537,7 +551,6 @@ function actualizarVisualizacionGrafico() {
         }
     }
 
-    // Dibujar en Chart.js
     let etiquetasX = datosFiltrados.map(h => {
         let torneoCorto = h.torneo
             .replace("Torneo Inicial", "Inicial")
@@ -554,7 +567,6 @@ function actualizarVisualizacionGrafico() {
         return {
             x: etiquetasX[datosFiltrados.indexOf(h)],
             y: modoMetricaActivo === "posicion" ? h.posicion : Math.round(h.puntos),
-            // Metadatos para el Tooltip Sofascore
             torneo: h.torneo,
             fecha: h.fecha,
             posicion: h.posicion,
@@ -593,7 +605,7 @@ function actualizarVisualizacionGrafico() {
             maintainAspectRatio: false,
             scales: {
                 y: {
-                    reverse: modoMetricaActivo === "posicion", // Invierte eje para la posición (1 arriba)
+                    reverse: modoMetricaActivo === "posicion", 
                     min: modoMetricaActivo === "posicion" ? 1 : undefined,
                     ticks: {
                         precision: 0
@@ -649,18 +661,12 @@ function actualizarVisualizacionGrafico() {
     });
 }
 
-// -------------------------------------------------------------------------
-// INICIALIZADORES Y GESTIÓN DE EVENTOS
-// -------------------------------------------------------------------------
 function cambiarFiltro(tipo, valor, elemento) {
     filtroTipoActivo = tipo;
     filtroValorActivo = valor;
 
-    // Desactivar botones de ambos grupos
     document.querySelectorAll("#grupoFiltrosTorneo .btn-pill").forEach(b => b.classList.remove("active"));
     document.querySelectorAll("#grupoFiltrosTiempo .btn-pill").forEach(b => b.classList.remove("active"));
-
-    // Activar el seleccionado
     elemento.classList.add("active");
 
     actualizarVisualizacionGrafico();
@@ -682,7 +688,6 @@ function cambiarModoGrafico(modo) {
 }
 
 function registrarEventosModal() {
-    // Vincular clics de los botones dinámicos de píldoras
     document.querySelectorAll("#grupoFiltrosTorneo .btn-pill").forEach(btn => {
         btn.addEventListener("click", () => cambiarFiltro("torneo", btn.getAttribute("data-valor"), btn));
     });
@@ -694,7 +699,6 @@ function registrarEventosModal() {
     document.getElementById("segmentPosicion").addEventListener("click", () => cambiarModoGrafico("posicion"));
     document.getElementById("segmentElo").addEventListener("click", () => cambiarModoGrafico("elo"));
 
-    // Cerrar Modal
     const modal = document.getElementById("modalGrafico");
     const btnCerrar = document.getElementById("btnCerrarModal");
 
@@ -753,15 +757,13 @@ async function iniciarApp() {
             fechasPorTorneo[torneo] = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
         });
 
-        // -----------------------------------------------------------
-        // CALCULO COMPLETO EN CACHÉ (Corre una sola vez en el arranque)
-        // -----------------------------------------------------------
         precalcularHistorialCompleto();
 
         const selectorTorneo = document.getElementById("selectorTorneo");
         if (selectorTorneo) {
             selectorTorneo.innerHTML = "";
-            torneosOrdenados.forEach(torneo => {
+            // AQUÍ INVERTIMOS EL MENÚ: El último torneo queda primero
+            [...torneosOrdenados].reverse().forEach(torneo => {
                 let option = document.createElement("option");
                 option.value = torneo;
                 option.text = torneo;
@@ -790,10 +792,9 @@ async function iniciarApp() {
             contenedor.appendChild(nota);
         }
 
-        // Registrar eventos interactivos del modal de visualización
         registrarEventosModal();
 
-        // Cargar el torneo más reciente que tengamos registrado
+        // Inicializamos la vista apuntando al último torneo del historial cronológico
         let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
         if (selectorTorneo && selectorFecha) {
             selectorTorneo.value = torneoInicial;
