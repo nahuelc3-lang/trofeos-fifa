@@ -11,6 +11,7 @@ let filtroTipoActivo = "torneo";
 let filtroValorActivo = "ultimo"; 
 let modoMetricaActivo = "posicion"; 
 
+// DICCIONARIO DE ALIAS: Corrige nombres escritos distinto en el CSV
 const aliasEquipos = {
     "estudiantes": "estudiantes (lp)",
     "estudiantes de la plata": "estudiantes (lp)",
@@ -19,42 +20,68 @@ const aliasEquipos = {
     "river": "river plate",
     "gimnasia": "gimnasia (lp)",
     "san martin": "san martin (sj)",
-    "san martin sj": "san martin (sj)"
+    "san martin sj": "san martin (sj)",
+    "san martin de san juan": "san martin (sj)",
+    "san martin t": "san martin (t)",
+    "san martin de tucuman": "san martin (t)",
+    "central cordoba": "central cordoba (sde)",
+    "sarmiento": "sarmiento (j)",
+    "talleres": "talleres (c)",
+    "atletico rafaela": "atletico de rafaela",
+    "newells": "newells old boys"
 };
 
-// DICCIONARIO DE ESCUDOS ONLINE (Wikipedia / Wikimedia Commons)
+// DICCIONARIO DE ESCUDOS (2012 - 2026)
+// Reemplazá "URL_ACA" con el link de la imagen o la ruta a tu archivo local.
 const logosEquipos = {
-    "boca juniors": "https://upload.wikimedia.org/wikipedia/commons/4/41/Club_Atl%C3%A9tico_Boca_Juniors_logo.svg",
-    "river plate": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Escudo_del_Club_Atl%C3%A9tico_River_Plate.svg",
-    "racing club": "https://upload.wikimedia.org/wikipedia/commons/7/75/Racing_Club_logo.svg",
-    "independiente": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg",
-    "san lorenzo": "https://upload.wikimedia.org/wikipedia/commons/7/76/Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg",
-    "estudiantes (lp)": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Escudo_del_Club_Estudiantes_de_La_Plata.svg",
-    "gimnasia (lp)": "https://upload.wikimedia.org/wikipedia/commons/a/af/Escudo_del_Club_de_Gimnasia_y_Esgrima_La_Plata.svg",
-    "rosario central": "https://upload.wikimedia.org/wikipedia/commons/9/91/Escudo_del_Club_Atl%C3%A9tico_Rosario_Central.svg",
-    "newells old boys": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys.svg",
-    "velez sarsfield": "https://upload.wikimedia.org/wikipedia/commons/3/30/Escudo_del_Club_Atl%C3%A9tico_V%C3%A9lez_Sarsfield.svg",
-    "lanus": "https://upload.wikimedia.org/wikipedia/commons/2/23/Escudo_del_Club_Atl%C3%A9tico_Lan%C3%BA.svg",
-    "banfield": "https://upload.wikimedia.org/wikipedia/commons/4/43/Escudo_del_Club_Atl%C3%A9tico_Banfield.svg",
-    "argentinos juniors": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Escudo_del_Asociaci%C3%B3n_Atl%C3%A9tica_Argentinos_Juniors.svg",
-    "huracan": "https://upload.wikimedia.org/wikipedia/commons/8/87/Escudo_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg",
-    "talleres (c)": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_del_Club_Atl%C3%A9tico_Talleres_%28C%C3%B3rdoba%29.svg",
-    "belgrano": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Escudo_del_Club_Atl%C3%A9tico_Belgrano.svg",
-    "colon": "https://upload.wikimedia.org/wikipedia/commons/1/15/Escudo_del_Club_Atl%C3%A9tico_Col%C3%B3n.svg",
-    "union": "https://upload.wikimedia.org/wikipedia/commons/3/36/Escudo_del_Club_Atl%C3%A9tico_Uni%C3%B3n.svg",
-    "atletico tucuman": "https://upload.wikimedia.org/wikipedia/commons/6/60/Escudo_del_Club_Atl%C3%A9tico_Tucum%C3%A1n.svg",
-    "godoy cruz": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Escudo_del_Club_Deportivo_Godoy_Cruz_Antonio_Tomba.svg",
-    "defensa y justicia": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Escudo_del_Club_Social_y_Deportivo_Defensa_y_Justicia.svg",
-    "tigre": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Escudo_del_Club_Atl%C3%A9tico_Tigre.svg",
-    "arsenal": "https://upload.wikimedia.org/wikipedia/commons/6/60/Escudo_del_Arsenal_F%C3%BAtbol_Club.svg",
-    "quilmes": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Escudo_del_Quilmes_Atl%C3%A9tico_Club.svg"
+    "aldosivi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYLTS9PrLZVE7UP-Uik6iz9jCN52PMfWsJKdWvPYuKzSXG-_Ti_vZlFQEE_8usH9wtg_y3By5Sc-Dq6h6KPDudFl-176QyNxk75GeOu6snFYmbHnKNGhHiQaBbJ1GqihS-WXANCOoadhwT1KnimCOLaoGMbmaKsBXSCdjar0-Y_fP3vg8A4_6jIvF5/s128/Club%20Atletico%20Aldosivi128x.png",
+    "all boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjBTKE3RImNmGGbOG-xY2II7CZH6VtUgW8S_j8LhP1dSX-PfvBic-IjLVCO3DX9OaAuvCLRII8PJqmJtxQJG9Cjr_HYVzSiHcJkqTR7TtTRgl712TYa9nKjDvtCXpxdWXRsOuZHoYR6glICoVk79EJXGJeDSAu2_XhvkYqDz2plAjDYwNmSIPZ9F7g/s1600/Club%20Atletico%20All%20Boys128x.png",
+    "argentinos juniors": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjlhaXsbedTImUrW4LsuLMzJ714Xo355W4iK-bbQY_6SDwuVGbm1f9RL3rtNkfqmdTmLQprVMVQ-T8aVryTtp1qXvzzm6lKMDChKBXzg3pC-sDefiWyIRStS0czof2sKpAlud6tSfgYLD0/s1600/Argentinos+Juniors128x.png",
+    "arsenal": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQjFWD9Orw6a83FcR3Zoch1iEVjZljtyqPBML1VuE6A3FtHv4Z3HFCIZrKbO5csJrtQJVu45Eu4pH6FCgiqh7TBq_SG8z23nQs16UChl4aOUDprqHsLktaxfC2Hc5B-t0JQ7ZXh3w0MfY/s1600/Arsenal+Futbol+Club128x.png",
+    "atletico de rafaela": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiK3oxcpUwRHw5wWXv20Lt4V0QNmHD2sLiFhX93tJ-dnVWZevWjbizoYIm5LHzVrDfriX2068fz1FkTjZi3_0aQFJ03zlv1pVd3fKfmPvj4DEvf6QZ1L47zl0n8uwgFRm9hmpiYM-BP7PA/s1600/Atletico+de+Rafaela128x.png",
+    "atletico tucuman": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGBJfU3aRLSteWSER8lobIpNEpbaWlfqx7EvaKZtMsPLxgji_tqG3c-Mmf93GSaFYjJ20DcIUXyJkg6xY-u79sHJSzrMG-_bTtcAZnQnvtQ5DLF9xPDc-R85ZpNQDuk-EhvTCg48q7QH34uEUmF4wlkoLdtheCOHg4yOHg2goolWv8-0jZWSUYNYnMZj0/s1600/Club%20Atl%C3%A9tico%20Tucum%C3%A1n128x.png",
+    "banfield": "https://blogger.googleusercontent.com/img/a/AVvXsEiZEUKPDYSMC8jq9i_h2MW4sW5PAODO1tsTY46lGoIuQMphpA0kLQmmVb_DfE85Fgd6rwct9FF_2LYz7T4qjj4RXqAykFFLLgtwHgDEKyQ7IlSYf8IPh3dCXXITgK_2JMhqaautnTRIoLGaBXB4dxQzpqaciKgnRc51bQBqGetAvooSZiRgBM0_cAH9",
+    "barracas central": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsk-bPNfH9eCqD12pv_CwL1BuNUAxrKPjH0aIKMhsh-tkiNO7ZB6B7sVsH0UVGCK7WJQ1FWGubVs7NUyaW3SPG7DEAiIYbIos_masxv3AMn6NCJeiR5JwEDk3bUoRt90a00T-HgeswNYyiR3HHPx_wnLdq464rw5IS6AWp7t9WzRwDWrt7nFDAmuEO/s1600/CA%20Barracas%20Central128x.png",
+    "belgrano": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjG0uaNSNb6Uwoy5vF30ZXEaLfasLlBVZhM3-_a9PxYpWsV2jOfH-f68iKJqD186p06Kkd0uYANyifn5toHP2tIbOOjVXwnMbcim4Nc5PHpHtdEFjELQNFGRjfpFvp9b_g5tThF8VGywsPE2BELihpO2_0CsRC96vOiITvEqRR08hxEdnIqk2lbgS3nBLg/s1600/Club%20Atl%C3%A9tico%20Belgrano128x.png",
+    "boca juniors": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqNkNCiGJBhKbV9_u86I0Bq4wsNgM/s1600/Boca%20Juniors128x.png",
+    "central cordoba (sde)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi4SrYADliV740-Ma8xnLa1b1lPaYuj_5obigcy34-l2ORW-l1mJq_A6LlDcN4yYSTh1bQMaZj2TvXFiVNqVXJQBdZua1lN12M8vVXUBZvgPRFTR5iSd1ASy3S6sbs5nMODxupK9d84fwDpYWXNxhY_Z4GcaZmBTDunVA7SMqFmdlAC2toh2WkaG75XZMs/s1600/Club%20Atletico%20Central%20Cordoba128x.png",
+    "chacarita juniors": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhIG_McsGv3mxdN-op7xXA5jM-b8XKLK7Sk4LUkyxPXPZ7eoei4b4F0MOVRXcMDSnXuafBJfpYxE79KogeR-AcAqdCFdnFTL30Ey1-r4IUuc8Tek1Q_oZQR5Zi8WaZ9H9jEL10ZBLqobtffgolIWsPfsD8bswtHMA_zNiZHvOIWjwZRIZcOjOj1LY2ItQE/s1600/CA%20Chacarita%20Juniors128x.png",
+    "colon": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzGFwFMkXyTIz-88dXiQFafSqUYWzpcLMP4lYkPxlKhTuYhSMbZsPklaPIQQjivQUeNbo19j_u_wTAjEq8OtDywWw257_MftakdeMbcPHOkd8OdytNVOu-00LYzMFoay2I09MZ4gQYYEM/s0/Club+Atletico+Colon128x.png",
+    "crucero del norte": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdRJJJ7vhIBD5emoCIWajeaF6vgLYNxRalAA419ygA1yObWECOBfPZyifX6zEG08LVAmWy7u6pROvMOyHhmCuwwtiGUXljmVLDS91QN9Tz48oKjZ69z9BK_Xihy7ox-_I4pFwnBRceqtyF/s1600/Club+Crucero+del+Norte128x.png",
+    "defensa y justicia": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhH2OEayYViOITgGkRO33d33v9Zer-9OjYv2RYMWpI9JesyTsTGh-Wope5SZx5kH7YvPf1tMjWaWBJDkF8lQTNE8W7vXaJxKeggNo9_m4blMOShfcABgJwq2YEIklhiHvohPB9dY06B1lU/s0/Club+Social+y+Deportivo+Defensa+y+Justicia128x.png",
+    "deportivo riestra": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwYG_qkLvctt1uDooMsd3Cf85QsMELoyh_JwXhfde-B9QF8flb3_gjujJgzFzGOWrRjtwPjgSC-i2Cal2MRxZ5JOvmxneQZ52pWGUPRAmb8DRKegYhKlU1z4XWSMBGkXOJENo1WWayVtUjaprF9BxwrrfHU93PDfZRLqwVrhmCh1XXrgF_IZkSU4mSjbA/s1600/Club%20Deportivo%20Riestra128x.png",
+    "estudiantes (lp)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s1600/Club%20Estudiantes%20de%20La%20Plata128x.png",
+    "gimnasia (lp)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4HjdHQpm6ukoVe_oFSjYvx3iYZYHNJPuDTSU9OtW95Fm_Or0JY68W1Z_UUYnxbHl92Ri1FwjNYZ_fBghTnp4EFKF6HhvIlRmBjOCgxzJBpywxNZLI7zz046A3J-YY8LqZcqyAJiOGfH4/s1600/Club+de+Gimnasia+y+Esgrima+La+Plata128x.png",
+    "godoy cruz": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi80fnjA1MthG6UeuRC0g50bIY82iC9Vev2JXPkSmexHnf7WIR34BwkcrrxgxD2NMIKP-RUyTiCa6lJ3FRhF64UNVpWkBy58zfo62oz1RgwkL4s5GwtEZOuhAMc7ZZ3EOYzTq4QMqV2aT9dQ9KJzNG3oFi5uxO5M9wv0YtkSxSZP2imTV2CJZK5a2BquQg/s1600/Godoy%20Cruz128x.png",
+    "huracan": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ5D1BTENTDFFp9u4q4FFwLVy2aLsW5bDUpI-0PH0c_ftcV1H8SiY70y8_PsygAyRCm3gcdYo625ObGsIemzkA9w-ouuaPYgvassM678QSj6JllObbUQy_TvsttPuMskI_3JwDEksu4QI/s1600/Club+Atletico+Huracan128x.png",
+    "independiente": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimsJgFxyJXwpXGV_uPf9mBgwnx_Yp8UDgyOxZGLgUK0HoisEqPNa6rZfFHKEnLKlxII9hFeSRsnQ077Iz9nWR3LMZEvQbEWDl3L_LlpkIpN_X4_GW3vHFtxYNYz0jUmafXGyg1tbvN_0Iokh9SydpqgD72ByRPRCHz01ZgON769GQG6npXUmgIB-heLBw/s1600/Club%20Atletico%20Independiente128x.png",
+    "independiente rivadavia": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhm7gIKplIfAqUe3Lcxfj4_rzdzMmklVEKSrAHtS4gv20f51QBF4ZJQhoZ2T2lfycrCT6OqiEGbuLuLGW34sl0Sp7HOnbE-0ItTnp1lI7uG9oY4pNysra_pwCCsEVcKWyI2HAKHIe3IQEQUu4Evu2zLmkmycZ6eJPmt-6QFtxw5L5XHQDYzZM-EZotxhyphenhyphenE/s1600/Independiente%20Rivadavia128x.png",
+    "instituto": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-MtsodoQ123uMzWKDD7Q3xFwVO9XRELj1pEUvlWkyEMCSEKKdwXfcFRH1PvIzo0amHjppMz1TQtawcb0Wq9ewxiGMAp1LKsL4r-pUbuNDsqSGI9N8ywZzwxYTOS7cXFqXUWllRAZgmQM/s1600/Instituto+Atletico+Central+Cordoba128x.png",
+    "lanus": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY0LCvqZHXem9kWtHYUM9sgTasj7XkYDtm9xGPZcXBWdWzAC9MDJPd9T06FbroMSZjaepTDjao038Vz7grV41lvC0-kY5FCv5YdlVLaDDxRv8R-9-OZ4VZBcloZbV9vRxfyBU_LJF8BYx2FpTOsIw_vKaWAMOYwd1OM3dfw-8VlCF9i2tH-kD-r85UsQ4/s1600/CA%20Lanus128x.png",
+    "newells old boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKxWx4tXSkJVEzqgz-TuYHh34vVYlJaRG0IfjRcjnHMnv-Bg_7PuDuYsqlwJlCC3P2LCnDGrmSkouKy9bY3abxtqhGRzDd1P0xULGxVFvT_gRz9r1zyTOSbkOH_hPMwi7RxOwr-O5FMyU/s1600/Club+Atletico+Newells+Old+Boys128x.png",
+    "nueva chicago": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5711xbOPjJyJq7ZjLs2_S4Gsb2LR80ACrK8oaYlbAif5QSdrAzGRldfrHhaw3-Q-btSqPkskaDaY8_YP6Df9QHmZuOKc8bZe19vcc32IrVmSQOSY5UHJ4ycEYfkRUjTveST7ACt22B4gU4UMz4z3CJBfgf-HPPDn2jwXY797JnaUKP92BazW-_qoLcs/s1600/CA%20Nueva%20Chicago128x.png",
+    "olimpo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk6Tc9DV0TJG4d9RRxtaHBJrzupxv522uCLzupMLyqJp_caSba8JXDjlgFzPZ6HrUpuxa5JCAISMWeFZ-O0fLSpmQw29t3tuqhNmMfWn6NafL2eqzlKiwKIhqonqq3eJ4gJLIcMEmSPkk/s1600/Club+Olimpo128x.png",
+    "patronato": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHSVELQxaixKKf-HBJqJ2R5HecTYm_fXbRLrJ-w9Vtj1QVvwJUpYJ_iefWcvgVWSavRtp9LK-bGwGmqYBZXsBdPMz0vgohD1UmmvdRiWsKzvSYQuJGGkfdSc7w2YD8vKfESTyN-fwdgQlWp430iFugtNR5r9h3pmSiU4ivZnfOzNAi8JyHm7vyFN-l/s1600/Club%20Atletico%20Patronato128x.png",
+    "platense": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRrSFevGRklwVlwuo8iOX1B7g8GpGOR-RU1ud9dz7w2XWH5tJIiOBG731fLpH-9GuoOI9cHM87TUnYZ5-vpaNR_18jx4AsSUOcmK8kNA4dn-WiocZrrhJzxxbk-raS9wPCEKyLWJteZ8ReiHUgXlSvO7KvNuNAxLDmbcR9YqDH9MlHs3nMgPtzPbECITg/s1600/Club%20Atletico%20Platense128x.png",
+    "quilmes": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiU4tDo5BSy4w7raZp9zycKpa3bvG-IZf0uJWqgzNeNOx398I4FwgOzyyrGi6k1wPmLE6QdJrl20-evWySYw7ONy3xNPR2lpPvv4empkc7UOhNlyRYlI4rs5WW0Vnwkmjf5y5BVXXIbsOOYKZlAD55DmTvhm0sz5-MWoj30mnSwmGz_OZlN2-VvLIgJ/s1600/Quilmes%20Atletico%20Club128x.png",
+    "racing club": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghWvSJWCrUF8u2JceuoExqUlFdSH_8ikgsw-3Mv8-CblPsDANkhTcB3yCOFufq7FH8rgreONKj2yjO4dIAVZAOjM0LP5Stm6dvBbp78TSLkNSDvXcV_qhvm3nsUKHNNbBkXcwU5pD8Sak/s1600/Racing+Club128x.png",
+    "river plate": "https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ",
+    "rosario central": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCm7IJilwhaIvOVMhJmrp42mFKUkPTiqQEBDNAx8IS9xUSvkdjB1YiWUpl_bGptgX6EXHbCS1Pf3Jbwu-f26fGtOldGlJAc-i-QxwIP6NlfPm5mBXJE1YzpGYKR7aTZJ5wJBSIAlrD0y5FCe4D4fuyGkx-7hCRs6-x-cnBbNmiW9jmyB6ZVllbGuDynu0/s1600/CA%20Rosario%20Central128x.png",
+    "san lorenzo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjG68ZrPNvlFuKIWw939yae1SX0fPGSOuAa_8OdtNaJzTGrIYyLXa0gkPFE827tFP8-wI838QyD6kiAxOR-JN3QVejwDWp2pnq38jB1rHlMeqZb5eGDETr42_SrhEU_qz9yfsT8rGxvbh04gd-pdUNap6iL7fez26aBNAuUl1sd_EmA3WziFEHCc2UZIVY/s1600/CA%20San%20Lorenzo%20de%20Almagro128x.png",
+    "san martin (sj)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEWIIKyRnzdyJieAvWGSa2lMn2vG6bgQmAGtupHsCg8pH20m1aZaZaH-uE7bovgguXr1qhZ2pPyp48tWwu0L80WRF65f9PJ_q2-uwyj8AoWuSlbsIHGlUQEIRFqH82YfrODi_OBvdjk9SGwNXrFFURhO-5iP30K4XC_MKrdD_z8koyxhPcD0DXSFbbQ94/s1600/Club%20Atl%C3%A9tico%20San%20Mart%C3%ADn128x.png",
+    "san martin (t)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpBGKSCCAmo9EDkMIxWTnIQ4zhR7fUcaee9oaiNTX3K6YC8OopjcNVNgqjmF1Mx9sULwwy5mQJnjwJNb3QNsJZeerFD5m3yvlzITAPprJQRnIhjimaeywLBY_5CycbQl7UZl9mA4UGROk/s1600/Club+Atletico+San+Martin128x.png",
+    "sarmiento (j)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOm5IHpBKTvNVI2oQsYF4jEUTPoYIwnqQHBf7h__5zoUpJAUEvM6h5HWH8HQ9AGnqo-t7za54gvJlXOgR80MJHbFWbwur2U_j_-fjtYSnBZqMcxcxC5XY_jD_O_6sKKvJddXl_LpjVA-M/s1600/Sarmiento+de+Junin128x.png",
+    "talleres (c)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrj-EZz7CmNG6m_Fa7Q3w1CcUORXE8k1tWkOeY_N-egX754nAJWchSjs55lARBlu-T9bG5twJNd-xn5gIzHCmL5iQSG-pl0ZBIzWfgATG7dz7bp4go3c4CRjarxwjQDCgtADnxY5eudgRhIWTJ1vP5gPOyoXpmS5E6EvcfyQxuFlkLmUGAMcDlBsvLKMI/s1600/Club%20Atl%C3%A9tico%20Talleres128x.png",
+    "temperley": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAHHO7kQm_DDJGUwdpUTKXGatGZ9o-Ov1oCrsVtgeqq0Xoq-oFGq0YEBdRkLYU6-J6LJAeOcCmUNNjt_o25q2PCPy-6WVzAsQwYpkVkD1x3bb2mv4ePkYvLyISfKetj7Cp60gya39Gadg/s1600/Club+Atletico+Temperley128x.png",
+    "tigre": "https://blogger.googleusercontent.com/img/a/AVvXsEheE2-jT6jhVGlGIRdZPJwS_A7uR_WMCHIQvTd1mUCqJNOau42BT_qO4tWzf7lRE5DJZqKhwo1JDkyQsn5ayntCNsHeCGVFsylbFmRNe8vhjhmHfgdMvJImq74xDJ6fIuvcxTTVg2YDsDzh37D568XL8A1AkCZZm2BkKqwtrA6ezoAVtEKqxEtFHoYs",
+    "union": "https://blogger.googleusercontent.com/img/a/AVvXsEglXo8V_6pxTEHZ-c81Q37Y42rQ80ittTUvm265m9VL8D_vv8_D14wdxqjyDUHW9UtsTBIliG2_Im-BdrFyvmf7ZfIe_rso9ejGquWbD7W8jxDz31BO40uw3kKwJPnGxdMasorbQSPGkIFHgMFm-ImXrbZ14Q-5-rV5hpqhhWlJpDJ9NqHcmFwbrjYC",
+    "velez sarsfield": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirp6aRrGW9ehZvYes7b_Lsz1nHmke4k3nV_Knh_zcmgVpEbFhqWiN2-tJGGOcNU00R2uudedXBlqZBIX0ldnSOw5W6JNB82FR5Kr8qEjseU6xRTPxRE5gsMRuxjLzX1eN84kwHKugkoZYqLCISFFubWIbCNtPZMIYTXdqU6RgLOh9UcQQj-MOJspTL/s1600/Velez%20Sarsfield128x.png"
 };
 
 function obtenerURL_Escudo(nombreNormalizado, nombreReal) {
-    if (logosEquipos[nombreNormalizado]) {
+    if (logosEquipos[nombreNormalizado] && logosEquipos[nombreNormalizado] !== "URL_ACA") {
         return logosEquipos[nombreNormalizado];
     }
-    // Si no está en el diccionario, crea un avatar de iniciales automático
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreReal)}&background=00285e&color=fff&rounded=true&bold=true`;
 }
 
@@ -391,7 +418,6 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
 
         let tagAscenso = (!datosAyer && fechaSeleccionada === 0) ? `<span style="font-size:10px; background:#ffd700; padding:2px 5px; border-radius:3px; margin-left:5px; color:black;">NUEVO</span>` : "";
 
-        // AQUÍ ESTÁ LA MAGIA DEL ESCUDO EN LA TABLA
         let escudoHtml = `<img src="${obtenerURL_Escudo(normalizarNombre(equipo.nombre), equipo.nombre)}" style="width:24px; height:24px; object-fit:contain;" alt="logo">`;
 
         tabla.innerHTML += `
@@ -421,7 +447,6 @@ function abrirFichaClub(nombreClub) {
     const modal = document.getElementById("modalGrafico");
     modal.style.display = "flex";
 
-    // AGREGAMOS EL ESCUDO AL TÍTULO DEL MODAL
     let escudoUrl = obtenerURL_Escudo(norm, nombreClub);
     document.getElementById("tituloModal").innerHTML = `
         <div style="display:flex; align-items:center; gap:12px;">
@@ -708,6 +733,7 @@ function registrarEventosModal() {
     }
 }
 
+// AQUÍ ESTÁ LA MODIFICACIÓN PARA INVERTIR LAS FECHAS
 function actualizarDesplegableFechas(torneoSeleccionado) {
     const selectorFecha = document.getElementById("selectorFecha");
     if (!selectorFecha) return;
@@ -715,17 +741,21 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
     
     let totalFechas = fechasPorTorneo[torneoSeleccionado] || 0;
     
-    let optionCero = document.createElement("option");
-    optionCero.value = 0;
-    optionCero.text = "Inicio del Torneo";
-    selectorFecha.appendChild(optionCero);
-
-    for(let i = 1; i <= totalFechas; i++) {
+    // Bucle invertido: Empezamos desde la última fecha hasta la 1
+    for(let i = totalFechas; i >= 1; i--) {
         let option = document.createElement("option");
         option.value = i;
         option.text = `Fecha ${i}`;
         selectorFecha.appendChild(option);
     }
+    
+    // Dejamos "Inicio del Torneo" al final de la lista visual
+    let optionCero = document.createElement("option");
+    optionCero.value = 0;
+    optionCero.text = "Inicio del Torneo";
+    selectorFecha.appendChild(optionCero);
+
+    // Seleccionamos por defecto la última fecha que se jugó
     selectorFecha.value = totalFechas;
 }
 
@@ -762,7 +792,6 @@ async function iniciarApp() {
         const selectorTorneo = document.getElementById("selectorTorneo");
         if (selectorTorneo) {
             selectorTorneo.innerHTML = "";
-            // AQUÍ INVERTIMOS EL MENÚ: El último torneo queda primero
             [...torneosOrdenados].reverse().forEach(torneo => {
                 let option = document.createElement("option");
                 option.value = torneo;
@@ -794,7 +823,6 @@ async function iniciarApp() {
 
         registrarEventosModal();
 
-        // Inicializamos la vista apuntando al último torneo del historial cronológico
         let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
         if (selectorTorneo && selectorFecha) {
             selectorTorneo.value = torneoInicial;
