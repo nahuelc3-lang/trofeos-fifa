@@ -13,7 +13,6 @@ const aliasEquipos = {
     "san martin sj": "san martin (sj)"
 };
 
-// 1. FUNCIÓN PARA ARREGLAR LOS SÍMBOLOS RAROS DE EXCEL
 function arreglarCodificacion(texto) {
     const mapa = {
         'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ã³': 'ó', 'Ãº': 'ú', 'Ã±': 'ñ', 'Ã‘': 'Ñ',
@@ -32,8 +31,6 @@ async function leerCSV(archivo) {
     
     let texto = await respuesta.text();
     texto = texto.replace(/^\uFEFF/, ''); 
-    
-    // Aplicamos la limpieza de símbolos a todo el archivo apenas lo leemos
     texto = arreglarCodificacion(texto);
     
     const filas = texto.trim().split(/\r?\n/).filter(fila => fila.trim() !== "");
@@ -58,81 +55,124 @@ async function leerCSV(archivo) {
 function normalizarNombre(nombre) {
     if (!nombre) return "";
     let limpio = nombre.trim().toLowerCase();
-    
     limpio = limpio.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    
     return aliasEquipos[limpio] || limpio;
 }
 
-function calcularResultadoEsperado(puntosA, puntosB) {
-    return 1 / (1 + Math.pow(10, (puntosB - puntosA) / 400));
+// NUEVO MOTOR MATEMÁTICO: Localía, Margen de Gol y K=25
+function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitante) {
+    let puntosL = equipoLocal.puntos;
+    let puntosV = equipoVisitante.puntos;
+
+    // 1. Ventaja de Localía (+75 puntos virtuales solo para el cálculo)
+    const VENTAJA_LOCAL = 75;
+    let ptosLocalVirtual = puntosL + VENTAJA_LOCAL;
+
+    // 2. Probabilidad Esperada
+    let esperadoLocal = 1 / (1 + Math.pow(10, (puntosV - ptosLocalVirtual) / 400));
+    let esperadoVisitante = 1 - esperadoLocal;
+
+    // 3. Determinar Resultado
+    let resultadoLocal, resultadoVisitante;
+    if (golesLocal > golesVisitante) { resultadoLocal = 1; resultadoVisitante = 0; }
+    else if (golesLocal < golesVisitante) { resultadoLocal = 0; resultadoVisitante = 1; }
+    else { resultadoLocal = 0.5; resultadoVisitante = 0.5; }
+
+    // 4. Multiplicador por Margen de Goles (G)
+    let difGoles = Math.abs(golesLocal - golesVisitante);
+    let G = 1;
+    
+    if (resultadoLocal !== 0.5) { // Si no es empate
+        // Diferencia de rating a favor del ganador
+        let difPuntos = (resultadoLocal === 1) ? (ptosLocalVirtual - puntosV) : (puntosV - ptosLocalVirtual);
+        // Fórmula logarítmica estándar para el fútbol
+        G = Math.log(difGoles + 1) * (2 / (2 + 0.001 * difPuntos));
+        if (G < 1) G = 1; // El multiplicador nunca achica los puntos base
+    }
+
+    // 5. Aplicar K base de 25
+    const K = 25;
+    let cambio = K * G * (resultadoLocal - esperadoLocal); // Fórmula Elo final
+
+    equipoLocal.puntos += cambio;
+    equipoVisitante.puntos -= cambio;
 }
 
-function actualizarPuntos(equipoA, equipoB, resultadoA) {
-    const K = 40;
-    const esperadoA = calcularResultadoEsperado(equipoA.puntos, equipoB.puntos);
-    const cambio = K * (resultadoA - esperadoA);
-    equipoA.puntos += cambio;
-    equipoB.puntos -= cambio;
-}
-
+// NUEVA LÓGICA HISTÓRICA: Regresión a la media y ascensos dinámicos
 function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
     let diccionarioEquipos = {};
     let indiceTorneoObjetivo = torneosOrdenados.indexOf(torneoObjetivo);
 
-    // Descubrir equipos y darles los 1500 puntos si son nuevos
-    datosPartidos.forEach(partido => {
-        let nombreTorneo = (partido.Torneo || "").trim();
-        let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
-
-        if (indiceEsteTorneo <= indiceTorneoObjetivo) {
-            let nombreLocalLimpio = normalizarNombre(partido.Local);
-            let nombreVisitanteLimpio = normalizarNombre(partido.Visitante);
-
-            if (!diccionarioEquipos[nombreLocalLimpio]) {
-                diccionarioEquipos[nombreLocalLimpio] = { nombre: (partido.Local).trim(), puntos: 1500, ultimoTorneo: indiceEsteTorneo };
-            } else {
-                diccionarioEquipos[nombreLocalLimpio].ultimoTorneo = indiceEsteTorneo;
-            }
-
-            if (!diccionarioEquipos[nombreVisitanteLimpio]) {
-                diccionarioEquipos[nombreVisitanteLimpio] = { nombre: (partido.Visitante).trim(), puntos: 1500, ultimoTorneo: indiceEsteTorneo };
-            } else {
-                diccionarioEquipos[nombreVisitanteLimpio].ultimoTorneo = indiceEsteTorneo;
-            }
-        }
+    // Mapa auxiliar para guardar los nombres originales bonitos
+    let nombresOriginales = {};
+    datosPartidos.forEach(p => {
+        nombresOriginales[normalizarNombre(p.Local)] = p.Local.trim();
+        nombresOriginales[normalizarNombre(p.Visitante)] = p.Visitante.trim();
     });
 
-    // Calcular los puntos partido a partido
-    datosPartidos.forEach(partido => {
-        let nombreTorneo = (partido.Torneo || "").trim();
-        let indiceEsteTorneo = torneosOrdenados.indexOf(nombreTorneo);
-        let colFecha = partido.Fecha_del_Torneo || partido.fecha_del_torneo;
-        let fechaDelPartido = Number(colFecha);
+    // Procesamos la historia torneo por torneo en orden cronológico
+    for (let t = 0; t <= indiceTorneoObjetivo; t++) {
+        let nombreTorneoActual = torneosOrdenados[t];
+        let partidosDeEsteTorneo = datosPartidos.filter(p => (p.Torneo || "").trim() === nombreTorneoActual);
         
-        let procesar = false;
+        // Identificar quiénes juegan este torneo
+        let equiposEsteTorneo = new Set();
+        partidosDeEsteTorneo.forEach(p => {
+            equiposEsteTorneo.add(normalizarNombre(p.Local));
+            equiposEsteTorneo.add(normalizarNombre(p.Visitante));
+        });
 
-        if (indiceEsteTorneo < indiceTorneoObjetivo) {
-            procesar = true;
-        } else if (indiceEsteTorneo === indiceTorneoObjetivo && fechaDelPartido <= fechaObjetivo) {
-            procesar = true;
+        // Calcular el promedio de puntos de la liga al finalizar el torneo anterior
+        let sumaPts = 0, cantEquipos = 0;
+        if (t > 0) {
+            Object.values(diccionarioEquipos).forEach(eq => {
+                if (eq.ultimoTorneo === t - 1) { sumaPts += eq.puntos; cantEquipos++; }
+            });
         }
+        let promedioLiga = cantEquipos > 0 ? (sumaPts / cantEquipos) : 1500;
 
-        if (procesar) {
+        // Administrar los puntos iniciales y de receso para los equipos que juegan hoy
+        equiposEsteTorneo.forEach(nombreEq => {
+            if (!diccionarioEquipos[nombreEq]) {
+                // ASCENSO O PRIMER TORNEO: El primer año arrancan en 1500. Después, el ascendido arranca 100 pts abajo del promedio.
+                let ptsIniciales = (t === 0) ? 1500 : (promedioLiga - 100);
+                diccionarioEquipos[nombreEq] = { 
+                    nombre: nombresOriginales[nombreEq], 
+                    puntos: ptsIniciales, 
+                    ultimoTorneo: t 
+                };
+            } else {
+                // EL EQUIPO YA EXISTÍA EN LA BASE
+                if (diccionarioEquipos[nombreEq].ultimoTorneo < t - 1) {
+                    // REINGRESO POST DESCENSO: Mezcla su historia (70%) con la realidad actual de la liga (30%)
+                    diccionarioEquipos[nombreEq].puntos = (diccionarioEquipos[nombreEq].puntos * 0.7) + (promedioLiga * 0.3);
+                } else if (diccionarioEquipos[nombreEq].ultimoTorneo === t - 1) {
+                    // EQUIPO QUE SE MANTIENE: Regresión de mercado (pierde un 5% de su distancia con los 1500 puntos)
+                    diccionarioEquipos[nombreEq].puntos = (diccionarioEquipos[nombreEq].puntos * 0.95) + (1500 * 0.05);
+                }
+                diccionarioEquipos[nombreEq].ultimoTorneo = t;
+            }
+        });
+
+        // Jugar los partidos
+        partidosDeEsteTorneo.forEach(partido => {
+            let colFecha = partido.Fecha_del_Torneo || partido.fecha_del_torneo;
+            let fechaDelPartido = Number(colFecha);
+            
+            // Si estamos en el torneo actual, frenamos en la fecha elegida por el usuario
+            if (t === indiceTorneoObjetivo && fechaDelPartido > fechaObjetivo) return;
+
             let local = diccionarioEquipos[normalizarNombre(partido.Local)];
             let visitante = diccionarioEquipos[normalizarNombre(partido.Visitante)];
-
             let golesLocal = Number(partido.Goles_Local || partido.goles_local);
             let golesVisitante = Number(partido.Goles_Visitante || partido.goles_visitante);
             
-            let resultado = (golesLocal > golesVisitante) ? 1 : (golesLocal < golesVisitante ? 0 : 0.5);
-            actualizarPuntos(local, visitante, resultado);
-        }
-    });
+            actualizarPuntos(local, visitante, golesLocal, golesVisitante);
+        });
+    }
 
-    // Filtrar descensos: Este es el filtro que permite que haya 20 o 30 equipos dinámicamente
+    // Filtrar solo a los equipos activos en el torneo objetivo
     let ranking = Object.values(diccionarioEquipos).filter(eq => eq.ultimoTorneo === indiceTorneoObjetivo);
-    
     ranking.sort((a, b) => b.puntos - a.puntos);
     ranking.forEach((eq, index) => eq.posicion = index + 1);
 
@@ -239,7 +279,11 @@ async function iniciarApp() {
             renderizarTabla(selectorTorneo.value, Number(e.target.value));
         });
 
-        // 2. MOSTRAR EL ÚLTIMO TORNEO POR DEFECTO
+        // Insertar nota metodológica al final
+        const nota = document.createElement("div");
+        nota.innerHTML = "<p style='font-size:12px; color:#666; text-align:center; margin-top:20px; font-style:italic;'>Metodología: Sistema Elo Internacional (K=25 variable). Incluye ventaja de localía, multiplicador por diferencia de gol y regresión a la media.</p>";
+        document.querySelector(".contenedor").appendChild(nota);
+
         let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
         selectorTorneo.value = torneoInicial;
         actualizarDesplegableFechas(torneoInicial);
