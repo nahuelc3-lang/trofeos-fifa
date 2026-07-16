@@ -105,8 +105,8 @@ const zonasEquipos = {
     "san martin (sj)": "San Juan",
     
     // Norte
-    "atletico tucuman": "Tucumán", "san martin (t)": "Tucumán",
-    "central cordoba (sde)": "Santiago del Estero",
+    "atletico tucuman": "Tucumán", "san martin t": "Tucumán",
+    "central cordoba": "Santiago del Estero",
     "crucero del norte": "Misiones"
 };
 
