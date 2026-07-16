@@ -383,20 +383,46 @@ async function iniciarApp() {
         nota.innerHTML = "<p style='font-size:12px; color:#666; text-align:center; margin-top:20px; font-style:italic;'>Metodología: Sistema Elo Internacional (K=25 variable). Incluye ventaja de localía, multiplicador por diferencia de gol, importancia de playoffs y regresión a la media.</p>";
         document.querySelector(".contenedor").appendChild(nota);
 
-        let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
-        selectorTorneo.value = torneoInicial;
-        actualizarDesplegableFechas(torneoInicial);
-        renderizarTabla(torneoInicial, Number(selectorFecha.value));
+let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
+selectorTorneo.value = torneoInicial;
+actualizarDesplegableFechas(torneoInicial);
+renderizarTabla(torneoInicial, Number(selectorFecha.value));
 
-        const modal = document.getElementById("modalGrafico");
-        const spanCerrar = document.querySelector(".cerrar-modal");
-        
-        spanCerrar.onclick = () => { modal.style.display = "none"; };
-        window.onclick = (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
+/* ===========================
+   CONFIGURACIÓN DEL MODAL
+=========================== */
+
+const modal = document.getElementById("modalGrafico");
+const spanCerrar = document.querySelector(".cerrar-modal");
+
+console.log("Modal encontrado:", modal);
+console.log("Botón cerrar encontrado:", spanCerrar);
+
+if (modal && spanCerrar) {
+
+    spanCerrar.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+
+} else {
+
+    console.error("ERROR: No se encontró el modal o el botón de cerrar.");
+
+    if (!modal) {
+        console.error("Falta el elemento con id='modalGrafico'");
+    }
+
+    if (!spanCerrar) {
+        console.error("Falta el elemento con class='cerrar-modal'");
+    }
+
+}
 
     } catch (error) {
         console.error(error);
