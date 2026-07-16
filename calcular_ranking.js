@@ -27,7 +27,6 @@ const aliasEquipos = {
     "newell's old boys": "newells old boys", "newells old boys": "newells old boys"
 };
 
-// DICCIONARIO CON TUS ENLACES DE BLOGGER INTEGRADOS
 const logosEquipos = {
     "aldosivi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYLTS9PrLZVE7UP-Uik6iz9jCN52PMfWsJKdWvPYuKzSXG-_Ti_vZlFQEE_8usH9wtg_y3By5Sc-Dq6h6KPDudFl-176QyNxk75GeOu6snFYmbHnKNGhHiQaBbJ1GqihS-WXANCOoadhwT1KnimCOLaoGMbmaKsBXSCdjar0-Y_fP3vg8A4_6jIvF5/s1600/Club%20Atletico%20Aldosivi128x.png",
     "all boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjBTKE3RImNmGGbOG-xY2II7CZH6VtUgW8S_j8LhP1dSX-PfvBic-IjLVCO3DX9OaAuvCLRII8PJqmJtxQJG9Cjr_HYVzSiHcJkqTR7TtTRgl712TYa9nKjDvtCXpxdWXRsOuZHoYR6glICoVk79EJXGJeDSAu2_XhvkYqDz2plAjDYwNmSIPZ9F7g/s1600/Club%20Atletico%20All%20Boys128x.png",
@@ -75,20 +74,30 @@ const logosEquipos = {
     "velez sarsfield": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirp6aRrGW9ehZvYes7b_Lsz1nHmke4k3nV_Knh_zcmgVpEbFhqWiN2-tJGGOcNU00R2uudedXBlqZBIX0ldnSOw5W6JNB82FR5Kr8qEjseU6xRTPxRE5gsMRuxjLzX1eN84kwHKugkoZYqLCISFFubWIbCNtPZMIYTXdqU6RgLOh9UcQQj-MOJspTL/s1600/Velez%20Sarsfield128x.png"
 };
 
+// NUEVO: Diccionario Geográfico de los Equipos (Filtros AFA)
 const zonasEquipos = {
     "boca juniors": "CABA", "river plate": "CABA", "san lorenzo": "CABA", "huracan": "CABA",
     "argentinos juniors": "CABA", "velez sarsfield": "CABA", "all boys": "CABA",
     "nueva chicago": "CABA", "barracas central": "CABA", "deportivo riestra": "CABA",
-    "racing club": "PBA", "independiente": "PBA", "lanus": "PBA", "banfield": "PBA",
-    "estudiantes (lp)": "PBA", "gimnasia (lp)": "PBA", "arsenal": "PBA", "quilmes": "PBA",
-    "tigre": "PBA", "defensa y justicia": "PBA", "platense": "PBA", "sarmiento (j)": "PBA",
-    "olimpo": "PBA", "temperley": "PBA", "chacarita juniors": "PBA", "aldosivi": "PBA",
+    
+    "racing club": "Conurbano", "independiente": "Conurbano", "lanus": "Conurbano", "banfield": "Conurbano",
+    "arsenal": "Conurbano", "quilmes": "Conurbano", "tigre": "Conurbano", "defensa y justicia": "Conurbano",
+    "platense": "Conurbano", "chacarita juniors": "Conurbano", "temperley": "Conurbano",
+    
+    "estudiantes (lp)": "La Plata", "gimnasia (lp)": "La Plata",
+    "aldosivi": "Interior BA", "sarmiento (j)": "Interior BA", "olimpo": "Interior BA",
+    
     "rosario central": "Santa Fe", "newells old boys": "Santa Fe", "colon": "Santa Fe",
     "union": "Santa Fe", "atletico de rafaela": "Santa Fe",
+    
     "talleres (c)": "Córdoba", "belgrano": "Córdoba", "instituto": "Córdoba", "estudiantes (rc)": "Córdoba",
+    
     "godoy cruz": "Mendoza", "independiente rivadavia": "Mendoza", "gimnasia (m)": "Mendoza",
+    
     "atletico tucuman": "Tucumán", "san martin (t)": "Tucumán",
-    "patronato": "Otras", "san martin (sj)": "Otras", "central cordoba (sde)": "Otras", "crueno del norte": "Otras"
+    "central cordoba (sde)": "Sgo del Estero",
+    
+    "patronato": "Otras", "san martin (sj)": "Otras", "crucero del norte": "Otras"
 };
 
 function obtenerURL_Escudo(nombreNormalizado, nombreReal) {
@@ -331,15 +340,18 @@ function renderizarTabla() {
     let rankingActual = calcularRankingHasta(selectorTorneo, selectorFecha);
     let rankingAnterior = calcularRankingHasta(selectorTorneo, selectorFecha - 1);
     
+    // FILTRO REGIONAL Y DE BUENOS AIRES
     if (selectorRegion !== "Todas") {
         rankingActual = rankingActual.filter(eq => {
             let zona = zonasEquipos[eq.nombreReal] || "Otras";
-            if (selectorRegion === "BA_Total") return zona === "CABA" || zona === "PBA";
+            if (selectorRegion === "AMBA") return zona === "CABA" || zona === "Conurbano";
+            if (selectorRegion === "BA_Provincia") return zona === "Conurbano" || zona === "La Plata" || zona === "Interior BA";
             return zona === selectorRegion;
         });
         rankingAnterior = rankingAnterior.filter(eq => {
             let zona = zonasEquipos[eq.nombreReal] || "Otras";
-            if (selectorRegion === "BA_Total") return zona === "CABA" || zona === "PBA";
+            if (selectorRegion === "AMBA") return zona === "CABA" || zona === "Conurbano";
+            if (selectorRegion === "BA_Provincia") return zona === "Conurbano" || zona === "La Plata" || zona === "Interior BA";
             return zona === selectorRegion;
         });
     }
@@ -468,6 +480,13 @@ window.abrirFichaClub = function(nombreClub) {
     actualizarVisualizacionGrafico();
 };
 
+// LIMPIEZA INTELIGENTE DEL EJE X DEL GRÁFICO
+function abreviarTorneo(torneo) {
+    let t = torneo.replace("Torneo ", "").replace("Campeonato de Primera División ", "Camp. ").replace("Campeonato de Primera Division ", "Camp. ");
+    t = t.replace("Apertura ", "Ape '").replace("Clausura ", "Clau '").replace("Inicial ", "Ini '").replace("Final ", "Fin '").replace("Transicion ", "Trans '").replace("Transición ", "Trans '");
+    return t;
+}
+
 function actualizarVisualizacionGrafico() {
     const norm = normalizarNombre(clubSeleccionadoActivo);
     const historialCompleto = cacheHistorialGlobal[norm];
@@ -514,8 +533,15 @@ function actualizarVisualizacionGrafico() {
     }
 
     let etiquetasX = datosFiltrados.map(h => {
-        let torneoCorto = h.torneo.replace("Torneo Inicial", "Inicial").replace("Torneo Final", "Final").replace("Torneo de Transicion", "Transición").replace("Torneo de Transición", "Transición").replace("Temporada", "Temp.").replace("Campeonato de Primera Division", "Camp.").replace("Campeonato de Primera División", "Camp.");
-        return h.fecha === 0 ? `${torneoCorto} (Inicio)` : `${torneoCorto} (F${h.fecha})`;
+        let esUnicoTorneo = (filtroTipoActivo === "torneo" && filtroValorActivo === "ultimo");
+        let fechaTexto = h.fecha === 0 ? "Inicio" : `F${h.fecha}`;
+        
+        // Si es un solo torneo, mostramos un eje hiperlimpio. Si son varios, ponemos iniciales.
+        if (esUnicoTorneo) {
+            return fechaTexto; 
+        } else {
+            return `${abreviarTorneo(h.torneo)} ${fechaTexto}`;
+        }
     });
 
     let datasetY = datosFiltrados.map(h => {
