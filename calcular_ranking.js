@@ -38,7 +38,6 @@ const aliasEquipos = {
     "atletico rafaela": "atletico de rafaela",
     "newells": "newells old boys",
     "newells old boys": "newells old boys"
-    "newells old boys": "Newell's Old Boys"
 };
 
 // DICCIONARIO DE ESCUDOS (2012 - 2026)
