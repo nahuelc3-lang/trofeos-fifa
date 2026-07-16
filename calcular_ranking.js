@@ -13,12 +13,20 @@ let modoMetricaActivo = "posicion";
 
 // DICCIONARIO DE ALIAS: Corrige nombres escritos distinto en el CSV
 const aliasEquipos = {
-    "estudiantes": "estudiantes (lp)",
+"estudiantes": "estudiantes (lp)",
     "estudiantes de la plata": "estudiantes (lp)",
+    "estudiantes (rio cuarto)": "estudiantes (rc)",
+    "estudiantes de rio cuarto": "estudiantes (rc)",
     "argentinos": "argentinos juniors",
     "boca": "boca juniors",
     "river": "river plate",
     "gimnasia": "gimnasia (lp)",
+    "gimnasia y esgrima la plata": "gimnasia (lp)",
+    "gimnasia y esgrima (la plata)": "gimnasia (lp)",
+    "gimnasia de la plata": "gimnasia (lp)",
+    "gimnasia (mendoza)": "gimnasia (m)",
+    "gimnasia y esgrima (mendoza)": "gimnasia (m)",
+    "gimnasia de mendoza": "gimnasia (m)",
     "san martin": "san martin (sj)",
     "san martin sj": "san martin (sj)",
     "san martin de san juan": "san martin (sj)",
@@ -28,7 +36,8 @@ const aliasEquipos = {
     "sarmiento": "sarmiento (j)",
     "talleres": "talleres (c)",
     "atletico rafaela": "atletico de rafaela",
-    "newells": "newells old boys"
+    "newells": "newells old boys",
+    "newells old boys": "newells old boys"
 };
 
 // DICCIONARIO DE ESCUDOS (2012 - 2026)
@@ -51,16 +60,16 @@ const logosEquipos = {
     "defensa y justicia": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhH2OEayYViOITgGkRO33d33v9Zer-9OjYv2RYMWpI9JesyTsTGh-Wope5SZx5kH7YvPf1tMjWaWBJDkF8lQTNE8W7vXaJxKeggNo9_m4blMOShfcABgJwq2YEIklhiHvohPB9dY06B1lU/s0/Club+Social+y+Deportivo+Defensa+y+Justicia128x.png",
     "deportivo riestra": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwYG_qkLvctt1uDooMsd3Cf85QsMELoyh_JwXhfde-B9QF8flb3_gjujJgzFzGOWrRjtwPjgSC-i2Cal2MRxZ5JOvmxneQZ52pWGUPRAmb8DRKegYhKlU1z4XWSMBGkXOJENo1WWayVtUjaprF9BxwrrfHU93PDfZRLqwVrhmCh1XXrgF_IZkSU4mSjbA/s1600/Club%20Deportivo%20Riestra128x.png",
     "estudiantes (lp)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s1600/Club%20Estudiantes%20de%20La%20Plata128x.png",
-    "Estudiantes (Río Cuarto)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxDYiVghrEwPKVH8fnB4JVIjSQYOa1ByEcrRhY_hIaThhWi3wvPu3eSQTKxH41p9Mgrw9133vLnDidORdM2z2PkI8_t0HQK6aKiZZst7r-yQxRsGji7NM5q5YmMRqpDumz9pr1WvH_Xk22VRe33nZaVW5wb71lQyMb1JKFeMU6hnDmD4wEo-Wg8Lo-/s1600/Asociacion%20Atletica%20Estudiantes128x.png",
-    "Gimnasia y Esgrima (La Plata)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4HjdHQpm6ukoVe_oFSjYvx3iYZYHNJPuDTSU9OtW95Fm_Or0JY68W1Z_UUYnxbHl92Ri1FwjNYZ_fBghTnp4EFKF6HhvIlRmBjOCgxzJBpywxNZLI7zz046A3J-YY8LqZcqyAJiOGfH4/s1600/Club+de+Gimnasia+y+Esgrima+La+Plata128x.png",
-    "Gimnasia (Mendoza)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDnI3ab6gLK5h4E3ghOYRRVtdzOdcv8z8WgbOMTP9oiz1NrflNq5CnDPM71INkz9ThbeHhwWhXbBjcsCx3EHHIgkI7NmFdji4wbFAf5t5cmCYpPThZxd65fmsMNp991FHz5jYtCX207wI/s1600/Club+Atletico+Gimnasia+y+Esgrima+Mendoza128x.png",
+    "estudiantes (rc)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxDYiVghrEwPKVH8fnB4JVIjSQYOa1ByEcrRhY_hIaThhWi3wvPu3eSQTKxH41p9Mgrw9133vLnDidORdM2z2PkI8_t0HQK6aKiZZst7r-yQxRsGji7NM5q5YmMRqpDumz9pr1WvH_Xk22VRe33nZaVW5wb71lQyMb1JKFeMU6hnDmD4wEo-Wg8Lo-/s1600/Asociacion%20Atletica%20Estudiantes128x.png",
+    "gimnasia (lp)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4HjdHQpm6ukoVe_oFSjYvx3iYZYHNJPuDTSU9OtW95Fm_Or0JY68W1Z_UUYnxbHl92Ri1FwjNYZ_fBghTnp4EFKF6HhvIlRmBjOCgxzJBpywxNZLI7zz046A3J-YY8LqZcqyAJiOGfH4/s1600/Club+de+Gimnasia+y+Esgrima+La+Plata128x.png",
+    "gimnasia (m)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDnI3ab6gLK5h4E3ghOYRRVtdzOdcv8z8WgbOMTP9oiz1NrflNq5CnDPM71INkz9ThbeHhwWhXbBjcsCx3EHHIgkI7NmFdji4wbFAf5t5cmCYpPThZxd65fmsMNp991FHz5jYtCX207wI/s1600/Club+Atletico+Gimnasia+y+Esgrima+Mendoza128x.png",
     "godoy cruz": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi80fnjA1MthG6UeuRC0g50bIY82iC9Vev2JXPkSmexHnf7WIR34BwkcrrxgxD2NMIKP-RUyTiCa6lJ3FRhF64UNVpWkBy58zfo62oz1RgwkL4s5GwtEZOuhAMc7ZZ3EOYzTq4QMqV2aT9dQ9KJzNG3oFi5uxO5M9wv0YtkSxSZP2imTV2CJZK5a2BquQg/s1600/Godoy%20Cruz128x.png",
     "huracan": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ5D1BTENTDFFp9u4q4FFwLVy2aLsW5bDUpI-0PH0c_ftcV1H8SiY70y8_PsygAyRCm3gcdYo625ObGsIemzkA9w-ouuaPYgvassM678QSj6JllObbUQy_TvsttPuMskI_3JwDEksu4QI/s1600/Club+Atletico+Huracan128x.png",
     "independiente": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimsJgFxyJXwpXGV_uPf9mBgwnx_Yp8UDgyOxZGLgUK0HoisEqPNa6rZfFHKEnLKlxII9hFeSRsnQ077Iz9nWR3LMZEvQbEWDl3L_LlpkIpN_X4_GW3vHFtxYNYz0jUmafXGyg1tbvN_0Iokh9SydpqgD72ByRPRCHz01ZgON769GQG6npXUmgIB-heLBw/s1600/Club%20Atletico%20Independiente128x.png",
     "independiente rivadavia": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhm7gIKplIfAqUe3Lcxfj4_rzdzMmklVEKSrAHtS4gv20f51QBF4ZJQhoZ2T2lfycrCT6OqiEGbuLuLGW34sl0Sp7HOnbE-0ItTnp1lI7uG9oY4pNysra_pwCCsEVcKWyI2HAKHIe3IQEQUu4Evu2zLmkmycZ6eJPmt-6QFtxw5L5XHQDYzZM-EZotxhyphenhyphenE/s1600/Independiente%20Rivadavia128x.png",
     "instituto": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-MtsodoQ123uMzWKDD7Q3xFwVO9XRELj1pEUvlWkyEMCSEKKdwXfcFRH1PvIzo0amHjppMz1TQtawcb0Wq9ewxiGMAp1LKsL4r-pUbuNDsqSGI9N8ywZzwxYTOS7cXFqXUWllRAZgmQM/s1600/Instituto+Atletico+Central+Cordoba128x.png",
     "lanus": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY0LCvqZHXem9kWtHYUM9sgTasj7XkYDtm9xGPZcXBWdWzAC9MDJPd9T06FbroMSZjaepTDjao038Vz7grV41lvC0-kY5FCv5YdlVLaDDxRv8R-9-OZ4VZBcloZbV9vRxfyBU_LJF8BYx2FpTOsIw_vKaWAMOYwd1OM3dfw-8VlCF9i2tH-kD-r85UsQ4/s1600/CA%20Lanus128x.png",
-    "Newell's Old Boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKxWx4tXSkJVEzqgz-TuYHh34vVYlJaRG0IfjRcjnHMnv-Bg_7PuDuYsqlwJlCC3P2LCnDGrmSkouKy9bY3abxtqhGRzDd1P0xULGxVFvT_gRz9r1zyTOSbkOH_hPMwi7RxOwr-O5FMyU/s1600/Club+Atletico+Newells+Old+Boys128x.png",
+    "newells old boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKxWx4tXSkJVEzqgz-TuYHh34vVYlJaRG0IfjRcjnHMnv-Bg_7PuDuYsqlwJlCC3P2LCnDGrmSkouKy9bY3abxtqhGRzDd1P0xULGxVFvT_gRz9r1zyTOSbkOH_hPMwi7RxOwr-O5FMyU/s1600/Club+Atletico+Newells+Old+Boys128x.png",
     "nueva chicago": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5711xbOPjJyJq7ZjLs2_S4Gsb2LR80ACrK8oaYlbAif5QSdrAzGRldfrHhaw3-Q-btSqPkskaDaY8_YP6Df9QHmZuOKc8bZe19vcc32IrVmSQOSY5UHJ4ycEYfkRUjTveST7ACt22B4gU4UMz4z3CJBfgf-HPPDn2jwXY797JnaUKP92BazW-_qoLcs/s1600/CA%20Nueva%20Chicago128x.png",
     "olimpo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk6Tc9DV0TJG4d9RRxtaHBJrzupxv522uCLzupMLyqJp_caSba8JXDjlgFzPZ6HrUpuxa5JCAISMWeFZ-O0fLSpmQw29t3tuqhNmMfWn6NafL2eqzlKiwKIhqonqq3eJ4gJLIcMEmSPkk/s1600/Club+Olimpo128x.png",
     "patronato": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHSVELQxaixKKf-HBJqJ2R5HecTYm_fXbRLrJ-w9Vtj1QVvwJUpYJ_iefWcvgVWSavRtp9LK-bGwGmqYBZXsBdPMz0vgohD1UmmvdRiWsKzvSYQuJGGkfdSc7w2YD8vKfESTyN-fwdgQlWp430iFugtNR5r9h3pmSiU4ivZnfOzNAi8JyHm7vyFN-l/s1600/Club%20Atletico%20Patronato128x.png",
