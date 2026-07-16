@@ -34,7 +34,7 @@ const aliasEquipos = {
 // DICCIONARIO DE ESCUDOS (2012 - 2026)
 // Reemplazá "URL_ACA" con el link de la imagen o la ruta a tu archivo local.
 const logosEquipos = {
-    "aldosivi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQxCNM1JpVBDNaKD2E77ypCmJzPuiGTybVN9_hSPkQ1DYVg-OoSovw6XIpeWhnoMttYgk4PKl608pjEA6Gv81FN4hNWsaYmVNxqdiC3ZN58Zs2FFm7TGYhzKyJuq-nFXIPzu8Q_pHopcqZxGRE1zv9VdQEo_Jb2pCqAAI_ondLfXmegTeby-0b3roR/s16000/Club%20Atletico%20Aldosivi.png",
+    "aldosivi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYLTS9PrLZVE7UP-Uik6iz9jCN52PMfWsJKdWvPYuKzSXG-_Ti_vZlFQEE_8usH9wtg_y3By5Sc-Dq6h6KPDudFl-176QyNxk75GeOu6snFYmbHnKNGhHiQaBbJ1GqihS-WXANCOoadhwT1KnimCOLaoGMbmaKsBXSCdjar0-Y_fP3vg8A4_6jIvF5/s1600/Club%20Atletico%20Aldosivi128x.png",
     "all boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjBTKE3RImNmGGbOG-xY2II7CZH6VtUgW8S_j8LhP1dSX-PfvBic-IjLVCO3DX9OaAuvCLRII8PJqmJtxQJG9Cjr_HYVzSiHcJkqTR7TtTRgl712TYa9nKjDvtCXpxdWXRsOuZHoYR6glICoVk79EJXGJeDSAu2_XhvkYqDz2plAjDYwNmSIPZ9F7g/s1600/Club%20Atletico%20All%20Boys128x.png",
     "argentinos juniors": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjlhaXsbedTImUrW4LsuLMzJ714Xo355W4iK-bbQY_6SDwuVGbm1f9RL3rtNkfqmdTmLQprVMVQ-T8aVryTtp1qXvzzm6lKMDChKBXzg3pC-sDefiWyIRStS0czof2sKpAlud6tSfgYLD0/s1600/Argentinos+Juniors128x.png",
     "arsenal": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiQjFWD9Orw6a83FcR3Zoch1iEVjZljtyqPBML1VuE6A3FtHv4Z3HFCIZrKbO5csJrtQJVu45Eu4pH6FCgiqh7TBq_SG8z23nQs16UChl4aOUDprqHsLktaxfC2Hc5B-t0JQ7ZXh3w0MfY/s1600/Arsenal+Futbol+Club128x.png",
