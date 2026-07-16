@@ -76,28 +76,38 @@ const logosEquipos = {
 
 // NUEVO: Diccionario Geográfico de los Equipos (Filtros AFA)
 const zonasEquipos = {
+    // CABA
     "boca juniors": "CABA", "river plate": "CABA", "san lorenzo": "CABA", "huracan": "CABA",
     "argentinos juniors": "CABA", "velez sarsfield": "CABA", "all boys": "CABA",
     "nueva chicago": "CABA", "barracas central": "CABA", "deportivo riestra": "CABA",
     
+    // Conurbano Bonaerense
     "racing club": "Conurbano", "independiente": "Conurbano", "lanus": "Conurbano", "banfield": "Conurbano",
     "arsenal": "Conurbano", "quilmes": "Conurbano", "tigre": "Conurbano", "defensa y justicia": "Conurbano",
     "platense": "Conurbano", "chacarita juniors": "Conurbano", "temperley": "Conurbano",
     
+    // La Plata
     "estudiantes (lp)": "La Plata", "gimnasia (lp)": "La Plata",
-    "aldosivi": "Interior BA", "sarmiento (j)": "Interior BA", "olimpo": "Interior BA",
     
+    // Interior de Buenos Aires
+    "aldosivi": "Interior BA", "sarmiento (j)": "Interior BA", "olimpo": "Interior BA",
+    "patronato": "Entre Ríos", "junin": "Interior BA",
+    
+    // Santa Fe
     "rosario central": "Santa Fe", "newells old boys": "Santa Fe", "colon": "Santa Fe",
     "union": "Santa Fe", "atletico de rafaela": "Santa Fe",
     
+    // Córdoba
     "talleres (c)": "Córdoba", "belgrano": "Córdoba", "instituto": "Córdoba", "estudiantes (rc)": "Córdoba",
     
+    // Cuyo
     "godoy cruz": "Mendoza", "independiente rivadavia": "Mendoza", "gimnasia (m)": "Mendoza",
+    "san martin (sj)": "San Juan",
     
+    // Norte
     "atletico tucuman": "Tucumán", "san martin (t)": "Tucumán",
-    "central cordoba (sde)": "Sgo del Estero",
-    
-    "patronato": "Otras", "san martin (sj)": "Otras", "crucero del norte": "Otras"
+    "central cordoba (sde)": "Santiago del Estero",
+    "crucero del norte": "Misiones"
 };
 
 function obtenerURL_Escudo(nombreNormalizado, nombreReal) {
