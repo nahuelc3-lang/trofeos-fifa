@@ -71,6 +71,41 @@
         .baja { color: #dc3545; font-weight: bold; }
         .igual { color: #6c757d; font-weight: bold; }
         .puntos-totales { font-weight: bold; font-size: 16px; }
+
+        .modal{
+    display:none;
+    position:fixed;
+    z-index:9999;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.6);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-contenido{
+    background:white;
+    width:90%;
+    max-width:1000px;
+    padding:20px;
+    border-radius:10px;
+    position:relative;
+}
+
+.cerrar-modal{
+    position:absolute;
+    top:10px;
+    right:20px;
+    font-size:35px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cerrar-modal:hover{
+    color:red;
+}
     </style>
 </head>
 <body>
@@ -105,7 +140,29 @@
     </table>
 </div>
 
+    </table>
+</div>
+
+<!-- Modal del gráfico -->
+<div id="modalGrafico" class="modal">
+    <div class="modal-contenido">
+
+        <span class="cerrar-modal">&times;</span>
+
+        <h2 id="tituloModal"></h2>
+
+        <div style="height:500px;">
+            <canvas id="canvasGrafico"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="calcular_ranking.js"></script>
+
+</body>
+</html>
 
 </body>
 </html>
