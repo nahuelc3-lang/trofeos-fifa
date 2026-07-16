@@ -1,8 +1,17 @@
 let datosPartidos = [];
 let torneosOrdenados = []; 
 let fechasPorTorneo = {}; 
-let partidosPorFechaYTorneo = {}; // NUEVO: Guardará la cantidad de partidos por cada "Torneo|Fecha"
+let partidosPorFechaYTorneo = {}; 
 let miGrafico = null; 
+
+// Base de Datos en Caché del recorrido histórico de cada club
+let cacheHistorialGlobal = {}; 
+
+// Variables de estado del modal actual
+let clubSeleccionadoActivo = "";
+let filtroTipoActivo = "torneo"; // "torneo" o "tiempo"
+let filtroValorActivo = "ultimo"; // "ultimo", "2", "5", "todo", "1año", "2años", "5años"
+let modoMetricaActivo = "posicion"; // "posicion" o "elo"
 
 const aliasEquipos = {
     "estudiantes": "estudiantes (lp)",
@@ -17,7 +26,7 @@ const aliasEquipos = {
 
 function arreglarCodificacion(texto) {
     const mapa = {
-        'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ã³': 'ó', 'Ãº': 'ú', 'Ãñ': 'ñ', 'Ã‘': 'Ñ',
+        'Ã¡': 'á', 'Ã©': 'é', 'Ã­': 'í', 'Ã³': 'ó', 'Ãº': 'ú', 'Ã±': 'ñ', 'Ã‘': 'Ñ',
         'ã¡': 'á', 'ã©': 'é', 'ã­': 'í', 'ã³': 'ó', 'ãº': 'ú', 'ãñ': 'ñ'
     };
     let resultado = texto;
@@ -25,6 +34,28 @@ function arreglarCodificacion(texto) {
         resultado = resultado.split(mal).join(mapa[mal]);
     }
     return resultado;
+}
+
+function obtenerCampo(objeto, campo) {
+    if (!objeto) return "";
+    const campoLower = campo.toLowerCase().trim();
+    if (objeto[campo] !== undefined) return objeto[campo];
+    for (let k in objeto) {
+        if (k.toLowerCase().trim() === campoLower) {
+            return objeto[k];
+        }
+    }
+    return "";
+}
+
+function parsearFechaStr(fechaStr) {
+    if (!fechaStr) return new Date();
+    let partes = fechaStr.split('/');
+    if (partes.length === 3) {
+        // Formato DD/MM/YYYY
+        return new Date(partes[2], partes[1] - 1, partes[0]);
+    }
+    return new Date(fechaStr);
 }
 
 async function leerCSV(archivo) {
@@ -65,19 +96,17 @@ function calcularResultadoEsperado(puntosA, puntosB) {
     return 1 / (1 + Math.pow(10, (puntosB - puntosA) / 400));
 }
 
-// NUEVA FUNCIÓN: Determina dinámicamente si el partido es una final o eliminatoria
 function obtenerMultiplicadorInstancia(torneo, fecha) {
     let clave = `${torneo.trim()}|${fecha}`;
-    let cantPartidos = partidosPorFechaYTorneo[clave] || 10; // Por defecto asumimos fecha regular
+    let cantPartidos = partidosPorFechaYTorneo[clave] || 10;
 
-    if (cantPartidos === 1) return 2.0; // Final única o partido de desempate de descenso/campeonato
-    if (cantPartidos === 2) return 1.6; // Semifinales
-    if (cantPartidos === 4) return 1.3; // Cuartos de final
-    if (cantPartidos === 8) return 1.1; // Octavos de final
-    return 1.0; // Fecha de liga regular (10 o más partidos)
+    if (cantPartidos === 1) return 2.0; 
+    if (cantPartidos === 2) return 1.6; 
+    if (cantPartidos === 4) return 1.3; 
+    if (cantPartidos === 8) return 1.1; 
+    return 1.0; 
 }
 
-// MODIFICADO: Ahora recibe torneo y fecha para aplicar la importancia correspondiente
 function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitante, torneo, fecha) {
     let puntosL = equipoLocal.puntos;
     let puntosV = equipoVisitante.puntos;
@@ -97,11 +126,13 @@ function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitan
     
     if (resultadoLocal !== 0.5) { 
         let difPuntos = (resultadoLocal === 1) ? (ptosLocalVirtual - puntosV) : (puntosV - ptosLocalVirtual);
-        G = Math.log(difGoles + 1) * (2 / (2 + 0.001 * difPuntos));
+        let denominador = 2 + 0.001 * difPuntos;
+        if (denominador <= 0.1) denominador = 0.1;
+
+        G = Math.log(difGoles + 1) * (2 / denominador);
         if (G < 1) G = 1; 
     }
 
-    // MULTIPLICADORES COMBINADOS: K Base (25) * Margen de Goles (G) * Peso de la Instancia (Playoff/Final)
     const K_BASE = 25;
     const pesoInstancia = obtenerMultiplicadorInstancia(torneo, fecha);
     
@@ -111,24 +142,31 @@ function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitan
     equipoVisitante.puntos -= cambio;
 }
 
-function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
+// -------------------------------------------------------------------------
+// REVOLUCIONARIO MOTOR DE PRECALCULO (Un solo bucle de alta velocidad)
+// -------------------------------------------------------------------------
+function precalcularHistorialCompleto() {
+    cacheHistorialGlobal = {};
     let diccionarioEquipos = {};
-    let indiceTorneoObjetivo = torneosOrdenados.indexOf(torneoObjetivo);
 
     let nombresOriginales = {};
     datosPartidos.forEach(p => {
-        nombresOriginales[normalizarNombre(p.Local)] = p.Local.trim();
-        nombresOriginales[normalizarNombre(p.Visitante)] = p.Visitante.trim();
+        let loc = obtenerCampo(p, 'Local').trim();
+        let vis = obtenerCampo(p, 'Visitante').trim();
+        if (loc) nombresOriginales[normalizarNombre(loc)] = loc;
+        if (vis) nombresOriginales[normalizarNombre(vis)] = vis;
     });
 
-    for (let t = 0; t <= indiceTorneoObjetivo; t++) {
+    for (let t = 0; t < torneosOrdenados.length; t++) {
         let nombreTorneoActual = torneosOrdenados[t];
-        let partidosDeEsteTorneo = datosPartidos.filter(p => (p.Torneo || "").trim() === nombreTorneoActual);
+        let partidosDeEsteTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === nombreTorneoActual);
         
         let equiposEsteTorneo = new Set();
         partidosDeEsteTorneo.forEach(p => {
-            equiposEsteTorneo.add(normalizarNombre(p.Local));
-            equiposEsteTorneo.add(normalizarNombre(p.Visitante));
+            let loc = obtenerCampo(p, 'Local');
+            let vis = obtenerCampo(p, 'Visitante');
+            if (loc) equiposEsteTorneo.add(normalizarNombre(loc));
+            if (vis) equiposEsteTorneo.add(normalizarNombre(vis));
         });
 
         let sumaPts = 0, cantEquipos = 0;
@@ -157,31 +195,152 @@ function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
             }
         });
 
-        partidosDeEsteTorneo.forEach(partido => {
-            let colFecha = partido.Fecha_del_Torneo || partido.fecha_del_torneo;
-            let fechaDelPartido = Number(colFecha);
-            
-            if (t === indiceTorneoObjetivo && fechaDelPartido > fechaObjetivo) return;
+        let fechas = [...new Set(partidosDeEsteTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
+        let fechasValidas = fechas.filter(n => !isNaN(n) && n > 0);
+        let maxFechas = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
 
-            let local = diccionarioEquipos[normalizarNombre(partido.Local)];
-            let visitante = diccionarioEquipos[normalizarNombre(partido.Visitante)];
-            let golesLocal = Number(partido.Goles_Local || partido.goles_local);
-            let golesVisitante = Number(partido.Goles_Visitante || partido.goles_visitante);
-            
-            // Enviamos el torneo y fecha correspondientes para calcular el multiplicador
-            actualizarPuntos(local, visitante, golesLocal, golesVisitante, nombreTorneoActual, fechaDelPartido);
+        // Registro Fecha 0 (Inicio)
+        let activeTeams = Array.from(equiposEsteTorneo);
+        let rankingTemp = activeTeams.map(nameNorm => ({
+            nameNorm: nameNorm,
+            puntos: diccionarioEquipos[nameNorm].puntos
+        })).sort((a,b) => b.puntos - a.puntos);
+        
+        let posMap = {};
+        rankingTemp.forEach((item, idx) => { posMap[item.nameNorm] = idx + 1; });
+
+        activeTeams.forEach(nameNorm => {
+            if (!cacheHistorialGlobal[nameNorm]) cacheHistorialGlobal[nameNorm] = [];
+            cacheHistorialGlobal[nameNorm].push({
+                torneo: nombreTorneoActual,
+                fecha: 0,
+                puntos: diccionarioEquipos[nameNorm].puntos,
+                posicion: posMap[nameNorm],
+                rival: "",
+                resultado: "",
+                score: "",
+                variacion: 0,
+                fechaReal: parsearFechaStr(obtenerCampo(partidosDeEsteTorneo[0], 'Fecha'))
+            });
         });
+
+        // Simular Fecha por Fecha
+        for (let f = 1; f <= maxFechas; f++) {
+            let partidosFecha = partidosDeEsteTorneo.filter(p => Number(obtenerCampo(p, 'Fecha_del_Torneo')) === f);
+            
+            let puntosPrevios = {};
+            activeTeams.forEach(nameNorm => {
+                puntosPrevios[nameNorm] = diccionarioEquipos[nameNorm].puntos;
+            });
+
+            let matchDetails = {};
+            activeTeams.forEach(nameNorm => {
+                matchDetails[nameNorm] = { rival: "", resultado: "", score: "", fechaReal: null };
+            });
+
+            partidosFecha.forEach(partido => {
+                let locName = obtenerCampo(partido, 'Local');
+                let visName = obtenerCampo(partido, 'Visitante');
+                let nameLocNorm = normalizarNombre(locName);
+                let nameVisNorm = normalizarNombre(visName);
+
+                let local = diccionarioEquipos[nameLocNorm];
+                let visitante = diccionarioEquipos[nameVisNorm];
+                let golesLocal = Number(obtenerCampo(partido, 'Goles_Local'));
+                let golesVisitante = Number(obtenerCampo(partido, 'Goles_Visitante'));
+
+                if (local && visitante) {
+                    actualizarPuntos(local, visitante, golesLocal, golesVisitante, nombreTorneoActual, f);
+                    
+                    let resLoc = golesLocal > golesVisitante ? "Ganó" : (golesLocal < golesVisitante ? "Perdió" : "Empató");
+                    let resVis = golesVisitante > golesLocal ? "Ganó" : (golesVisitante < golesLocal ? "Perdió" : "Empató");
+                    
+                    let fReal = parsearFechaStr(obtenerCampo(partido, 'Fecha'));
+
+                    matchDetails[nameLocNorm] = {
+                        rival: visitante.nombre,
+                        resultado: resLoc,
+                        score: `${golesLocal}-${golesVisitante}`,
+                        fechaReal: fReal
+                    };
+                    matchDetails[nameVisNorm] = {
+                        rival: local.nombre,
+                        resultado: resVis,
+                        score: `${golesVisitante}-${golesLocal}`,
+                        fechaReal: fReal
+                    };
+                }
+            });
+
+            let rankingF = activeTeams.map(nameNorm => ({
+                nameNorm: nameNorm,
+                puntos: diccionarioEquipos[nameNorm].puntos
+            })).sort((a,b) => b.puntos - a.puntos);
+
+            let posMapF = {};
+            rankingF.forEach((item, idx) => { posMapF[item.nameNorm] = idx + 1; });
+
+            activeTeams.forEach(nameNorm => {
+                let md = matchDetails[nameNorm];
+                let varElo = diccionarioEquipos[nameNorm].puntos - puntosPrevios[nameNorm];
+                let fReal = md.fechaReal || cacheHistorialGlobal[nameNorm][cacheHistorialGlobal[nameNorm].length - 1].fechaReal;
+
+                cacheHistorialGlobal[nameNorm].push({
+                    torneo: nombreTorneoActual,
+                    fecha: f,
+                    puntos: diccionarioEquipos[nameNorm].puntos,
+                    posicion: posMapF[nameNorm],
+                    rival: md.rival,
+                    resultado: md.resultado,
+                    score: md.score,
+                    variacion: varElo,
+                    fechaReal: fReal
+                });
+            });
+        }
+    }
+}
+
+// Para mantener compatibilidad con el renderizador de la tabla principal
+function calcularRankingHasta(torneoObjetivo, fechaObjetivo) {
+    let indicesFiltrados = {};
+    let indicesOrdenados = torneosOrdenados.indexOf(torneoObjetivo);
+    
+    // Obtenemos los datos instantáneos de nuestra caché global
+    let rankingActual = [];
+    
+    for (let nameNorm in cacheHistorialGlobal) {
+        let hist = cacheHistorialGlobal[nameNorm];
+        let snapshot = hist.find(h => h.torneo === torneoObjetivo && h.fecha === fechaObjetivo);
+        if (snapshot) {
+            rankingActual.push({
+                nombre: snapshot.rival ? nameNorm : snapshot.rival || nameNorm, 
+                nombreReal: nameNorm,
+                puntos: snapshot.puntos,
+                posicion: snapshot.posicion
+            });
+        }
     }
 
-    let ranking = Object.values(diccionarioEquipos).filter(eq => eq.ultimoTorneo === indiceTorneoObjetivo);
-    ranking.sort((a, b) => b.puntos - a.puntos);
-    ranking.forEach((eq, index) => eq.posicion = index + 1);
+    // Traducir nombres reales
+    let nombresOriginales = {};
+    datosPartidos.forEach(p => {
+        nombresOriginales[normalizarNombre(obtenerCampo(p, 'Local'))] = obtenerCampo(p, 'Local').trim();
+    });
 
-    return ranking;
+    rankingActual.forEach(eq => {
+        eq.nombre = nombresOriginales[eq.nombreReal] || eq.nombreReal;
+    });
+
+    rankingActual.sort((a, b) => b.puntos - a.puntos);
+    rankingActual.forEach((eq, index) => eq.posicion = index + 1);
+
+    return rankingActual;
 }
 
 function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
     const tabla = document.querySelector("#tablaRanking tbody");
+    if (!tabla) return;
     tabla.innerHTML = "";
 
     let rankingActual = calcularRankingHasta(torneoSeleccionado, fechaSeleccionada);
@@ -214,7 +373,7 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
         <tr>
             <td><strong>${equipo.posicion}</strong></td>
             <td>${iconoPos}</td>
-            <td class="equipo-nombre" onclick="abrirGrafico('${equipo.nombre}')">${equipo.nombre} ${tagAscenso}</td>
+            <td class="equipo-nombre" onclick="abrirFichaClub('${equipo.nombre}')">${equipo.nombre} ${tagAscenso}</td>
             <td class="puntos-totales">${Math.round(equipo.puntos)}</td>
             <td>${textoPts}</td>
         </tr>
@@ -222,62 +381,210 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
     });
 }
 
-function abrirGrafico(nombreClub) {
+// -------------------------------------------------------------------------
+// NUEVAS FUNCIONES DE LA INTERFAZ: FICHA COMPLETA DEL CLUB (Sofascore style)
+// -------------------------------------------------------------------------
+function abrirFichaClub(nombreClub) {
+    clubSeleccionadoActivo = nombreClub;
+    const norm = normalizarNombre(nombreClub);
+    const historialCompleto = cacheHistorialGlobal[norm];
+
+    if (!historialCompleto || historialCompleto.length === 0) return;
+
+    // Abrir Modal
     const modal = document.getElementById("modalGrafico");
     modal.style.display = "flex";
-    
-    document.getElementById("tituloModal").innerText = `Evolución de Posición: ${nombreClub}`;
-    
-    let historial = [];
-    let nombreLimpio = normalizarNombre(nombreClub);
-    
-    let torneoSelect = document.getElementById("selectorTorneo").value;
-    let limTorneoIdx = torneosOrdenados.indexOf(torneoSelect);
-    
-    for (let t = 0; t <= limTorneoIdx; t++) {
-        let torneo = torneosOrdenados[t];
-        let maxFechas = fechasPorTorneo[torneo] || 0;
-        
-        for (let f = 1; f <= maxFechas; f++) {
-            let ranking = calcularRankingHasta(torneo, f);
-            let eq = ranking.find(e => normalizarNombre(e.nombre) === nombreLimpio);
-            if (eq) {
-                let torneoAbreviado = torneo
-                    .replace("Torneo Inicial", "Inicial")
-                    .replace("Torneo Final", "Final")
-                    .replace("Torneo de Transicion", "Transición")
-                    .replace("Torneo de Transición", "Transición")
-                    .replace("Temporada", "Temp.")
-                    .replace("Campeonato de Primera Division", "Camp.")
-                    .replace("Campeonato de Primera División", "Camp.");
-                
-                historial.push({
-                    etiqueta: `${torneoAbreviado} (F${f})`,
-                    posicion: eq.posicion
-                });
-            }
+
+    // Titular del Club
+    document.getElementById("tituloModal").innerText = nombreClub;
+
+    // Calcular estadísticas históricas hasta la fecha actualmente seleccionada
+    const torneoSelect = document.getElementById("selectorTorneo").value;
+    const fechaSelect = Number(document.getElementById("selectorFecha").value);
+    const limTorneoIdx = torneosOrdenados.indexOf(torneoSelect);
+
+    // Filtrar todo el historial hasta el momento de visualización
+    const histFiltrado = historialCompleto.filter(h => {
+        let tIdx = torneosOrdenados.indexOf(h.torneo);
+        if (tIdx < limTorneoIdx) return true;
+        if (tIdx === limTorneoIdx && h.fecha <= fechaSelect) return true;
+        return false;
+    });
+
+    // 1. Snapshot Actual
+    let snapActual = histFiltrado[histFiltrado.length - 1];
+    let snapAnterior = histFiltrado.length > 1 ? histFiltrado[histFiltrado.length - 2] : null;
+
+    document.getElementById("statPosicion").innerText = `${snapActual.posicion}°`;
+    document.getElementById("statElo").innerText = Math.round(snapActual.puntos);
+
+    // Cambios (Deltas) en tarjetas principales
+    if (snapAnterior) {
+        let difPos = snapAnterior.posicion - snapActual.posicion;
+        let difElo = snapActual.puntos - snapAnterior.puntos;
+
+        // Posición cambio
+        let pCambio = document.getElementById("statCambioPos");
+        if (difPos > 0) { pCambio.className = "stat-change sube"; pCambio.innerText = `▲ +${difPos}`; }
+        else if (difPos < 0) { pCambio.className = "stat-change baja"; pCambio.innerText = `▼ ${difPos}`; }
+        else { pCambio.className = "stat-change igual"; pCambio.innerText = `-`; }
+
+        // Elo cambio
+        let eCambio = document.getElementById("statCambioElo");
+        if (difElo > 0) { eCambio.className = "stat-change sube"; eCambio.innerText = `▲ +${difElo.toFixed(1)}`; }
+        else if (difElo < 0) { eCambio.className = "stat-change baja"; eCambio.innerText = `▼ ${difElo.toFixed(1)}`; }
+        else { eCambio.className = "stat-change igual"; eCambio.innerText = `-`; }
+    } else {
+        document.getElementById("statCambioPos").innerText = "-";
+        document.getElementById("statCambioElo").innerText = "-";
+    }
+
+    // 2. Estadísticas Secundarias
+    let posicionesList = histFiltrado.map(h => h.posicion);
+    let mejorPos = Math.min(...posicionesList);
+    let peorPos = Math.max(...posicionesList);
+    let torneosDisputados = [...new Set(histFiltrado.map(h => h.torneo))].length;
+
+    let subidas = histFiltrado.map(h => h.variacion).filter(v => v > 0);
+    let bajadas = histFiltrado.map(h => h.variacion).filter(v => v < 0);
+    let mayorSubida = subidas.length > 0 ? Math.max(...subidas) : 0;
+    let mayorBajada = bajadas.length > 0 ? Math.min(...bajadas) : 0;
+
+    document.getElementById("statMejorPos").innerText = `${mejorPos}°`;
+    document.getElementById("statPeorPos").innerText = `${peorPos}°`;
+    document.getElementById("statTorneos").innerText = torneosDisputados;
+    document.getElementById("statMayorSubida").innerText = `+${mayorSubida.toFixed(1)}`;
+    document.getElementById("statMayorBajada").innerText = `${mayorBajada.toFixed(1)}`;
+
+    // Estado del club (Si jugó en el torneo seleccionado o descendió)
+    let tagEstado = document.getElementById("tagEstadoClub");
+    let juegaHoy = snapActual.torneo === torneoSelect;
+    if (juegaHoy) {
+        tagEstado.innerText = "Primera División";
+        tagEstado.style.background = "rgba(0, 40, 94, 0.08)";
+        tagEstado.style.color = "var(--primary)";
+    } else {
+        tagEstado.innerText = "En el Ascenso / Inactivo";
+        tagEstado.style.background = "rgba(113, 128, 150, 0.15)";
+        tagEstado.style.color = "var(--text-muted)";
+    }
+
+    // Dibujar el gráfico con los filtros activos por defecto
+    actualizarVisualizacionGrafico();
+}
+
+function actualizarVisualizacionGrafico() {
+    const norm = normalizarNombre(clubSeleccionadoActivo);
+    const historialCompleto = cacheHistorialGlobal[norm];
+
+    const torneoSelect = document.getElementById("selectorTorneo").value;
+    const fechaSelect = Number(document.getElementById("selectorFecha").value);
+    const limTorneoIdx = torneosOrdenados.indexOf(torneoSelect);
+
+    // 1. Filtrar base límite de tiempo actual
+    let datosFiltrados = historialCompleto.filter(h => {
+        let tIdx = torneosOrdenados.indexOf(h.torneo);
+        if (tIdx < limTorneoIdx) return true;
+        if (tIdx === limTorneoIdx && h.fecha <= fechaSelect) return true;
+        return false;
+    });
+
+    let fechaLimiteReal = datosFiltrados[datosFiltrados.length - 1].fechaReal;
+
+    // 2. Aplicar Filtro de Rango (Torneo o Tiempo)
+    if (filtroTipoActivo === "torneo") {
+        if (filtroValorActivo === "ultimo") {
+            datosFiltrados = datosFiltrados.filter(h => h.torneo === torneoSelect);
+        } else if (filtroValorActivo === "2") {
+            let inicioIdx = Math.max(0, limTorneoIdx - 1);
+            datosFiltrados = datosFiltrados.filter(h => {
+                let idx = torneosOrdenados.indexOf(h.torneo);
+                return idx >= inicioIdx && idx <= limTorneoIdx;
+            });
+        } else if (filtroValorActivo === "5") {
+            let inicioIdx = Math.max(0, limTorneoIdx - 4);
+            datosFiltrados = datosFiltrados.filter(h => {
+                let idx = torneosOrdenados.indexOf(h.torneo);
+                return idx >= inicioIdx && idx <= limTorneoIdx;
+            });
+        }
+        // En filtros de Torneo mostramos TODOS los puntos (Fechas completas)
+    } else {
+        // Filtro por tiempo
+        let msLimite = fechaLimiteReal.getTime();
+        let msFiltro = 0;
+
+        if (filtroValorActivo === "1año") msFiltro = 365 * 24 * 60 * 60 * 1000;
+        else if (filtroValorActivo === "2años") msFiltro = 2 * 365 * 24 * 60 * 60 * 1000;
+        else if (filtroValorActivo === "5años") msFiltro = 5 * 365 * 24 * 60 * 60 * 1000;
+
+        if (msFiltro > 0) {
+            datosFiltrados = datosFiltrados.filter(h => (msLimite - h.fechaReal.getTime()) <= msFiltro);
+        }
+
+        // LIMPIEZA DE GRÁFICO (Estilo Sofascore): 
+        // Si hay rango temporal amplio, reducimos a un único punto por torneo (la fecha de cierre),
+        // manteniendo solo detallada la fecha actual seleccionada para evitar saturar el canvas.
+        if (filtroValorActivo !== "1año") {
+            datosFiltrados = datosFiltrados.filter((h, idx) => {
+                // Dejar siempre el inicio (fecha 0), final de torneo, o el último punto de la lista
+                let partidosDelTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === h.torneo);
+                let fechas = [...new Set(partidosDelTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
+                let maxF = fechas.filter(n => !isNaN(n) && n > 0).length > 0 ? Math.max(...fechas.filter(n => !isNaN(n) && n > 0)) : 0;
+
+                return h.fecha === maxF || h.fecha === 0 || idx === datosFiltrados.length - 1;
+            });
         }
     }
-    
+
+    // Dibujar en Chart.js
+    let etiquetasX = datosFiltrados.map(h => {
+        let torneoCorto = h.torneo
+            .replace("Torneo Inicial", "Inicial")
+            .replace("Torneo Final", "Final")
+            .replace("Torneo de Transicion", "Transición")
+            .replace("Torneo de Transición", "Transición")
+            .replace("Temporada", "Temp.")
+            .replace("Campeonato de Primera Division", "Camp.")
+            .replace("Campeonato de Primera División", "Camp.");
+        return h.fecha === 0 ? `${torneoCorto} (Inicio)` : `${torneoCorto} (F${h.fecha})`;
+    });
+
+    let datasetY = datosFiltrados.map(h => {
+        return {
+            x: etiquetasX[datosFiltrados.indexOf(h)],
+            y: modoMetricaActivo === "posicion" ? h.posicion : Math.round(h.puntos),
+            // Metadatos para el Tooltip Sofascore
+            torneo: h.torneo,
+            fecha: h.fecha,
+            posicion: h.posicion,
+            elo: Math.round(h.puntos),
+            rival: h.rival,
+            resultado: h.resultado,
+            score: h.score,
+            variacion: h.variacion
+        };
+    });
+
     if (miGrafico) {
         miGrafico.destroy();
     }
-    
-    let ctx = document.getElementById('canvasGrafico').getContext('2d');
+
+    let ctx = document.getElementById("canvasGrafico").getContext("2d");
     miGrafico = new Chart(ctx, {
-        type: 'line',
+        type: "line",
         data: {
-            labels: historial.map(h => h.etiqueta),
+            labels: etiquetasX,
             datasets: [{
-                label: 'Posición histórica',
-                data: historial.map(h => h.posicion),
-                borderColor: '#00285e',
-                backgroundColor: 'rgba(0, 40, 94, 0.1)',
+                label: modoMetricaActivo === "posicion" ? "Posición en la Tabla" : "Puntos de Rendimiento Elo",
+                data: datasetY,
+                borderColor: "#00285e",
+                backgroundColor: "rgba(0, 40, 94, 0.05)",
                 borderWidth: 3,
-                pointRadius: 4,
+                pointRadius: datasetY.length > 50 ? 2 : 4,
                 pointHoverRadius: 7,
-                pointBackgroundColor: '#00285e',
-                tension: 0.2,
+                pointBackgroundColor: "#00285e",
+                tension: 0.15,
                 fill: true
             }]
         },
@@ -286,23 +593,55 @@ function abrirGrafico(nombreClub) {
             maintainAspectRatio: false,
             scales: {
                 y: {
-                    reverse: true, 
-                    min: 1,
+                    reverse: modoMetricaActivo === "posicion", // Invierte eje para la posición (1 arriba)
+                    min: modoMetricaActivo === "posicion" ? 1 : undefined,
                     ticks: {
-                        precision: 0 
+                        precision: 0
                     },
-                    title: {
-                        display: true,
-                        text: 'Puesto en el Ranking'
+                    grid: {
+                        color: "#edf2f7"
                     }
                 },
                 x: {
                     grid: {
-                        display: false 
+                        display: false
                     },
                     ticks: {
                         maxRotation: 45,
-                        minRotation: 45
+                        minRotation: 45,
+                        font: { size: 10 }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    backgroundColor: "rgba(0, 20, 50, 0.9)",
+                    titleFont: { size: 13, weight: "bold" },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: function(context) {
+                            let d = context[0].raw;
+                            return `${d.torneo} - Fecha ${d.fecha}`;
+                        },
+                        label: function(context) {
+                            let d = context.raw;
+                            let lines = [];
+                            lines.push(`Posición: ${d.posicion}°`);
+                            lines.push(`Puntos Elo: ${d.elo}`);
+                            
+                            if (d.rival) {
+                                lines.push(`Rival: ${d.rival}`);
+                                lines.push(`Resultado: ${d.resultado} (${d.score})`);
+                            }
+                            
+                            if (d.fecha > 0) {
+                                let signo = d.variacion >= 0 ? "+" : "";
+                                lines.push(`Variación: ${signo}${d.variacion.toFixed(2)} pts`);
+                            }
+                            return lines;
+                        }
                     }
                 }
             }
@@ -310,8 +649,64 @@ function abrirGrafico(nombreClub) {
     });
 }
 
+// -------------------------------------------------------------------------
+// INICIALIZADORES Y GESTIÓN DE EVENTOS
+// -------------------------------------------------------------------------
+function cambiarFiltro(tipo, valor, elemento) {
+    filtroTipoActivo = tipo;
+    filtroValorActivo = valor;
+
+    // Desactivar botones de ambos grupos
+    document.querySelectorAll("#grupoFiltrosTorneo .btn-pill").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("#grupoFiltrosTiempo .btn-pill").forEach(b => b.classList.remove("active"));
+
+    // Activar el seleccionado
+    elemento.classList.add("active");
+
+    actualizarVisualizacionGrafico();
+}
+
+function cambiarModoGrafico(modo) {
+    modoMetricaActivo = modo;
+    
+    document.getElementById("segmentPosicion").classList.remove("active");
+    document.getElementById("segmentElo").classList.remove("active");
+
+    if (modo === "posicion") {
+        document.getElementById("segmentPosicion").classList.add("active");
+    } else {
+        document.getElementById("segmentElo").classList.add("active");
+    }
+
+    actualizarVisualizacionGrafico();
+}
+
+function registrarEventosModal() {
+    // Vincular clics de los botones dinámicos de píldoras
+    document.querySelectorAll("#grupoFiltrosTorneo .btn-pill").forEach(btn => {
+        btn.addEventListener("click", () => cambiarFiltro("torneo", btn.getAttribute("data-valor"), btn));
+    });
+
+    document.querySelectorAll("#grupoFiltrosTiempo .btn-pill").forEach(btn => {
+        btn.addEventListener("click", () => cambiarFiltro("tiempo", btn.getAttribute("data-valor"), btn));
+    });
+
+    document.getElementById("segmentPosicion").addEventListener("click", () => cambiarModoGrafico("posicion"));
+    document.getElementById("segmentElo").addEventListener("click", () => cambiarModoGrafico("elo"));
+
+    // Cerrar Modal
+    const modal = document.getElementById("modalGrafico");
+    const btnCerrar = document.getElementById("btnCerrarModal");
+
+    if (btnCerrar && modal) {
+        btnCerrar.onclick = () => { modal.style.display = "none"; };
+        window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    }
+}
+
 function actualizarDesplegableFechas(torneoSeleccionado) {
     const selectorFecha = document.getElementById("selectorFecha");
+    if (!selectorFecha) return;
     selectorFecha.innerHTML = ""; 
     
     let totalFechas = fechasPorTorneo[torneoSeleccionado] || 0;
@@ -334,18 +729,17 @@ async function iniciarApp() {
     try {
         datosPartidos = await leerCSV("partidos.csv");
 
-        let colTorneo = datosPartidos[0].Torneo !== undefined ? 'Torneo' : 'torneo';
-        torneosOrdenados = [...new Set(datosPartidos.map(p => (p[colTorneo] || "").trim()).filter(t => t !== ""))];
+        torneosOrdenados = [...new Set(datosPartidos.map(p => {
+            let t = obtenerCampo(p, 'Torneo');
+            return (t || "").trim();
+        }).filter(t => t !== ""))];
         
         if (torneosOrdenados.length === 0) throw new Error("No se encontraron torneos en el CSV.");
 
-        let colFecha = datosPartidos[0].Fecha_del_Torneo !== undefined ? 'Fecha_del_Torneo' : 'fecha_del_torneo';
-        
-        // NUEVO PASO DE PREPARACIÓN: Contamos cuántos partidos se juegan en cada torneo y fecha
         partidosPorFechaYTorneo = {};
         datosPartidos.forEach(p => {
-            let t = (p[colTorneo] || "").trim();
-            let f = Number(p[colFecha]);
+            let t = obtenerCampo(p, 'Torneo').trim();
+            let f = Number(obtenerCampo(p, 'Fecha_del_Torneo'));
             if (t && !isNaN(f)) {
                 let clave = `${t}|${f}`;
                 partidosPorFechaYTorneo[clave] = (partidosPorFechaYTorneo[clave] || 0) + 1;
@@ -353,76 +747,59 @@ async function iniciarApp() {
         });
 
         torneosOrdenados.forEach(torneo => {
-            let partidosDeEsteTorneo = datosPartidos.filter(p => (p[colTorneo] || "").trim() === torneo);
-            let fechas = [...new Set(partidosDeEsteTorneo.map(p => Number(p[colFecha])))];
+            let partidosDeEsteTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === torneo);
+            let fechas = [...new Set(partidosDeEsteTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
             let fechasValidas = fechas.filter(n => !isNaN(n) && n > 0);
             fechasPorTorneo[torneo] = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
         });
 
+        // -----------------------------------------------------------
+        // CALCULO COMPLETO EN CACHÉ (Corre una sola vez en el arranque)
+        // -----------------------------------------------------------
+        precalcularHistorialCompleto();
+
         const selectorTorneo = document.getElementById("selectorTorneo");
-        torneosOrdenados.forEach(torneo => {
-            let option = document.createElement("option");
-            option.value = torneo;
-            option.text = torneo;
-            selectorTorneo.appendChild(option);
-        });
+        if (selectorTorneo) {
+            selectorTorneo.innerHTML = "";
+            torneosOrdenados.forEach(torneo => {
+                let option = document.createElement("option");
+                option.value = torneo;
+                option.text = torneo;
+                selectorTorneo.appendChild(option);
+            });
+        }
 
         const selectorFecha = document.getElementById("selectorFecha");
 
-        selectorTorneo.addEventListener("change", (e) => {
-            let torneoSeleccionado = e.target.value;
-            actualizarDesplegableFechas(torneoSeleccionado);
-            renderizarTabla(torneoSeleccionado, Number(selectorFecha.value));
-        });
+        if (selectorTorneo && selectorFecha) {
+            selectorTorneo.addEventListener("change", (e) => {
+                let torneoSeleccionado = e.target.value;
+                actualizarDesplegableFechas(torneoSeleccionado);
+                renderizarTabla(torneoSeleccionado, Number(selectorFecha.value));
+            });
 
-        selectorFecha.addEventListener("change", (e) => {
-            renderizarTabla(selectorTorneo.value, Number(e.target.value));
-        });
+            selectorFecha.addEventListener("change", (e) => {
+                renderizarTabla(selectorTorneo.value, Number(e.target.value));
+            });
+        }
 
         const nota = document.createElement("div");
         nota.innerHTML = "<p style='font-size:12px; color:#666; text-align:center; margin-top:20px; font-style:italic;'>Metodología: Sistema Elo Internacional (K=25 variable). Incluye ventaja de localía, multiplicador por diferencia de gol, importancia de playoffs y regresión a la media.</p>";
-        document.querySelector(".contenedor").appendChild(nota);
-
-let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
-selectorTorneo.value = torneoInicial;
-actualizarDesplegableFechas(torneoInicial);
-renderizarTabla(torneoInicial, Number(selectorFecha.value));
-
-/* ===========================
-   CONFIGURACIÓN DEL MODAL
-=========================== */
-
-const modal = document.getElementById("modalGrafico");
-const spanCerrar = document.querySelector(".cerrar-modal");
-
-console.log("Modal encontrado:", modal);
-console.log("Botón cerrar encontrado:", spanCerrar);
-
-if (modal && spanCerrar) {
-
-    spanCerrar.onclick = function () {
-        modal.style.display = "none";
-    };
-
-    window.onclick = function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
+        const contenedor = document.querySelector(".contenedor");
+        if (contenedor) {
+            contenedor.appendChild(nota);
         }
-    };
 
-} else {
+        // Registrar eventos interactivos del modal de visualización
+        registrarEventosModal();
 
-    console.error("ERROR: No se encontró el modal o el botón de cerrar.");
-
-    if (!modal) {
-        console.error("Falta el elemento con id='modalGrafico'");
-    }
-
-    if (!spanCerrar) {
-        console.error("Falta el elemento con class='cerrar-modal'");
-    }
-
-}
+        // Cargar el torneo más reciente que tengamos registrado
+        let torneoInicial = torneosOrdenados[torneosOrdenados.length - 1];
+        if (selectorTorneo && selectorFecha) {
+            selectorTorneo.value = torneoInicial;
+            actualizarDesplegableFechas(torneoInicial);
+            renderizarTabla(torneoInicial, Number(selectorFecha.value));
+        }
 
     } catch (error) {
         console.error(error);
