@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking AFA Histórico</title>
+    <!-- Cargamos Chart.js para dibujar los gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Vinculamos la hoja de estilos externa con el diseño moderno -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="contenedor">
     <header class="header-principal">
-        <h1>Ranking AFA Histórico</h1>
+        <div class="header-top">
+            <!-- Escudo AFA -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Logo_de_la_AFA.svg" alt="AFA Logo" class="afa-logo">
+            <h1>Ranking AFA Histórico</h1>
+            <!-- Botón Modo Oscuro -->
+            <button id="btnModoOscuro" class="dark-mode-toggle" title="Cambiar tema">🌙</button>
+        </div>
         <p class="subtitulo">Clasificación de rendimiento basada en el sistema de puntuación internacional Elo</p>
     </header>
     
@@ -24,6 +32,22 @@
         <div class="grupo-control">
             <label for="selectorFecha"><strong>Fecha</strong></label>
             <select id="selectorFecha"></select>
+        </div>
+
+        <!-- NUEVO: Selector de Región -->
+        <div class="grupo-control">
+            <label for="selectorRegion"><strong>Ubicación</strong></label>
+            <select id="selectorRegion">
+                <option value="Todas">Todo el País</option>
+                <option value="BA_Total">Buenos Aires (Total)</option>
+                <option value="CABA">Ciudad Autónoma (CABA)</option>
+                <option value="PBA">Provincia de Bs. As.</option>
+                <option value="Santa Fe">Santa Fe</option>
+                <option value="Córdoba">Córdoba</option>
+                <option value="Mendoza">Mendoza</option>
+                <option value="Tucumán">Tucumán</option>
+                <option value="Otras">Otras Provincias</option>
+            </select>
         </div>
     </div>
 
@@ -38,10 +62,12 @@
             </tr>
         </thead>
         <tbody>
-            </tbody>
+            <!-- El ranking dinámico se inserta acá -->
+        </tbody>
     </table>
 </div>
 
+<!-- MODAL COMPLETO: FICHA DEL CLUB -->
 <div id="modalGrafico" class="modal">
     <div class="modal-contenido">
         <span class="cerrar-modal" id="btnCerrarModal">&times;</span>
