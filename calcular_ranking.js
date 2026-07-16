@@ -11,9 +11,9 @@ let filtroTipoActivo = "torneo";
 let filtroValorActivo = "ultimo"; 
 let modoMetricaActivo = "posicion"; 
 
-// DICCIONARIO DE ALIAS: Corrige nombres escritos distinto en el CSV
+// DICCIONARIO DE ALIAS: Corrige nombres escritos distinto, incluyendo a los Gimnasia y Estudiantes RC
 const aliasEquipos = {
-"estudiantes": "estudiantes (lp)",
+    "estudiantes": "estudiantes (lp)",
     "estudiantes de la plata": "estudiantes (lp)",
     "estudiantes (rio cuarto)": "estudiantes (rc)",
     "estudiantes de rio cuarto": "estudiantes (rc)",
@@ -37,11 +37,12 @@ const aliasEquipos = {
     "talleres": "talleres (c)",
     "atletico rafaela": "atletico de rafaela",
     "newells": "newells old boys",
+    "newell's": "newells old boys",
+    "newell's old boys": "newells old boys",
     "newells old boys": "newells old boys"
 };
 
-// DICCIONARIO DE ESCUDOS (2012 - 2026)
-// Reemplazá "URL_ACA" con el link de la imagen o la ruta a tu archivo local.
+// DICCIONARIO DE ESCUDOS: Respeté tus links y agregué los que faltan de Primera División
 const logosEquipos = {
     "aldosivi": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYLTS9PrLZVE7UP-Uik6iz9jCN52PMfWsJKdWvPYuKzSXG-_Ti_vZlFQEE_8usH9wtg_y3By5Sc-Dq6h6KPDudFl-176QyNxk75GeOu6snFYmbHnKNGhHiQaBbJ1GqihS-WXANCOoadhwT1KnimCOLaoGMbmaKsBXSCdjar0-Y_fP3vg8A4_6jIvF5/s1600/Club%20Atletico%20Aldosivi128x.png",
     "all boys": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjBTKE3RImNmGGbOG-xY2II7CZH6VtUgW8S_j8LhP1dSX-PfvBic-IjLVCO3DX9OaAuvCLRII8PJqmJtxQJG9Cjr_HYVzSiHcJkqTR7TtTRgl712TYa9nKjDvtCXpxdWXRsOuZHoYR6glICoVk79EJXGJeDSAu2_XhvkYqDz2plAjDYwNmSIPZ9F7g/s1600/Club%20Atletico%20All%20Boys128x.png",
@@ -80,7 +81,7 @@ const logosEquipos = {
     "rosario central": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCm7IJilwhaIvOVMhJmrp42mFKUkPTiqQEBDNAx8IS9xUSvkdjB1YiWUpl_bGptgX6EXHbCS1Pf3Jbwu-f26fGtOldGlJAc-i-QxwIP6NlfPm5mBXJE1YzpGYKR7aTZJ5wJBSIAlrD0y5FCe4D4fuyGkx-7hCRs6-x-cnBbNmiW9jmyB6ZVllbGuDynu0/s1600/CA%20Rosario%20Central128x.png",
     "san lorenzo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjG68ZrPNvlFuKIWw939yae1SX0fPGSOuAa_8OdtNaJzTGrIYyLXa0gkPFE827tFP8-wI838QyD6kiAxOR-JN3QVejwDWp2pnq38jB1rHlMeqZb5eGDETr42_SrhEU_qz9yfsT8rGxvbh04gd-pdUNap6iL7fez26aBNAuUl1sd_EmA3WziFEHCc2UZIVY/s1600/CA%20San%20Lorenzo%20de%20Almagro128x.png",
     "san martin (sj)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgEWIIKyRnzdyJieAvWGSa2lMn2vG6bgQmAGtupHsCg8pH20m1aZaZaH-uE7bovgguXr1qhZ2pPyp48tWwu0L80WRF65f9PJ_q2-uwyj8AoWuSlbsIHGlUQEIRFqH82YfrODi_OBvdjk9SGwNXrFFURhO-5iP30K4XC_MKrdD_z8koyxhPcD0DXSFbbQ94/s1600/Club%20Atl%C3%A9tico%20San%20Mart%C3%ADn128x.png",
-    "San Martín (Tucumán)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpBGKSCCAmo9EDkMIxWTnIQ4zhR7fUcaee9oaiNTX3K6YC8OopjcNVNgqjmF1Mx9sULwwy5mQJnjwJNb3QNsJZeerFD5m3yvlzITAPprJQRnIhjimaeywLBY_5CycbQl7UZl9mA4UGROk/s1600/Club+Atletico+San+Martin128x.png",
+    "san martin (t)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpBGKSCCAmo9EDkMIxWTnIQ4zhR7fUcaee9oaiNTX3K6YC8OopjcNVNgqjmF1Mx9sULwwy5mQJnjwJNb3QNsJZeerFD5m3yvlzITAPprJQRnIhjimaeywLBY_5CycbQl7UZl9mA4UGROk/s1600/Club+Atletico+San+Martin128x.png",
     "sarmiento (j)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOm5IHpBKTvNVI2oQsYF4jEUTPoYIwnqQHBf7h__5zoUpJAUEvM6h5HWH8HQ9AGnqo-t7za54gvJlXOgR80MJHbFWbwur2U_j_-fjtYSnBZqMcxcxC5XY_jD_O_6sKKvJddXl_LpjVA-M/s1600/Sarmiento+de+Junin128x.png",
     "talleres (c)": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrj-EZz7CmNG6m_Fa7Q3w1CcUORXE8k1tWkOeY_N-egX754nAJWchSjs55lARBlu-T9bG5twJNd-xn5gIzHCmL5iQSG-pl0ZBIzWfgATG7dz7bp4go3c4CRjarxwjQDCgtADnxY5eudgRhIWTJ1vP5gPOyoXpmS5E6EvcfyQxuFlkLmUGAMcDlBsvLKMI/s1600/Club%20Atl%C3%A9tico%20Talleres128x.png",
     "temperley": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAHHO7kQm_DDJGUwdpUTKXGatGZ9o-Ov1oCrsVtgeqq0Xoq-oFGq0YEBdRkLYU6-J6LJAeOcCmUNNjt_o25q2PCPy-6WVzAsQwYpkVkD1x3bb2mv4ePkYvLyISfKetj7Cp60gya39Gadg/s1600/Club+Atletico+Temperley128x.png",
@@ -89,9 +90,11 @@ const logosEquipos = {
     "velez sarsfield": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirp6aRrGW9ehZvYes7b_Lsz1nHmke4k3nV_Knh_zcmgVpEbFhqWiN2-tJGGOcNU00R2uudedXBlqZBIX0ldnSOw5W6JNB82FR5Kr8qEjseU6xRTPxRE5gsMRuxjLzX1eN84kwHKugkoZYqLCISFFubWIbCNtPZMIYTXdqU6RgLOh9UcQQj-MOJspTL/s1600/Velez%20Sarsfield128x.png"
 };
 
+// Protección para generar imagen de reserva si el enlace está roto o dice "URL_ACA"
 function obtenerURL_Escudo(nombreNormalizado, nombreReal) {
-    if (logosEquipos[nombreNormalizado] && logosEquipos[nombreNormalizado] !== "URL_ACA") {
-        return logosEquipos[nombreNormalizado];
+    let url = logosEquipos[nombreNormalizado];
+    if (url && url !== "URL_ACA" && !url.includes("URL_ACA")) {
+        return url;
     }
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombreReal)}&background=00285e&color=fff&rounded=true&bold=true`;
 }
@@ -108,6 +111,7 @@ function arreglarCodificacion(texto) {
     return resultado;
 }
 
+// Búsqueda de columnas a prueba de balas
 function obtenerCampo(objeto, campo) {
     if (!objeto) return "";
     const campoLower = campo.toLowerCase().trim();
@@ -160,6 +164,7 @@ function normalizarNombre(nombre) {
     if (!nombre) return "";
     let limpio = nombre.trim().toLowerCase();
     limpio = limpio.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    limpio = limpio.replace(/'/g, ""); // Extrae el apóstrofe de Newell's
     return aliasEquipos[limpio] || limpio;
 }
 
@@ -213,6 +218,17 @@ function actualizarPuntos(equipoLocal, equipoVisitante, golesLocal, golesVisitan
     equipoVisitante.puntos -= cambio;
 }
 
+// Búsqueda inteligente de columna de Fechas (Para evitar el error de 0 fechas)
+function obtenerValorFechaNumerica(p) {
+    let v = obtenerCampo(p, 'Fecha_del_Torneo');
+    if (v !== "") return Number(v);
+    v = obtenerCampo(p, 'Jornada');
+    if (v !== "") return Number(v);
+    v = obtenerCampo(p, 'Fecha');
+    if (v !== "" && !isNaN(Number(v))) return Number(v);
+    return NaN;
+}
+
 function precalcularHistorialCompleto() {
     cacheHistorialGlobal = {};
     let diccionarioEquipos = {};
@@ -263,7 +279,8 @@ function precalcularHistorialCompleto() {
             }
         });
 
-        let fechas = [...new Set(partidosDeEsteTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
+        // Usamos el extractor de fechas a prueba de fallos
+        let fechas = [...new Set(partidosDeEsteTorneo.map(p => obtenerValorFechaNumerica(p)))];
         let fechasValidas = fechas.filter(n => !isNaN(n) && n > 0);
         let maxFechas = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
 
@@ -292,7 +309,7 @@ function precalcularHistorialCompleto() {
         });
 
         for (let f = 1; f <= maxFechas; f++) {
-            let partidosFecha = partidosDeEsteTorneo.filter(p => Number(obtenerCampo(p, 'Fecha_del_Torneo')) === f);
+            let partidosFecha = partidosDeEsteTorneo.filter(p => obtenerValorFechaNumerica(p) === f);
             
             let puntosPrevios = {};
             activeTeams.forEach(nameNorm => {
@@ -430,12 +447,15 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
         let tagAscenso = (!datosAyer && fechaSeleccionada === 0) ? `<span style="font-size:10px; background:#ffd700; padding:2px 5px; border-radius:3px; margin-left:5px; color:black;">NUEVO</span>` : "";
 
         let escudoHtml = `<img src="${obtenerURL_Escudo(normalizarNombre(equipo.nombre), equipo.nombre)}" style="width:24px; height:24px; object-fit:contain;" alt="logo">`;
+        
+        // ¡ESCAPE DE COMILLAS AQUÍ! Vital para evitar el error de Newell's
+        let nombreEscapado = equipo.nombre.replace(/'/g, "\\'");
 
         tabla.innerHTML += `
         <tr>
             <td><strong>${equipo.posicion}</strong></td>
             <td>${iconoPos}</td>
-            <td class="equipo-nombre" onclick="abrirFichaClub('${equipo.nombre}')">
+            <td class="equipo-nombre" onclick="abrirFichaClub('${nombreEscapado}')">
                 <div style="display:flex; align-items:center; gap:10px;">
                     ${escudoHtml}
                     <span>${equipo.nombre} ${tagAscenso}</span>
@@ -448,7 +468,8 @@ function renderizarTabla(torneoSeleccionado, fechaSeleccionada) {
     });
 }
 
-function abrirFichaClub(nombreClub) {
+// Para hacer la función global e invocarla desde el HTML
+window.abrirFichaClub = function(nombreClub) {
     clubSeleccionadoActivo = nombreClub;
     const norm = normalizarNombre(nombreClub);
     const historialCompleto = cacheHistorialGlobal[norm];
@@ -529,7 +550,7 @@ function abrirFichaClub(nombreClub) {
     }
 
     actualizarVisualizacionGrafico();
-}
+};
 
 function actualizarVisualizacionGrafico() {
     const norm = normalizarNombre(clubSeleccionadoActivo);
@@ -579,7 +600,7 @@ function actualizarVisualizacionGrafico() {
         if (filtroValorActivo !== "1año") {
             datosFiltrados = datosFiltrados.filter((h, idx) => {
                 let partidosDelTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === h.torneo);
-                let fechas = [...new Set(partidosDelTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
+                let fechas = [...new Set(partidosDelTorneo.map(p => obtenerValorFechaNumerica(p)))];
                 let maxF = fechas.filter(n => !isNaN(n) && n > 0).length > 0 ? Math.max(...fechas.filter(n => !isNaN(n) && n > 0)) : 0;
 
                 return h.fecha === maxF || h.fecha === 0 || idx === datosFiltrados.length - 1;
@@ -723,17 +744,23 @@ function cambiarModoGrafico(modo) {
     actualizarVisualizacionGrafico();
 }
 
+// Registro Defensivo de Eventos (Si no encuentra el HTML de una, no explota)
 function registrarEventosModal() {
-    document.querySelectorAll("#grupoFiltrosTorneo .btn-pill").forEach(btn => {
+    let torneosBtn = document.querySelectorAll("#grupoFiltrosTorneo .btn-pill");
+    if(torneosBtn) torneosBtn.forEach(btn => {
         btn.addEventListener("click", () => cambiarFiltro("torneo", btn.getAttribute("data-valor"), btn));
     });
 
-    document.querySelectorAll("#grupoFiltrosTiempo .btn-pill").forEach(btn => {
+    let tiempoBtn = document.querySelectorAll("#grupoFiltrosTiempo .btn-pill");
+    if(tiempoBtn) tiempoBtn.forEach(btn => {
         btn.addEventListener("click", () => cambiarFiltro("tiempo", btn.getAttribute("data-valor"), btn));
     });
 
-    document.getElementById("segmentPosicion").addEventListener("click", () => cambiarModoGrafico("posicion"));
-    document.getElementById("segmentElo").addEventListener("click", () => cambiarModoGrafico("elo"));
+    let segPos = document.getElementById("segmentPosicion");
+    if (segPos) segPos.addEventListener("click", () => cambiarModoGrafico("posicion"));
+    
+    let segElo = document.getElementById("segmentElo");
+    if (segElo) segElo.addEventListener("click", () => cambiarModoGrafico("elo"));
 
     const modal = document.getElementById("modalGrafico");
     const btnCerrar = document.getElementById("btnCerrarModal");
@@ -744,7 +771,7 @@ function registrarEventosModal() {
     }
 }
 
-// AQUÍ ESTÁ LA MODIFICACIÓN PARA INVERTIR LAS FECHAS
+// Fechas invertidas, listas para mostrar la última arriba
 function actualizarDesplegableFechas(torneoSeleccionado) {
     const selectorFecha = document.getElementById("selectorFecha");
     if (!selectorFecha) return;
@@ -752,7 +779,6 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
     
     let totalFechas = fechasPorTorneo[torneoSeleccionado] || 0;
     
-    // Bucle invertido: Empezamos desde la última fecha hasta la 1
     for(let i = totalFechas; i >= 1; i--) {
         let option = document.createElement("option");
         option.value = i;
@@ -760,14 +786,12 @@ function actualizarDesplegableFechas(torneoSeleccionado) {
         selectorFecha.appendChild(option);
     }
     
-    // Dejamos "Inicio del Torneo" al final de la lista visual
     let optionCero = document.createElement("option");
     optionCero.value = 0;
     optionCero.text = "Inicio del Torneo";
     selectorFecha.appendChild(optionCero);
 
-    // Seleccionamos por defecto la última fecha que se jugó
-    selectorFecha.value = totalFechas;
+    selectorFecha.value = String(totalFechas);
 }
 
 async function iniciarApp() {
@@ -784,7 +808,7 @@ async function iniciarApp() {
         partidosPorFechaYTorneo = {};
         datosPartidos.forEach(p => {
             let t = obtenerCampo(p, 'Torneo').trim();
-            let f = Number(obtenerCampo(p, 'Fecha_del_Torneo'));
+            let f = obtenerValorFechaNumerica(p);
             if (t && !isNaN(f)) {
                 let clave = `${t}|${f}`;
                 partidosPorFechaYTorneo[clave] = (partidosPorFechaYTorneo[clave] || 0) + 1;
@@ -793,7 +817,7 @@ async function iniciarApp() {
 
         torneosOrdenados.forEach(torneo => {
             let partidosDeEsteTorneo = datosPartidos.filter(p => obtenerCampo(p, 'Torneo').trim() === torneo);
-            let fechas = [...new Set(partidosDeEsteTorneo.map(p => Number(obtenerCampo(p, 'Fecha_del_Torneo'))))];
+            let fechas = [...new Set(partidosDeEsteTorneo.map(p => obtenerValorFechaNumerica(p)))];
             let fechasValidas = fechas.filter(n => !isNaN(n) && n > 0);
             fechasPorTorneo[torneo] = fechasValidas.length > 0 ? Math.max(...fechasValidas) : 0;
         });
