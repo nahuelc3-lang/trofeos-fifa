@@ -2,125 +2,27 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking AFA Histórico</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f0f2f5;
-            color: #333;
-        }
-        .contenedor {
-            max-width: 900px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-        }
-        .controles {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-        }
-        .grupo-control {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        select {
-            padding: 8px 12px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            min-width: 200px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border-bottom: 1px solid #eee;
-            padding: 12px 15px;
-            text-align: center;
-        }
-        th {
-            background: #00285e;
-            color: white;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-        tr:hover { background: #f5f5f5; }
-        .equipo-nombre { text-align: left; font-weight: bold; font-size: 15px; }
-        .sube { color: #28a745; font-weight: bold; }
-        .baja { color: #dc3545; font-weight: bold; }
-        .igual { color: #6c757d; font-weight: bold; }
-        .puntos-totales { font-weight: bold; font-size: 16px; }
-
-        .modal{
-    display:none;
-    position:fixed;
-    z-index:9999;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.6);
-    justify-content:center;
-    align-items:center;
-}
-
-.modal-contenido{
-    background:white;
-    width:90%;
-    max-width:1000px;
-    padding:20px;
-    border-radius:10px;
-    position:relative;
-}
-
-.cerrar-modal{
-    position:absolute;
-    top:10px;
-    right:20px;
-    font-size:35px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.cerrar-modal:hover{
-    color:red;
-}
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="contenedor">
-    <h1>Ranking AFA Histórico</h1>
+    <header class="header-principal">
+        <h1>Ranking AFA Histórico</h1>
+        <p class="subtitulo">Clasificación de rendimiento basada en el sistema de puntuación internacional Elo</p>
+    </header>
     
     <div class="controles">
         <div class="grupo-control">
-            <label for="selectorTorneo"><strong>Torneo:</strong></label>
+            <label for="selectorTorneo"><strong>Torneo</strong></label>
             <select id="selectorTorneo"></select>
         </div>
         
         <div class="grupo-control">
-            <label for="selectorFecha"><strong>Fecha:</strong></label>
+            <label for="selectorFecha"><strong>Fecha</strong></label>
             <select id="selectorFecha"></select>
         </div>
     </div>
@@ -128,11 +30,11 @@
     <table id="tablaRanking">
         <thead>
             <tr>
-                <th>Pos</th>
-                <th>+/-</th>
+                <th style="width: 80px;">Pos</th>
+                <th style="width: 90px;">+/-</th>
                 <th style="text-align: left;">Equipo</th>
-                <th>Puntos</th>
-                <th>Dif. Pts</th>
+                <th style="width: 120px;">Puntos Elo</th>
+                <th style="width: 120px;">Var. Fecha</th>
             </tr>
         </thead>
         <tbody>
@@ -140,29 +42,90 @@
     </table>
 </div>
 
-    </table>
-</div>
-
-<!-- Modal del gráfico -->
 <div id="modalGrafico" class="modal">
     <div class="modal-contenido">
-
-        <span class="cerrar-modal">&times;</span>
-
-        <h2 id="tituloModal"></h2>
-
-        <div style="height:500px;">
-            <canvas id="canvasGrafico"></canvas>
+        <span class="cerrar-modal" id="btnCerrarModal">&times;</span>
+        
+        <div class="modal-header-ficha">
+            <div class="club-brand">
+                <h2 id="tituloModal">Nombre del Club</h2>
+                <span id="tagEstadoClub" class="tag-estado">Primera División</span>
+            </div>
+            
+            <div class="stats-grid-principales">
+                <div class="stat-card principal">
+                    <span class="stat-label">Posición Actual</span>
+                    <div class="stat-value" id="statPosicion">-</div>
+                    <div class="stat-change" id="statCambioPos">-</div>
+                </div>
+                <div class="stat-card principal">
+                    <span class="stat-label">Puntos Elo</span>
+                    <div class="stat-value" id="statElo">-</div>
+                    <div class="stat-change" id="statCambioElo">-</div>
+                </div>
+            </div>
         </div>
 
+        <div class="secondary-stats-grid">
+            <div class="sec-stat-card">
+                <span class="sec-label">Mejor Posición</span>
+                <span class="sec-value" id="statMejorPos">-</span>
+            </div>
+            <div class="sec-stat-card">
+                <span class="sec-label">Peor Posición</span>
+                <span class="sec-value" id="statPeorPos">-</span>
+            </div>
+            <div class="sec-stat-card">
+                <span class="sec-label">Torneos Jugados</span>
+                <span class="sec-value" id="statTorneos">-</span>
+            </div>
+            <div class="sec-stat-card">
+                <span class="sec-label">Mayor Subida</span>
+                <span class="sec-value success" id="statMayorSubida">-</span>
+            </div>
+            <div class="sec-stat-card">
+                <span class="sec-label">Mayor Bajada</span>
+                <span class="sec-value danger" id="statMayorBajada">-</span>
+            </div>
+        </div>
+
+        <div class="filtros-dashboard">
+            <div class="filtro-grupo">
+                <span class="filtro-titulo">Rango de Torneos</span>
+                <div class="btn-group" id="grupoFiltrosTorneo">
+                    <button class="btn-pill active" data-valor="ultimo">Último</button>
+                    <button class="btn-pill" data-valor="2">Últimos 2</button>
+                    <button class="btn-pill" data-valor="5">Últimos 5</button>
+                    <button class="btn-pill" data-valor="todo">Todo</button>
+                </div>
+            </div>
+            
+            <div class="filtro-grupo">
+                <span class="filtro-titulo">Rango de Tiempo</span>
+                <div class="btn-group" id="grupoFiltrosTiempo">
+                    <button class="btn-pill" data-valor="1año">1 Año</button>
+                    <button class="btn-pill" data-valor="2años">2 Años</button>
+                    <button class="btn-pill" data-valor="5años">5 Años</button>
+                    <button class="btn-pill" data-valor="todo">Histórico</button>
+                </div>
+            </div>
+
+            <div class="filtro-grupo">
+                <span class="filtro-titulo">Métrica</span>
+                <div class="segmented-control">
+                    <button class="segment-btn active" id="segmentPosicion">Posición</button>
+                    <button class="segment-btn" id="segmentElo">Puntos Elo</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grafico-wrapper">
+            <canvas id="canvasGrafico"></canvas>
+        </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="calcular_ranking.js"></script>
-
-</body>
-</html>
 
 </body>
 </html>
