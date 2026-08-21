@@ -17,7 +17,7 @@
         }
         .header-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,7 +43,7 @@
         .btn-volver:hover { background-color: #555; }
         input {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             padding: 15px;
             margin-bottom: 20px;
             border: none;
@@ -54,24 +54,53 @@
             box-sizing: border-box;
         }
         input::placeholder { color: #aaa; }
-        .lista-equipos {
+        
+        /* Estilos para las categorías (Continente, País, Liga) */
+        .contenedor-principal {
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
+        }
+        details {
+            background-color: #1a1a1a;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 10px;
+            border-left: 4px solid #333;
+        }
+        details details {
+            margin-top: 10px;
+            border-left: 4px solid #555;
+            background-color: #222;
+        }
+        details details details {
+            border-left: 4px solid #00d2ff;
+            background-color: #2a2a2a;
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+            outline: none;
+            font-size: 16px;
+        }
+        summary:hover { color: #00d2ff; }
+        
+        .lista-equipos {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 10px 0 0 0;
         }
         .equipo {
             background-color: #1e1e1e;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 5px solid #00d2ff;
+            border-bottom: 1px solid #333;
         }
-        .real { font-weight: bold; font-size: 16px; }
+        .real { font-weight: bold; font-size: 15px; }
         .ficticio { color: #aaaaaa; font-size: 14px; text-align: right;}
         .oculto { display: none !important; }
     </style>
@@ -79,52 +108,211 @@
 <body>
 
     <div class="header-container">
-        <!-- Este botón los devuelve a tu página principal -->
         <a href="index.html" class="btn-volver">🔙 Volver</a>
         <h1>Buscador eFootball</h1>
-        <div style="width: 70px;"></div> <!-- Espaciador para centrar el título -->
+        <div style="width: 70px;"></div>
     </div>
 
-    <!-- Buscador -->
-    <input type="text" id="buscador" placeholder="Escribí un equipo (ej: Real Madrid)...">
+    <input type="text" id="buscador" placeholder="Buscar equipo real o ficticio...">
 
-    <!-- Lista de Equipos -->
-    <ul class="lista-equipos" id="contenedor-equipos">
+    <div class="contenedor-principal" id="arbol-equipos">
         
-        <!-- Inglaterra -->
-        <li class="equipo"><span class="real">Manchester City</span> <span class="ficticio">Manchester Blue</span></li>
-        <li class="equipo"><span class="real">Chelsea</span> <span class="ficticio">London FC</span></li>
-        <li class="equipo"><span class="real">West Ham United</span> <span class="ficticio">East London</span></li>
-        <li class="equipo"><span class="real">Aston Villa</span> <span class="ficticio">West Midlands Village</span></li>
-        <li class="equipo"><span class="real">Tottenham Hotspur</span> <span class="ficticio">North East London</span></li>
-        
-        <!-- España -->
-        <li class="equipo"><span class="real">Real Madrid</span> <span class="ficticio">Madrid Chamartin B</span></li>
-        <li class="equipo"><span class="real">Atlético de Madrid</span> <span class="ficticio">Madrid Rosas RB</span></li>
-        <li class="equipo"><span class="real">Sevilla</span> <span class="ficticio">Sevilla Nervion BR</span></li>
-        <li class="equipo"><span class="real">Villarreal</span> <span class="ficticio">Villarreal A</span></li>
-        
-        <!-- Italia -->
-        <li class="equipo"><span class="real">Inter de Milán</span> <span class="ficticio">Lombardia NA</span></li>
-        <li class="equipo"><span class="real">Juventus</span> <span class="ficticio">Piemonte BN</span></li>
-        <li class="equipo"><span class="real">AC Milan</span> <span class="ficticio">Milano RN</span></li>
+        <!-- ================= UEFA - EUROPA ================= -->
+        <details class="continente">
+            <summary>UEFA - Europa</summary>
 
-        <!-- AGREGÁ MÁS EQUIPOS ACÁ ABAJO COPIANDO UNA DE LAS LÍNEAS DE ARRIBA -->
-    </ul>
+            <!-- INGLATERRA -->
+            <details class="pais">
+                <summary>Inglaterra (The FA)</summary>
+                
+                <details class="liga">
+                    <summary>Premier League</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Aston Villa</span> <span class="ficticio">Aston RB</span></li>
+                        <li class="equipo"><span class="real">Bournemouth</span> <span class="ficticio">Bournemouth RB</span></li>
+                        <li class="equipo"><span class="real">Brighton & Hove Albion</span> <span class="ficticio">Brighton WB</span></li>
+                        <li class="equipo"><span class="real">Burnley</span> <span class="ficticio">Burnley RB</span></li>
+                        <li class="equipo"><span class="real">Chelsea</span> <span class="ficticio">Chelsea B</span></li>
+                        <li class="equipo"><span class="real">Crystal Palace</span> <span class="ficticio">Crystal Palace RB</span></li>
+                        <li class="equipo"><span class="real">Everton</span> <span class="ficticio">Everton B</span></li>
+                        <li class="equipo"><span class="real">Leicester City</span> <span class="ficticio">Leicester B</span></li>
+                        <li class="equipo"><span class="real">Liverpool</span> <span class="ficticio">Liverpool R</span></li>
+                        <li class="equipo"><span class="real">Manchester City</span> <span class="ficticio">Manchester B</span></li>
+                        <li class="equipo"><span class="real">Newcastle United</span> <span class="ficticio">Newcastle WB</span></li>
+                        <li class="equipo"><span class="real">Norwich City</span> <span class="ficticio">Norwich YG</span></li>
+                        <li class="equipo"><span class="real">Sheffield United</span> <span class="ficticio">Sheffield RB</span></li>
+                        <li class="equipo"><span class="real">Southampton</span> <span class="ficticio">Southampton RW</span></li>
+                        <li class="equipo"><span class="real">Tottenham Hotspur</span> <span class="ficticio">Tottenham WB</span></li>
+                        <li class="equipo"><span class="real">Watford</span> <span class="ficticio">Watford BY</span></li>
+                        <li class="equipo"><span class="real">West Ham United</span> <span class="ficticio">West Ham RB</span></li>
+                        <li class="equipo"><span class="real">Wolverhampton Wanderers</span> <span class="ficticio">Wolverhampton YB</span></li>
+                    </ul>
+                </details>
+
+                <details class="liga">
+                    <summary>Championship (Segunda División)</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Barnsley</span> <span class="ficticio">Barnsley R</span></li>
+                        <li class="equipo"><span class="real">Birmingham City</span> <span class="ficticio">Birmingham B</span></li>
+                        <li class="equipo"><span class="real">Blackburn Rovers</span> <span class="ficticio">Blackburn BW</span></li>
+                        <li class="equipo"><span class="real">Brentford</span> <span class="ficticio">Brentford RW</span></li>
+                        <li class="equipo"><span class="real">Bristol City</span> <span class="ficticio">Bristol R</span></li>
+                        <li class="equipo"><span class="real">Cardiff City</span> <span class="ficticio">Cardiff B</span></li>
+                        <li class="equipo"><span class="real">Charlton Athletic</span> <span class="ficticio">Charlton RW</span></li>
+                        <li class="equipo"><span class="real">Derby County</span> <span class="ficticio">Derby WB</span></li>
+                        <li class="equipo"><span class="real">Fulham</span> <span class="ficticio">Fulham W</span></li>
+                        <li class="equipo"><span class="real">Huddersfield Town</span> <span class="ficticio">Huddersfield BW</span></li>
+                        <li class="equipo"><span class="real">Hull City</span> <span class="ficticio">Hull OB</span></li>
+                        <li class="equipo"><span class="real">Leeds United</span> <span class="ficticio">Leeds W</span></li>
+                        <li class="equipo"><span class="real">Luton Town</span> <span class="ficticio">Luton WO</span></li>
+                        <li class="equipo"><span class="real">Middlesbrough</span> <span class="ficticio">Middlesbrough RW</span></li>
+                        <li class="equipo"><span class="real">Millwall</span> <span class="ficticio">Millwall BW</span></li>
+                        <li class="equipo"><span class="real">Nottingham Forest</span> <span class="ficticio">Nottingham RW</span></li>
+                        <li class="equipo"><span class="real">Preston North End</span> <span class="ficticio">Preston WB</span></li>
+                        <li class="equipo"><span class="real">Queens Park Rangers</span> <span class="ficticio">Queen's Park BW</span></li>
+                        <li class="equipo"><span class="real">Reading</span> <span class="ficticio">Reading BW</span></li>
+                        <li class="equipo"><span class="real">Sheffield Wednesday</span> <span class="ficticio">Sheffield BW</span></li>
+                        <li class="equipo"><span class="real">Stoke City</span> <span class="ficticio">Stoke RW</span></li>
+                        <li class="equipo"><span class="real">Swansea City</span> <span class="ficticio">Swansea W</span></li>
+                        <li class="equipo"><span class="real">West Bromwich Albion</span> <span class="ficticio">West Bromwich WB</span></li>
+                        <li class="equipo"><span class="real">Wigan Athletic</span> <span class="ficticio">Wigan BW</span></li>
+                    </ul>
+                </details>
+            </details>
+
+            <!-- ESPAÑA -->
+            <details class="pais">
+                <summary>España (RFEF)</summary>
+                
+                <details class="liga">
+                    <summary>LaLiga (Primera División)</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Athletic Club Bilbao</span> <span class="ficticio">Bilbao BR</span></li>
+                        <li class="equipo"><span class="real">Atlético de Madrid</span> <span class="ficticio">Madrid Rosas RB</span></li>
+                        <li class="equipo"><span class="real">Celta de Vigo</span> <span class="ficticio">Vigo AB</span></li>
+                        <li class="equipo"><span class="real">Deportivo Alavés</span> <span class="ficticio">Álava AB</span></li>
+                        <li class="equipo"><span class="real">Espanyol</span> <span class="ficticio">Llobregat AB</span></li>
+                        <li class="equipo"><span class="real">Getafe CF</span> <span class="ficticio">Getafe A</span></li>
+                        <li class="equipo"><span class="real">Granada</span> <span class="ficticio">Granada RB</span></li>
+                        <li class="equipo"><span class="real">Leganés</span> <span class="ficticio">Leganés AB</span></li>
+                        <li class="equipo"><span class="real">Levante UD</span> <span class="ficticio">Levante RA</span></li>
+                        <li class="equipo"><span class="real">Mallorca</span> <span class="ficticio">Mallorca RN</span></li>
+                        <li class="equipo"><span class="real">Osasuna</span> <span class="ficticio">Pamplona RA</span></li>
+                        <li class="equipo"><span class="real">Real Betis</span> <span class="ficticio">Sevilla Triana VB</span></li>
+                        <li class="equipo"><span class="real">Real Madrid</span> <span class="ficticio">Madrid Chamartin B</span></li>
+                        <li class="equipo"><span class="real">Real Sociedad</span> <span class="ficticio">Vasco Gipuzkoa AB</span></li>
+                        <li class="equipo"><span class="real">Real Valladolid</span> <span class="ficticio">Valladolid MB</span></li>
+                        <li class="equipo"><span class="real">SD Eibar</span> <span class="ficticio">Eibar AR</span></li>
+                        <li class="equipo"><span class="real">Sevilla FC</span> <span class="ficticio">Sevilla Nervión BR</span></li>
+                        <li class="equipo"><span class="real">Valencia</span> <span class="ficticio">Valencia BN</span></li>
+                        <li class="equipo"><span class="real">Villarreal</span> <span class="ficticio">Villarreal A</span></li>
+                    </ul>
+                </details>
+
+                <details class="liga">
+                    <summary>LaLiga 2 (Segunda División)</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Albacete</span> <span class="ficticio">Albacete BN</span></li>
+                        <li class="equipo"><span class="real">Alcorcón</span> <span class="ficticio">Alcorcón AA</span></li>
+                        <li class="equipo"><span class="real">Almería</span> <span class="ficticio">Almería RB</span></li>
+                        <li class="equipo"><span class="real">Cádiz</span> <span class="ficticio">Cádiz AA</span></li>
+                        <li class="equipo"><span class="real">Deportivo La Coruña</span> <span class="ficticio">La Coruña AB</span></li>
+                        <li class="equipo"><span class="real">Elche</span> <span class="ficticio">Elche BV</span></li>
+                        <li class="equipo"><span class="real">Extremadura</span> <span class="ficticio">Extremadura AR</span></li>
+                        <li class="equipo"><span class="real">Fuenlabrada</span> <span class="ficticio">Fuenlabrada A</span></li>
+                        <li class="equipo"><span class="real">Girona</span> <span class="ficticio">Girona R</span></li>
+                        <li class="equipo"><span class="real">Huesca</span> <span class="ficticio">Huesca RA</span></li>
+                        <li class="equipo"><span class="real">Las Palmas</span> <span class="ficticio">Las Palmas AA</span></li>
+                        <li class="equipo"><span class="real">Lugo</span> <span class="ficticio">Lugo RB</span></li>
+                        <li class="equipo"><span class="real">Málaga</span> <span class="ficticio">Málaga AB</span></li>
+                        <li class="equipo"><span class="real">Mirandés</span> <span class="ficticio">Miranda de Ebro RN</span></li>
+                        <li class="equipo"><span class="real">Numancia</span> <span class="ficticio">Numancia R</span></li>
+                        <li class="equipo"><span class="real">Ponferradina</span> <span class="ficticio">Ponferrada AB</span></li>
+                        <li class="equipo"><span class="real">Racing Santander</span> <span class="ficticio">Santander VB</span></li>
+                        <li class="equipo"><span class="real">Rayo Vallecano</span> <span class="ficticio">Vallecas BR</span></li>
+                        <li class="equipo"><span class="real">Real Oviedo</span> <span class="ficticio">Oviedo A</span></li>
+                        <li class="equipo"><span class="real">Real Zaragoza</span> <span class="ficticio">Zaragoza BA</span></li>
+                        <li class="equipo"><span class="real">Sporting Gijón</span> <span class="ficticio">Gijón RB</span></li>
+                        <li class="equipo"><span class="real">Tenerife</span> <span class="ficticio">Tenerife AB</span></li>
+                    </ul>
+                </details>
+            </details>
+
+            <!-- ITALIA -->
+            <details class="pais">
+                <summary>Italia (FIGC)</summary>
+                
+                <details class="liga">
+                    <summary>Serie A (Primera División)</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Monza</span> <span class="ficticio">Monza RB</span></li>
+                        <li class="equipo"><span class="real">Venezia</span> <span class="ficticio">Venezia ANV</span></li>
+                        <li class="equipo"><span class="real">Juventus</span> <span class="ficticio">Piemonte BN</span></li>
+                        <li class="equipo"><span class="real">Sassuolo</span> <span class="ficticio">Sassuelo NV</span></li>
+                        <li class="equipo"><span class="real">Bologna</span> <span class="ficticio">Bologna RB</span></li>
+                        <li class="equipo"><span class="real">Genoa</span> <span class="ficticio">Genova RB</span></li>
+                        <li class="equipo"><span class="real">Fiorentina</span> <span class="ficticio">Firenze V</span></li>
+                        <li class="equipo"><span class="real">AS Roma</span> <span class="ficticio">Roma GR</span></li>
+                        <li class="equipo"><span class="real">Frosinone</span> <span class="ficticio">Frosinone GA</span></li>
+                        <li class="equipo"><span class="real">Napoli</span> <span class="ficticio">Napoli A</span></li>
+                        <li class="equipo"><span class="real">Lecce</span> <span class="ficticio">Lecce GR</span></li>
+                        <li class="equipo"><span class="real">Cagliari</span> <span class="ficticio">Caglari RB</span></li>
+                    </ul>
+                </details>
+
+                <details class="liga">
+                    <summary>Serie B (Segunda División)</summary>
+                    <ul class="lista-equipos">
+                        <li class="equipo"><span class="real">Ascoli</span> <span class="ficticio">MA Zebra</span></li>
+                        <li class="equipo"><span class="real">Benevento</span> <span class="ficticio">CM Yellow Red</span></li>
+                        <li class="equipo"><span class="real">Chievo</span> <span class="ficticio">DL Yellow</span></li>
+                        <li class="equipo"><span class="real">Cittadella</span> <span class="ficticio">DL Crimson</span></li>
+                        <li class="equipo"><span class="real">Cosenza</span> <span class="ficticio">AJ Red Blue</span></li>
+                        <li class="equipo"><span class="real">Cremonese</span> <span class="ficticio">LB Red Grey</span></li>
+                        <li class="equipo"><span class="real">Crotone</span> <span class="ficticio">BK Red Blue</span></li>
+                        <li class="equipo"><span class="real">Empoli</span> <span class="ficticio">TO Blue</span></li>
+                        <li class="equipo"><span class="real">Frosinone (Histórico)</span> <span class="ficticio">TI Yellow Blue</span></li>
+                        <li class="equipo"><span class="real">Juve Stabia</span> <span class="ficticio">CM Blue Yellow</span></li>
+                        <li class="equipo"><span class="real">Livorno</span> <span class="ficticio">TO Brown</span></li>
+                        <li class="equipo"><span class="real">Perugia</span> <span class="ficticio">Prastogna</span></li>
+                        <li class="equipo"><span class="real">Pescara</span> <span class="ficticio">AB White Light Blue</span></li>
+                        <li class="equipo"><span class="real">Pisa</span> <span class="ficticio">TO Blue Black</span></li>
+                        <li class="equipo"><span class="real">Pordenone</span> <span class="ficticio">FV Green Black</span></li>
+                        <li class="equipo"><span class="real">Salernitana</span> <span class="ficticio">CM Burgundy</span></li>
+                        <li class="equipo"><span class="real">Spezia</span> <span class="ficticio">Spremonese</span></li>
+                        <li class="equipo"><span class="real">Trapani</span> <span class="ficticio">Drepanumese</span></li>
+                        <li class="equipo"><span class="real">Venezia (Histórico)</span> <span class="ficticio">DL Green Black Orange</span></li>
+                        <li class="equipo"><span class="real">Virtus Entella</span> <span class="ficticio">LR White Blue</span></li>
+                        <li class="equipo"><span class="real">Palermo</span> <span class="ficticio">SI Pink Black</span></li>
+                    </ul>
+                </details>
+            </details>
+
+        </details>
+        <!-- Podés agregar más continentes abajo copiando la estructura de UEFA -->
+    </div>
 
     <script>
         const buscador = document.getElementById('buscador');
         const equipos = document.querySelectorAll('.equipo');
+        const categorias = document.querySelectorAll('details');
 
-        // Esta función hace que el buscador funcione en tiempo real
         buscador.addEventListener('input', function() {
             const textoBusqueda = this.value.toLowerCase().trim();
+
+            let busquedaActiva = textoBusqueda.length > 0;
+
+            // Abrir todas las carpetas automáticamente si el usuario está buscando algo
+            categorias.forEach(categoria => {
+                if (busquedaActiva) {
+                    categoria.open = true;
+                }
+            });
 
             equipos.forEach(equipo => {
                 const nombreReal = equipo.querySelector('.real').textContent.toLowerCase();
                 const nombreFicticio = equipo.querySelector('.ficticio').textContent.toLowerCase();
                 
-                // Busca tanto si escriben el nombre real como el ficticio
                 if (nombreReal.includes(textoBusqueda) || nombreFicticio.includes(textoBusqueda)) {
                     equipo.classList.remove('oculto');
                 } else {
