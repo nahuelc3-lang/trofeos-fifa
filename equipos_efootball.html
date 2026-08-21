@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nombres Reales - eFootball</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h1 { 
+            color: #00d2ff; 
+            font-size: 22px; 
+            margin: 0; 
+            text-align: center; 
+            flex-grow: 1;
+        }
+        .btn-volver {
+            color: #fff;
+            background-color: #333;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-volver:hover { background-color: #555; }
+        input {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #2a2a2a;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        input::placeholder { color: #aaa; }
+        .lista-equipos {
+            width: 100%;
+            max-width: 500px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .equipo {
+            background-color: #1e1e1e;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #00d2ff;
+        }
+        .real { font-weight: bold; font-size: 16px; }
+        .ficticio { color: #aaaaaa; font-size: 14px; text-align: right;}
+        .oculto { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <!-- Este botón los devuelve a tu página principal -->
+        <a href="index.html" class="btn-volver">🔙 Volver</a>
+        <h1>Buscador eFootball</h1>
+        <div style="width: 70px;"></div> <!-- Espaciador para centrar el título -->
+    </div>
+
+    <!-- Buscador -->
+    <input type="text" id="buscador" placeholder="Escribí un equipo (ej: Real Madrid)...">
+
+    <!-- Lista de Equipos -->
+    <ul class="lista-equipos" id="contenedor-equipos">
+        
+        <!-- Inglaterra -->
+        <li class="equipo"><span class="real">Manchester City</span> <span class="ficticio">Manchester Blue</span></li>
+        <li class="equipo"><span class="real">Chelsea</span> <span class="ficticio">London FC</span></li>
+        <li class="equipo"><span class="real">West Ham United</span> <span class="ficticio">East London</span></li>
+        <li class="equipo"><span class="real">Aston Villa</span> <span class="ficticio">West Midlands Village</span></li>
+        <li class="equipo"><span class="real">Tottenham Hotspur</span> <span class="ficticio">North East London</span></li>
+        
+        <!-- España -->
+        <li class="equipo"><span class="real">Real Madrid</span> <span class="ficticio">Madrid Chamartin B</span></li>
+        <li class="equipo"><span class="real">Atlético de Madrid</span> <span class="ficticio">Madrid Rosas RB</span></li>
+        <li class="equipo"><span class="real">Sevilla</span> <span class="ficticio">Sevilla Nervion BR</span></li>
+        <li class="equipo"><span class="real">Villarreal</span> <span class="ficticio">Villarreal A</span></li>
+        
+        <!-- Italia -->
+        <li class="equipo"><span class="real">Inter de Milán</span> <span class="ficticio">Lombardia NA</span></li>
+        <li class="equipo"><span class="real">Juventus</span> <span class="ficticio">Piemonte BN</span></li>
+        <li class="equipo"><span class="real">AC Milan</span> <span class="ficticio">Milano RN</span></li>
+
+        <!-- AGREGÁ MÁS EQUIPOS ACÁ ABAJO COPIANDO UNA DE LAS LÍNEAS DE ARRIBA -->
+    </ul>
+
+    <script>
+        const buscador = document.getElementById('buscador');
+        const equipos = document.querySelectorAll('.equipo');
+
+        // Esta función hace que el buscador funcione en tiempo real
+        buscador.addEventListener('input', function() {
+            const textoBusqueda = this.value.toLowerCase().trim();
+
+            equipos.forEach(equipo => {
+                const nombreReal = equipo.querySelector('.real').textContent.toLowerCase();
+                const nombreFicticio = equipo.querySelector('.ficticio').textContent.toLowerCase();
+                
+                // Busca tanto si escriben el nombre real como el ficticio
+                if (nombreReal.includes(textoBusqueda) || nombreFicticio.includes(textoBusqueda)) {
+                    equipo.classList.remove('oculto');
+                } else {
+                    equipo.classList.add('oculto');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
