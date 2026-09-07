@@ -68,14 +68,7 @@ h1 {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 20px;
-}
-
-.tabla-contenedor {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 20px;
-    overflow-x: auto; /* 🔥 ESTA ES LA MAGIA: permite deslizar la tabla hacia los costados */
+    overflow-x: auto;
 }
 
 table {
@@ -103,10 +96,22 @@ tr:hover td {
 
 .td-centro { text-align: center; }
 
+/* ESTILOS PARA ENLACES ANCLA (LINKS INTERNOS) */
+a.enlace-ancla {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+a.enlace-ancla:hover {
+    color: #00e5ff;
+}
+
 /* VITRINAS DE JUGADORES */
 .vitrinas-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
+    /* 🔥 Modificado para que ocupe toda la pantalla (1 columna en lugar de 2) */
+    grid-template-columns: 1fr; 
     gap: 30px;
 }
 
@@ -116,6 +121,7 @@ tr:hover td {
     border-radius: 15px;
     padding: 20px;
     text-align: center;
+    scroll-margin-top: 30px; /* Margen superior al saltar a la vitrina */
 }
 
 .vitrina-jugador h3 {
@@ -140,6 +146,15 @@ tr:hover td {
     flex-direction: column;
     align-items: center;
     width: 160px;
+    scroll-margin-top: 40px; /* Margen al saltar al trofeo específico */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto al saltar directo al trofeo desde el historial */
+.trofeo-item:target {
+    box-shadow: 0 0 20px 2px rgba(0, 229, 255, 0.6);
+    transform: scale(1.05);
+    border: 1px solid #00e5ff;
 }
 
 .trofeo-item model-viewer {
@@ -160,18 +175,17 @@ tr:hover td {
     .estadisticas-grid, .vitrinas-grid {
         grid-template-columns: 1fr;
     }
-    .panel { padding: 15px; } /* Achicamos un poco el padding general para ganar espacio */
+    .panel { padding: 15px; } 
 
-    /* 🔥 Ajustes específicos para las tablas en celulares */
     table {
-        font-size: 13px; /* Letra un poco más chica */
-        min-width: 450px; /* Fuerza a la tabla a tener un ancho mínimo para activar el scroll horizontal */
+        font-size: 13px; 
+        min-width: 450px; 
     }
     th, td {
-        padding: 8px 5px; /* Menos espacio de relleno entre columnas */
+        padding: 8px 5px; 
     }
     .equipo img {
-        width: 18px; /* Achicamos un milímetro los escudos en celus */
+        width: 18px; 
         height: 18px;
     }
 }
@@ -203,36 +217,36 @@ tr:hover td {
               <th>Edición</th> </tr>
           </thead>
           <tbody>
-            <tr><td>Mundial 2026 (Generico)</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5d6sroo7YdfGbudsfcETZfyFpGlwgdLJN1Ah2RotgloDZm5pKyPFk1zBdVezHibLErTo568nz1iOmVHSBaPsoubNbxQJE0z8_mk1ggV9EqQ2LvM8C3z0RoXp6WVfu3N-esDEV6ynYuApYWMadrblKMEqwqkcARyb2m1tfMOrhhPZfPq9ywCav40CJ/s128/Argentina128x.png"><span>Argentina</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Apertura 2026</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png"><span>Estudiantes</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Champions League 25/26</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGfaRmGxY6u2krZbdUYM-bUnQf4aXSHGPIDYUo11nvhxDkO1dsVibQpTB2uk7cJwe3veplZn3fbVY9EYyf_9wciqqoL2RYf3mUarp05wq0tnbDJHbRufcIwT5Fql9i2SOrBDcV85VJgcfoPko35TZ2H4k_I3jXF7txJ-gS2kLa22HFAcjKIKiSS6qlZAU/s128/FC%20Bayern%20Munchen128x.png"><span>FC Bayern München</span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1920px-Flag_of_Germany.svg.png"></div></td><td>FC 26</td></tr>
-            <tr><td>Recopa Sudamericana 2026</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhus4SZGFTO0T8qOFRtBmhdp-CFdK_CO9JNlfOIsEQG_-Z2mqj4gRTGwGRqei1fq-YdZZOV_AzSz3RcdkwcWjPUc4pn2zkQAr1lytasg7vQdcWstg8fWQEhTeVuWM4evElEIy-BpufwK_oSxeu3x-W9zdpDqRTAO4mfYZ_RoKOpGCSI68Lt65CcEMPadV4/s128/Clube%20de%20Regatas%20do%20Flamengo128x.png"><span>Flamengo</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Sudamericana 2025</td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUhFsLecx9r6C_vDUkPBCSP4P7rCexc5rm2aEYPP6EbnzBBng5MaVavdPM2PT8El7wD-ZcbiBKSIkodFgUA4X0WMexssET3Ma0yuoouQgsnxIV0bnWx367plwLMMVyeyJOtfGX4hWD8_E/s1600/Clube+Atletico+Mineiro128x.png"><span>Atlético Mineiro</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Libertadores 2025</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Clausura 2025</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY0LCvqZHXem9kWtHYUM9sgTasj7XkYDtm9xGPZcXBWdWzAC9MDJPd9T06FbroMSZjaepTDjao038Vz7grV41lvC0-kY5FCv5YdlVLaDDxRv8R-9-OZ4VZBcloZbV9vRxfyBU_LJF8BYx2FpTOsIw_vKaWAMOYwd1OM3dfw-8VlCF9i2tH-kD-r85UsQ4/s128/CA%20Lanus128x.png"><span>Lanús</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
-            <tr><td>Liga 2025</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png"><span>Estudiantes</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-mun26" class="enlace-ancla">Mundial 2026 (Generico)</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5d6sroo7YdfGbudsfcETZfyFpGlwgdLJN1Ah2RotgloDZm5pKyPFk1zBdVezHibLErTo568nz1iOmVHSBaPsoubNbxQJE0z8_mk1ggV9EqQ2LvM8C3z0RoXp6WVfu3N-esDEV6ynYuApYWMadrblKMEqwqkcARyb2m1tfMOrhhPZfPq9ywCav40CJ/s128/Argentina128x.png"><span>Argentina</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-ape26" class="enlace-ancla">Apertura 2026</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png"><span>Estudiantes</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-cha2526" class="enlace-ancla">Champions League 25/26</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGfaRmGxY6u2krZbdUYM-bUnQf4aXSHGPIDYUo11nvhxDkO1dsVibQpTB2uk7cJwe3veplZn3fbVY9EYyf_9wciqqoL2RYf3mUarp05wq0tnbDJHbRufcIwT5Fql9i2SOrBDcV85VJgcfoPko35TZ2H4k_I3jXF7txJ-gS2kLa22HFAcjKIKiSS6qlZAU/s128/FC%20Bayern%20Munchen128x.png"><span>FC Bayern München</span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1920px-Flag_of_Germany.svg.png"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-rec26" class="enlace-ancla">Recopa Sudamericana 2026</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhus4SZGFTO0T8qOFRtBmhdp-CFdK_CO9JNlfOIsEQG_-Z2mqj4gRTGwGRqei1fq-YdZZOV_AzSz3RcdkwcWjPUc4pn2zkQAr1lytasg7vQdcWstg8fWQEhTeVuWM4evElEIy-BpufwK_oSxeu3x-W9zdpDqRTAO4mfYZ_RoKOpGCSI68Lt65CcEMPadV4/s128/Clube%20de%20Regatas%20do%20Flamengo128x.png"><span>Flamengo</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-mat-sud25" class="enlace-ancla">Sudamericana 2025</a></td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUhFsLecx9r6C_vDUkPBCSP4P7rCexc5rm2aEYPP6EbnzBBng5MaVavdPM2PT8El7wD-ZcbiBKSIkodFgUA4X0WMexssET3Ma0yuoouQgsnxIV0bnWx367plwLMMVyeyJOtfGX4hWD8_E/s1600/Clube+Atletico+Mineiro128x.png"><span>Atlético Mineiro</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-lib25" class="enlace-ancla">Libertadores 2025</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-nic-cla25" class="enlace-ancla">Clausura 2025</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY0LCvqZHXem9kWtHYUM9sgTasj7XkYDtm9xGPZcXBWdWzAC9MDJPd9T06FbroMSZjaepTDjao038Vz7grV41lvC0-kY5FCv5YdlVLaDDxRv8R-9-OZ4VZBcloZbV9vRxfyBU_LJF8BYx2FpTOsIw_vKaWAMOYwd1OM3dfw-8VlCF9i2tH-kD-r85UsQ4/s128/CA%20Lanus128x.png"><span>Lanús</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
+            <tr><td><a href="#t-joa-lig25" class="enlace-ancla">Liga 2025</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoOjD68Co76GwEpbBxPM_QaEiagf3vJHpk5GGDbizMLmfNv1Oa-g7lPDVBP906DKPN10B8P5_K4L8LYdLbC5NqSkFPHQrCGIeypuTeltR8mqltZplU8ucGvDqOvEteSKVbdqAPb9vbTjq2eopnuN1-q4KAMXPS6l-bvv-Y0obBOg1IcKCzl5c1LBRCVpg/s128/Club%20Estudiantes%20de%20La%20Plata128x.png"><span>Estudiantes</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 26</td></tr>
             
-            <tr><td>Champions League 24/25</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiS1f-ywNC5vCxGaY-iL6mbcBTJgRS2Z_LGloHny6ZnMHYoT0b_79VSKDIrqJ_BaSNU3ufkQlKOG5zb1G-qoiDRB1nKiD5MZQDMx0cghu-ozh-AIGbyIOOxj2M4KWluwsTVyw678B06Uwk/s1600/Real+Madrid+CF128x.png"><span>Real Madrid</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FC 25</td></tr>
-            <tr><td>Apertura 2025</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKxWx4tXSkJVEzqgz-TuYHh34vVYlJaRG0IfjRcjnHMnv-Bg_7PuDuYsqlwJlCC3P2LCnDGrmSkouKy9bY3abxtqhGRzDd1P0xULGxVFvT_gRz9r1zyTOSbkOH_hPMwi7RxOwr-O5FMyU/s1600/Club+Atletico+Newells+Old+Boys128x.png"><span>Newell's</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
-            <tr><td>Recopa Sudamericana 2025</td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghWvSJWCrUF8u2JceuoExqUlFdSH_8ikgsw-3Mv8-CblPsDANkhTcB3yCOFufq7FH8rgreONKj2yjO4dIAVZAOjM0LP5Stm6dvBbp78TSLkNSDvXcV_qhvm3nsUKHNNbBkXcwU5pD8Sak/s1600/Racing+Club128x.png"><span>Racing</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
-            <tr><td>Sudamericana 2024</td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiiRIaWS6-71TzKlRTjARBfXvXxICejK5DRKMZhDuwoJno2sY4MlkDl3gNDhbiiSZj9CD047rIY2YLi24b36fpoKuyfY7JnNh-jrrVRfzTqKIr7QoKGajr_QFPEPOqWLQbjJGSBnycRmWs/s128/Cruzeiro+Esporte+Clube128x.png"><span>Cruzeiro</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 25</td></tr>
-            <tr><td>Libertadores 2024</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 25</td></tr>
-            <tr><td>LPF 2024</td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqNkNCiGJBhKbV9_u86I0Bq4wsNgM/s128/Boca%20Juniors128x.png"><span>Boca</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-joa-cha2425" class="enlace-ancla">Champions League 24/25</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiS1f-ywNC5vCxGaY-iL6mbcBTJgRS2Z_LGloHny6ZnMHYoT0b_79VSKDIrqJ_BaSNU3ufkQlKOG5zb1G-qoiDRB1nKiD5MZQDMx0cghu-ozh-AIGbyIOOxj2M4KWluwsTVyw678B06Uwk/s1600/Real+Madrid+CF128x.png"><span>Real Madrid</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-nic-ape25" class="enlace-ancla">Apertura 2025</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKxWx4tXSkJVEzqgz-TuYHh34vVYlJaRG0IfjRcjnHMnv-Bg_7PuDuYsqlwJlCC3P2LCnDGrmSkouKy9bY3abxtqhGRzDd1P0xULGxVFvT_gRz9r1zyTOSbkOH_hPMwi7RxOwr-O5FMyU/s1600/Club+Atletico+Newells+Old+Boys128x.png"><span>Newell's</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-mat-rec25" class="enlace-ancla">Recopa Sudamericana 2025</a></td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghWvSJWCrUF8u2JceuoExqUlFdSH_8ikgsw-3Mv8-CblPsDANkhTcB3yCOFufq7FH8rgreONKj2yjO4dIAVZAOjM0LP5Stm6dvBbp78TSLkNSDvXcV_qhvm3nsUKHNNbBkXcwU5pD8Sak/s1600/Racing+Club128x.png"><span>Racing</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-mat-sud24" class="enlace-ancla">Sudamericana 2024</a></td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiiRIaWS6-71TzKlRTjARBfXvXxICejK5DRKMZhDuwoJno2sY4MlkDl3gNDhbiiSZj9CD047rIY2YLi24b36fpoKuyfY7JnNh-jrrVRfzTqKIr7QoKGajr_QFPEPOqWLQbjJGSBnycRmWs/s128/Cruzeiro+Esporte+Clube128x.png"><span>Cruzeiro</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-nic-lib24" class="enlace-ancla">Libertadores 2024</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 25</td></tr>
+            <tr><td><a href="#t-mat-lpf24" class="enlace-ancla">LPF 2024</a></td><td><b>Mateo</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjOL0rL1mnaqAIv_9cWnQayBcfquddQxXR82Ho7GG9YdcQjYhK077s3wlCOM1Z1OExJShV-b-f3Yzuoq049fzMYoRvgwR06s99-ezsl4uki7P80_dKIxjtIO4kDkpJNbJTxG-K2jS8xkKzvkTgkVXfy2sosC1ZROpCqHP2p0L_F9w/s128/Boca%20Juniors128x.png"><span>Boca</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 25</td></tr>
             
-            <tr><td>Eurocopa 2024</td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRTZnuTqm5vs3jS9XP9VDI9FybyxJLMiat9GbyC0INOYnJGXk3x3WoCWhtf_rPJKFhCEGujSJR4-vhU0z8cZykFXRR1BUUF-ncVWbko6JEEZdbtp3W-qHhjDjJC8OCreCuf1KjNilrZcXxkDVKeZkmH21-LCllGLR2wrwoQ6k_nWNe9a4zgCqimVKl/s128/FFF128x.png"><span>Francia</span><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Champions League 23/24</td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheoShoIC-wNtKqxI6_P5AV8UvS9V25paNPnYiytDC6FV2TFGWe4U8gOCvIFoq-Yeyz6m48ZS2SzEkztbD8qQIHEj2l864fNJFn-pVsFEeUS1D4CKkWEhCdzsdLygsmhdsoN7aX6SRrZGxWSqBBA-GPvDZM01PxE74ZMjsdJa_MV1wkSa_68xMby3YFj2c/s128/Club%20Atl%C3%A9tico%20de%20Madrid128x.png"><span>Atlético de Madrid</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Copa de Primera 2024</td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Recopa Sudamericana 2024</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Sudamericana 2023</td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDIsPLRLyl-SLzxRKRR782JpE6_3wapeZVMV8il4PrNb2QuW9fDe-qzU-wrJgheKRFnuGnzUResybcTlGK8QbtINmRT4aBmAmmOl3oChEg4dSNBhdIrlgck8xsXIiFiQ0YJmjUApelf9whlWb6hAZ8ufg7mAPNexpmwSebbcKufJZbhT8MN6ehJGJdTew/s128/LDU%20de%20Quito128x.png"><span>Liga de Quito</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Libertadores 2023</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 24</td></tr>
-            <tr><td>Copa de Primera 2023</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi80fnjA1MthG6UeuRC0g50bIY82iC9Vev2JXPkSmexHnf7WIR34BwkcrrxgxD2NMIKP-RUyTiCa6lJ3FRhF64UNVpWkBy58zfo62oz1RgwkL4s5GwtEZOuhAMc7ZZ3EOYzTq4QMqV2aT9dQ9KJzNG3oFi5uxO5M9wv0YtkSxSZP2imTV2CJZK5a2BquQg/s128/Godoy%20Cruz128x.png"><span>Godoy Cruz</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-nah-eur24" class="enlace-ancla">Eurocopa 2024</a></td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRTZnuTqm5vs3jS9XP9VDI9FybyxJLMiat9GbyC0INOYnJGXk3x3WoCWhtf_rPJKFhCEGujSJR4-vhU0z8cZykFXRR1BUUF-ncVWbko6JEEZdbtp3W-qHhjDjJC8OCreCuf1KjNilrZcXxkDVKeZkmH21-LCllGLR2wrwoQ6k_nWNe9a4zgCqimVKl/s128/FFF128x.png"><span>Francia</span><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-nah-cha2324" class="enlace-ancla">Champions League 23/24</a></td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheoShoIC-wNtKqxI6_P5AV8UvS9V25paNPnYiytDC6FV2TFGWe4U8gOCvIFoq-Yeyz6m48ZS2SzEkztbD8qQIHEj2l864fNJFn-pVsFEeUS1D4CKkWEhCdzsdLygsmhdsoN7aX6SRrZGxWSqBBA-GPvDZM01PxE74ZMjsdJa_MV1wkSa_68xMby3YFj2c/s128/Club%20Atl%C3%A9tico%20de%20Madrid128x.png"><span>Atlético de Madrid</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-nah-cop24" class="enlace-ancla">Copa de Primera 2024</a></td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-joa-rec24" class="enlace-ancla">Recopa Sudamericana 2024</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-nah-sud23" class="enlace-ancla">Sudamericana 2023</a></td><td><b>Nahuel</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDIsPLRLyl-SLzxRKRR782JpE6_3wapeZVMV8il4PrNb2QuW9fDe-qzU-wrJgheKRFnuGnzUResybcTlGK8QbtINmRT4aBmAmmOl3oChEg4dSNBhdIrlgck8xsXIiFiQ0YJmjUApelf9whlWb6hAZ8ufg7mAPNexpmwSebbcKufJZbhT8MN6ehJGJdTew/s128/LDU%20de%20Quito128x.png"><span>Liga de Quito</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-joa-lib23" class="enlace-ancla">Libertadores 2023</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghwDuqHUuS5RTx3JGVVH16ztVORYrW3jqBuMtBivRCJykVF5OczE34N4bSA330jugKh21Ad0s3p_Wua08mxSZ-Z50AeerWel7kQgc3hyphenhyphen3JRcdHZAnsZ4AWDPPeP0YKl7-SC29LAUD1r1Q/s1600/Fluminense+Football+Club128x.png"><span>Fluminense</span><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"></div></td><td>FC 24</td></tr>
+            <tr><td><a href="#t-nic-cop23" class="enlace-ancla">Copa de Primera 2023</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi80fnjA1MthG6UeuRC0g50bIY82iC9Vev2JXPkSmexHnf7WIR34BwkcrrxgxD2NMIKP-RUyTiCa6lJ3FRhF64UNVpWkBy58zfo62oz1RgwkL4s5GwtEZOuhAMc7ZZ3EOYzTq4QMqV2aT9dQ9KJzNG3oFi5uxO5M9wv0YtkSxSZP2imTV2CJZK5a2BquQg/s128/Godoy%20Cruz128x.png"><span>Godoy Cruz</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FC 24</td></tr>
             
-            <tr><td>Champions League 22/23</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKpAXuqAvxzsDan7pfHN9ta1luf2zmiOXMBO1AXaGtASLV7S_tFbU7CUm5tL6DvhEjtBdTsNXIgqE56_-tHaPd8BGUsDcD-wjw0tHyusTn4tKqCjS1klmjc8cnxZOJE1JDiNm-GHb8Tg8/s128/FC+Barcelona128x.png"><span>Barcelona</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FIFA 23</td></tr>
-            <tr><td>Recopa Sudamericana 2023</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtp9ZnoN9alyN3r-uCMq10bZ94qGJs4KHuPg48QTYKJ2eZzXt_SKBLJs10CGMQMUOpXQOVHxCgUWgzfWZykddWhDtjdNLybpb4G1zAa-1X4obEIwRmBaPVN_fJ3EQL8Wec7h2034llnDd1wX7gyJcghHiYY5WDUg6KfKQKd3NuKFRwtCpfa8Kddvo6/s128/Independiente%20del%20Valle128x.png"><span>IDV</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FIFA 23</td></tr>
-            <tr><td>Mundial 2022</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5d6sroo7YdfGbudsfcETZfyFpGlwgdLJN1Ah2RotgloDZm5pKyPFk1zBdVezHibLErTo568nz1iOmVHSBaPsoubNbxQJE0z8_mk1ggV9EqQ2LvM8C3z0RoXp6WVfu3N-esDEV6ynYuApYWMadrblKMEqwqkcARyb2m1tfMOrhhPZfPq9ywCav40CJ/s128/Argentina128x.png"><span>Argentina</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
-            <tr><td>Sudamericana 2022</td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtp9ZnoN9alyN3r-uCMq10bZ94qGJs4KHuPg48QTYKJ2eZzXt_SKBLJs10CGMQMUOpXQOVHxCgUWgzfWZykddWhDtjdNLybpb4G1zAa-1X4obEIwRmBaPVN_fJ3EQL8Wec7h2034llnDd1wX7gyJcghHiYY5WDUg6KfKQKd3NuKFRwtCpfa8Kddvo6/s128/Independiente%20del%20Valle128x.png"><span>IDV</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FIFA 23</td></tr>
-            <tr><td>Libertadores 2022</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
-            <tr><td>LPF 2022</td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrj-EZz7CmNG6m_Fa7Q3w1CcUORXE8k1tWkOeY_N-egX754nAJWchSjs55lARBlu-T9bG5twJNd-xn5gIzHCmL5iQSG-pl0ZBIzWfgATG7dz7bp4go3c4CRjarxwjQDCgtADnxY5eudgRhIWTJ1vP5gPOyoXpmS5E6EvcfyQxuFlkLmUGAMcDlBsvLKMI/s128/Club%20Atl%C3%A9tico%20Talleres128x.png"><span>Talleres</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-joa-cha2223" class="enlace-ancla">Champions League 22/23</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKpAXuqAvxzsDan7pfHN9ta1luf2zmiOXMBO1AXaGtASLV7S_tFbU7CUm5tL6DvhEjtBdTsNXIgqE56_-tHaPd8BGUsDcD-wjw0tHyusTn4tKqCjS1klmjc8cnxZOJE1JDiNm-GHb8Tg8/s128/FC+Barcelona128x.png"><span>Barcelona</span><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Spain.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-nic-rec23" class="enlace-ancla">Recopa Sudamericana 2023</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtp9ZnoN9alyN3r-uCMq10bZ94qGJs4KHuPg48QTYKJ2eZzXt_SKBLJs10CGMQMUOpXQOVHxCgUWgzfWZykddWhDtjdNLybpb4G1zAa-1X4obEIwRmBaPVN_fJ3EQL8Wec7h2034llnDd1wX7gyJcghHiYY5WDUg6KfKQKd3NuKFRwtCpfa8Kddvo6/s128/Independiente%20del%20Valle128x.png"><span>IDV</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-joa-mun22" class="enlace-ancla">Mundial 2022</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5d6sroo7YdfGbudsfcETZfyFpGlwgdLJN1Ah2RotgloDZm5pKyPFk1zBdVezHibLErTo568nz1iOmVHSBaPsoubNbxQJE0z8_mk1ggV9EqQ2LvM8C3z0RoXp6WVfu3N-esDEV6ynYuApYWMadrblKMEqwqkcARyb2m1tfMOrhhPZfPq9ywCav40CJ/s128/Argentina128x.png"><span>Argentina</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-nic-sud22" class="enlace-ancla">Sudamericana 2022</a></td><td><b>Nico</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtp9ZnoN9alyN3r-uCMq10bZ94qGJs4KHuPg48QTYKJ2eZzXt_SKBLJs10CGMQMUOpXQOVHxCgUWgzfWZykddWhDtjdNLybpb4G1zAa-1X4obEIwRmBaPVN_fJ3EQL8Wec7h2034llnDd1wX7gyJcghHiYY5WDUg6KfKQKd3NuKFRwtCpfa8Kddvo6/s128/Independiente%20del%20Valle128x.png"><span>IDV</span><img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Flag_of_Ecuador.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-joa-lib22" class="enlace-ancla">Libertadores 2022</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgTBK7xhnKu2_r_QmZQ1cTNMJsILgHkg9qmEPHvBzWp1YNXQ3yacqii16J9eEz6cUWXrd74cT0d4YE6vTg4bl9rI8zpYAR0AFadmDoF97IZyeHTCSauM9cqvXIwX2zfxk24E_uso78IpGptZ83ITlmLnK9itXSmq2rwz5t_e8XrzwCU_tgCMN8R1DZQ=s128"><span>River</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
+            <tr><td><a href="#t-joa-lpf22" class="enlace-ancla">LPF 2022</a></td><td><b>Joaquín</b></td><td><div class="equipo" style="justify-content: flex-start;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrj-EZz7CmNG6m_Fa7Q3w1CcUORXE8k1tWkOeY_N-egX754nAJWchSjs55lARBlu-T9bG5twJNd-xn5gIzHCmL5iQSG-pl0ZBIzWfgATG7dz7bp4go3c4CRjarxwjQDCgtADnxY5eudgRhIWTJ1vP5gPOyoXpmS5E6EvcfyQxuFlkLmUGAMcDlBsvLKMI/s128/Club%20Atl%C3%A9tico%20Talleres128x.png"><span>Talleres</span><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"></div></td><td>FIFA 23</td></tr>
           </tbody>
         </table>
       </div>
@@ -248,20 +262,20 @@ tr:hover td {
           </thead>
           <tbody>
             <tr>
-              <td><b>Joaquín</b></td>
-              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">13</td>
+              <td><a href="#vitrina-joaquin" class="enlace-ancla"><b>Joaquín</b></a></td>
+              <td class="td-centro"><a href="#vitrina-joaquin" class="enlace-ancla" style="font-size: 18px; color: #ffd700; font-weight: bold;">13</a></td>
             </tr>
             <tr>
-              <td><b>Nico</b></td>
-              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">6</td>
+              <td><a href="#vitrina-nico" class="enlace-ancla"><b>Nico</b></a></td>
+              <td class="td-centro"><a href="#vitrina-nico" class="enlace-ancla" style="font-size: 18px; color: #ffd700; font-weight: bold;">6</a></td>
             </tr>
             <tr>
-              <td><b>Mateo</b></td>
-              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">4</td>
+              <td><a href="#vitrina-mateo" class="enlace-ancla"><b>Mateo</b></a></td>
+              <td class="td-centro"><a href="#vitrina-mateo" class="enlace-ancla" style="font-size: 18px; color: #ffd700; font-weight: bold;">4</a></td>
             </tr>
             <tr>
-              <td><b>Nahuel</b></td>
-              <td class="td-centro" style="font-size: 18px; color: #ffd700; font-weight: bold;">4</td>
+              <td><a href="#vitrina-nahuel" class="enlace-ancla"><b>Nahuel</b></a></td>
+              <td class="td-centro"><a href="#vitrina-nahuel" class="enlace-ancla" style="font-size: 18px; color: #ffd700; font-weight: bold;">4</a></td>
             </tr>
           </tbody>
         </table>
@@ -308,134 +322,136 @@ tr:hover td {
     <h2 style="text-align: center;">Vitrinas Personales</h2>
     <div class="vitrinas-grid">
 
-      <div class="vitrina-jugador">
+      <!-- Agregamos ID a cada vitrina para el anclaje -->
+      <div class="vitrina-jugador" id="vitrina-joaquin">
         <h3>Joaquín</h3>
         <div class="trofeos-ganados">
-          <div class="trofeo-item">
+          <!-- ID en cada trofeo -->
+          <div class="trofeo-item" id="t-joa-mun26">
             <model-viewer src="FIFA_Mundial.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Mundial 2026 (Generico)</b><br>con Argentina</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-mun22">
             <model-viewer src="FIFA_Mundial.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Mundial 2022</b><br>con Argentina</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-cha2526">
             <model-viewer src="UEFA_Champions_League.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Champions 25/26</b><br>con FC Bayern München</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-cha2425">
             <model-viewer src="UEFA_Champions_League.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Champions 24/25</b><br>con Real Madrid</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-cha2223">
             <model-viewer src="UEFA_Champions_League.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Champions 22/23</b><br>con Barcelona</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-lib25">
             <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Libertadores 2025</b><br>con River</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-lib23">
             <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Libertadores 2023</b><br>con Fluminense</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-lib22">
             <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Libertadores 2022</b><br>con River</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-rec26">
             <model-viewer src="CONMEBOL_RecopaSudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Recopa 2026</b><br>con Flamengo</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-rec24">
             <model-viewer src="CONMEBOL_RecopaSudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Recopa 2024</b><br>con Fluminense</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-ape26">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Apertura 2026</b><br>con Estudiantes</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-lig25">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Liga 2025</b><br>con Estudiantes</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-joa-lpf22">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>LPF 2022</b><br>con Talleres</div>
           </div>
         </div>
       </div>
 
-<div class="vitrina-jugador">
+      <div class="vitrina-jugador" id="vitrina-nico">
         <h3>Nico</h3>
         <div class="trofeos-ganados">
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-lib24">
             <model-viewer src="CONMEBOL_Libertadores.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Libertadores 2024</b><br>con Fluminense</div>
           </div>
           
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-rec23">
             <model-viewer src="CONMEBOL_RecopaSudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Recopa 2023</b><br>con IDV</div> 
           </div>
 
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-sud22">
             <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Sudamericana 2022</b><br>con IDV</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-cla25">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Clausura 2025</b><br>con Lanús</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-ape25">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Apertura 2025</b><br>con Newell's</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nic-cop23">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Copa Primera 2023</b><br>con Godoy Cruz</div>
           </div>
         </div>
       </div>
 
-      <div class="vitrina-jugador">
+      <div class="vitrina-jugador" id="vitrina-mateo">
         <h3>Mateo</h3>
         <div class="trofeos-ganados">
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-mat-rec25">
             <model-viewer src="CONMEBOL_RecopaSudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Recopa 2025</b><br>con Racing</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-mat-sud25">
             <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Sudamericana 2025</b><br>con Mineiro</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-mat-sud24">
             <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Sudamericana 2024</b><br>con Cruzeiro</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-mat-lpf24">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>LPF 2024</b><br>con Boca</div>
           </div>
         </div>
       </div>
 
-      <div class="vitrina-jugador">
+      <div class="vitrina-jugador" id="vitrina-nahuel">
         <h3>Nahuel</h3>
         <div class="trofeos-ganados">
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nah-eur24">
             <model-viewer src="UEFA_Eurocopa.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Eurocopa 2024</b><br>con Francia</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nah-cha2324">
             <model-viewer src="UEFA_Champions_League.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Champions 23/24</b><br>con At. Madrid</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nah-sud23">
             <model-viewer src="CONMEBOL_Sudamericana.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Sudamericana 2023</b><br>con Liga de Quito</div>
           </div>
-          <div class="trofeo-item">
+          <div class="trofeo-item" id="t-nah-cop24">
             <model-viewer src="AFA_LPF.glb" auto-rotate camera-controls></model-viewer>
             <div class="trofeo-info"><b>Copa Primera 2024</b><br>con River</div>
           </div>
